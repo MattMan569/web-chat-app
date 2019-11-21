@@ -10,9 +10,17 @@
 </head>
 
 <body>
+    {{>header}}
+
     <div class="main-content">
-        {{>header}}
-        <p>content ...</p>
+        <h2>Join a Room</h2>
+        <form action="/chat">
+            <label for="username">Display Name</label>
+            <input type="text" name="username" placeholder="Display name" required>
+            <label for="room-name">Room Name</label>
+            <input type="text" name="room-name" placeholder="Room name" required>
+            <button>Join</button>
+        </form>
     </div>
 
     {{>footer}}

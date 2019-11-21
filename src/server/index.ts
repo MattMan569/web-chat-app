@@ -2,6 +2,7 @@ import express from "express";
 import { Request, Response } from "express";
 import hbs from "hbs";
 import path from "path";
+import { Result } from "range-parser";
 
 const websiteTitle = "Chat App";
 const websiteAuthor = "Matthew Polsom";
@@ -24,6 +25,14 @@ app.use(express.static(publicDirectoryPath));
 
 app.get("/", (req: Request, res: Response) => {
     res.render("index", {
+        websiteAuthor,
+        websiteTitle,
+    });
+});
+
+app.get("/chat", (req: Request, res: Response) => {
+    res.render("chat", {
+        pageTitle: "Chat",
         websiteAuthor,
         websiteTitle,
     });
