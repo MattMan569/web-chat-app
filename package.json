@@ -8,12 +8,11 @@
     "clean": "rimraf dist",
     "copy:client": "copyfiles -e \"**/*.ts\" -e \"**/*.scss\" -u 1 \"src/client/**/*\" \"dist/\"",
     "copy:templates": "copyfiles -u 1 \"src/templates/**/*\" \"dist/\"",
-    "mkdirClient": "mkdirp dist/client",
     "sass": "node-sass src/client/scss/styles.scss dist/client/css/styles.css --output-style=compressed",
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
-    "bundle": "browserify src/client/chat.ts -p [ tsify ] > dist/client/bundle.js",
-    "prestart": "npm run clean && npm-run-all --parallel copy:* mkdirClient && npm-run-all --parallel sass build bundle",
+    "bundle": "browserify src/client/chat.ts -p [ tsify ] -o dist/client/bundle.js",
+    "prestart": "npm run clean && npm-run-all --parallel copy:* sass build bundle",
     "start": "node dist/server"
   },
   "repository": {
@@ -37,7 +36,6 @@
     "@types/node": "^12.12.11",
     "browserify": "^16.5.0",
     "copyfiles": "^2.1.1",
-    "mkdirp": "^0.5.1",
     "node-sass": "^4.13.0",
     "nodemon": "^1.19.4",
     "npm-run-all": "^4.1.5",
