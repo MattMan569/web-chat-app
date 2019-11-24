@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>{{websiteTitle}}</title>
+</head>
+
+<body>
+    {{>header}}
+
+    <div class="main-content">
+        {{!--
+
+        <div class="login">
+            <h2>Login</h2>
+            <form action="/join">
+                <label for="username">Username</label>
+                <input type="text" name="username" placeholder="username" required>
+
+                <label for="password">Password</label>
+                <input type="text" name="password" placeholder="password" required>
+                
+                <button>Login</button>
+            </form>
+        </div>
+
+        <div class="signup">
+            <form action="/join">
+                <label for="username">Username</label>
+                <input type="text" name="username" placeholder="Username" required>
+
+                <label for="email">Email</label>
+                <input type="email" name="email" placeholder="email" required>
+
+                <label for="password">Password</label>
+                <input type="password" name="password" placeholder="password" required>
+
+                <label for="password-confirm">Confirm Your Password</label>
+                <input type="password" name="password-confirm" placeholder="password" required>
+
+                <button>Sign Up</button>
+            </form>
+        </div>
+
+        --}}
+
+        {{!-- Display text according to which form is displayed --}}
+        <div class="switch-form">
+            <p id="switch-form-message"></p>
+            <button id="switch-form-message-btn"></button>
+        </div>
+    </div>
+
+    {{>footer}}
+
+    <script src="bundle.js"></script>
+</body>
+
+</html>
