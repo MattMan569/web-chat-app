@@ -1,9 +1,14 @@
 import express, {Request, Response} from "express";
+import User from "../models/user";
 
 const router = express.Router();
 
 const websiteTitle = "Chat App";
 const websiteAuthor = "Matthew Polsom";
+
+/*
+    Page requests
+*/
 
 // Room browser / home page
 router.get("/", (req: Request, res: Response) => {
@@ -39,6 +44,23 @@ router.get("/signup", (req: Request, res: Response) => {
         websiteAuthor,
         websiteTitle,
     });
+});
+
+/*
+    API requests
+*/
+
+// Create a new user
+router.post("/users", async (req: Request, res: Response) => {
+    const user = new User(req.body);
+
+    try {
+        await user.save();
+        const token = await user.generateAuthToken();
+        res.status(201).send({user, token});
+    } catch (e) {
+        res.status(400).send(e);
+    }
 });
 
 export default router;

@@ -29,18 +29,24 @@
   },
   "homepage": "https://github.com/MattMan569/web-chat-app#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "handlebars": "^4.5.3",
     "hbs": "^4.0.6",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.3.5",
-    "mongoose": "^5.7.12"
+    "mongoose": "^5.7.12",
+    "validator": "^12.1.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.2",
     "@types/hbs": "^4.0.1",
     "@types/jest": "^24.0.23",
+    "@types/jsonwebtoken": "^8.3.5",
     "@types/mongoose": "^5.5.32",
     "@types/node": "^12.12.11",
+    "@types/validator": "^12.0.1",
     "browserify": "^16.5.0",
     "copyfiles": "^2.1.1",
     "env-cmd": "^10.0.1",
