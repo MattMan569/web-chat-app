@@ -11,7 +11,7 @@
     "sass": "node-sass src/client/scss/styles.scss dist/client/css/styles.css --output-style=compressed",
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
-    "bundle": "browserify src/client/chat.ts -p [ tsify ] -o dist/client/bundle.js",
+    "bundle": "browserify src/client/client.ts -p [ tsify ] -o dist/client/bundle.js",
     "prestart": "npm run clean && npm-run-all --parallel copy:* sass build bundle",
     "start": "node dist/server"
   },

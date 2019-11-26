@@ -1,11 +1,7 @@
 import express from "express";
 import { Request, Response } from "express";
-import fs from "fs";
 import hbs from "hbs";
 import path from "path";
-
-const websiteTitle = "Chat App";
-const websiteAuthor = "Matthew Polsom";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,11 +11,8 @@ const publicDirectoryPath = path.join(__dirname, "../client");
 const viewsPath = path.join(__dirname, "../templates/views");
 const partialsPath = path.join(__dirname, "../templates/partials");
 
-// Get the partials to send to the client
-const clientPartials = {
-    login: fs.readFileSync(path.join(__dirname, "../templates/partials/login.hbs"), "utf-8"),
-    signup: fs.readFileSync(path.join(__dirname, "../templates/partials/signup.hbs"), "utf-8"),
-};
+const websiteTitle = "Chat App";
+const websiteAuthor = "Matthew Polsom";
 
 // Setup hbs
 app.set("view engine", "hbs");
@@ -29,31 +22,37 @@ hbs.registerPartials(partialsPath);
 // Set the static directory
 app.use(express.static(publicDirectoryPath));
 
-app.get("/partialForms", (req: Request, res: Response) => {
-    res.send(clientPartials);
-});
-
-// Login / signup
+// Room browser / home page
 app.get("/", (req: Request, res: Response) => {
     res.render("index", {
-        websiteAuthor,
-        websiteTitle,
-
-    });
-});
-
-// Select a chat room to join
-app.get("/join", (req: Request, res: Response) => {
-    res.render("join", {
+        pageTitle: websiteTitle,
         websiteAuthor,
         websiteTitle,
     });
 });
 
-// In a chat room
+// Inside a chat room
 app.get("/chat", (req: Request, res: Response) => {
     res.render("chat", {
-        pageTitle: "Chat",
+        pageTitle: websiteTitle,
+        websiteAuthor,
+        websiteTitle,
+    });
+});
+
+// Login to an existing account
+app.get("/login", (req: Request, res: Response) => {
+    res.render("login", {
+        pageTitle: `Login - ${websiteTitle}` ,
+        websiteAuthor,
+        websiteTitle,
+    });
+});
+
+// Sign up for an account
+app.get("/signup", (req: Request, res: Response) => {
+    res.render("signup", {
+        pageTitle: `Signup - ${websiteTitle}`,
         websiteAuthor,
         websiteTitle,
     });
