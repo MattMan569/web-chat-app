@@ -54,4 +54,21 @@ router.post("/users/logout", async (req: Request, res: Response) => {
     }
 });
 
+// Logout everywhere
+router.post("/users/logoutAll", async (req: Request, res: Response) => {
+    try {
+        // Remove all tokens from the user
+        req.body.user.tokens = [];
+        await req.body.user.save();
+        res.send();
+    } catch (e) {
+        res.status(500).send();
+    }
+});
+
+// Get the user object making the request
+router.get("/users/me", async (req: Request, res: Response) => {
+    res.send(req.body.user);
+});
+
 export default router;
