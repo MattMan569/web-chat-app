@@ -4,7 +4,7 @@ import mongoose, { Document, Model } from "mongoose";
 import validator from "validator";
 
 // Define the array of json web tokens
-interface IToken {
+export interface IToken {
     _id: mongoose.Types.ObjectId;
     token: string;
 }
