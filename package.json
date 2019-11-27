@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "copy:client": "copyfiles -e \"**/*.ts\" -e \"**/*.scss\" -u 1 \"src/client/**/*\" \"dist/\"",
-    "copy:templates": "copyfiles -u 1 \"src/templates/**/*\" \"dist/\"",
+    "copy:templates": "copyfiles -u 1 \"src/server/templates/**/*\" \"dist/\"",
     "sass": "node-sass src/client/scss/styles.scss dist/client/css/styles.css --output-style=compressed",
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",

@@ -7,8 +7,8 @@ import userRouter from "./routers/user";
 
 // Define paths
 const publicDirectoryPath = path.join(__dirname, "../client");
-const viewsPath = path.join(__dirname, "../templates/views");
-const partialsPath = path.join(__dirname, "../templates/partials");
+const viewsPath = path.join(__dirname, "./templates/views");
+const partialsPath = path.join(__dirname, "./templates/partials");
 
 // Create the express application
 const app = express();
