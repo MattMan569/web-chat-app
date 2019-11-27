@@ -1,14 +1,7 @@
 import express, { Request, Response } from "express";
-import User, { IUser } from "../models/user";
+import User, { IToken, IUser } from "../models/user";
 
 const router = express.Router();
-
-// TODO: update for heroku
-router.use((req: Request, res: Response, next) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
 
 // Create a new user
 router.post("/users", async (req: Request, res: Response) => {
@@ -44,6 +37,21 @@ router.post("/users/login", async (req: Request, res: Response) => {
 
     const token = user.generateAuthToken();
     res.send({ user, token });
+});
+
+// Logout
+router.post("/users/logout", async (req: Request, res: Response) => {
+    try {
+        // Remove the token the user is currently logged in with
+        req.body.user.tokens = req.body.user.tokens.filter((token: IToken) => {
+            return token.token !== req.body.token;
+        });
+        await req.body.user.save();
+
+        res.send();
+    } catch (e) {
+        res.status(500).send(e);
+    }
 });
 
 export default router;
