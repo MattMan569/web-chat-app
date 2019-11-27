@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import hbs from "hbs";
 import path from "path";
@@ -12,6 +13,12 @@ const partialsPath = path.join(__dirname, "./templates/partials");
 
 // Create the express application
 const app = express();
+
+// Use CORS
+app.use(cors({
+    credentials: true,
+    origin: true,
+}));
 
 // Setup hbs
 app.set("view engine", "hbs");
