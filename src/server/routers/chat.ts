@@ -6,6 +6,13 @@ const router = express.Router();
 const websiteTitle = "Chat App";
 const websiteAuthor = "Matthew Polsom";
 
+// TODO: update for heroku
+router.use((req: Request, res: Response, next) => {
+    res.header("Access-Control-Allow-Origin", "http://localhost");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 /*
     Page requests
 */
