@@ -9,6 +9,7 @@ const websiteAuthor = "Matthew Polsom";
 // Room browser / home page
 router.get("/", (req: Request, res: Response) => {
     res.render("index", {
+        page: "index",
         pageTitle: websiteTitle,
         websiteAuthor,
         websiteTitle,
@@ -18,6 +19,7 @@ router.get("/", (req: Request, res: Response) => {
 // Inside a chat room
 router.get("/chat", (req: Request, res: Response) => {
     res.render("chat", {
+        page: "chat",
         pageTitle: websiteTitle,
         websiteAuthor,
         websiteTitle,
@@ -27,6 +29,7 @@ router.get("/chat", (req: Request, res: Response) => {
 // Login to an existing account
 router.get("/login", (req: Request, res: Response) => {
     res.render("login", {
+        page: "login",
         pageTitle: `Login - ${websiteTitle}` ,
         websiteAuthor,
         websiteTitle,
@@ -36,6 +39,7 @@ router.get("/login", (req: Request, res: Response) => {
 // Sign up for an account
 router.get("/signup", (req: Request, res: Response) => {
     res.render("signup", {
+        page: "signup",
         pageTitle: `Signup - ${websiteTitle}`,
         websiteAuthor,
         websiteTitle,
