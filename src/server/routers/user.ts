@@ -1,5 +1,5 @@
-import express, {Request, Response} from "express";
-import User from "../models/user";
+import express, { Request, Response } from "express";
+import User, { IUser } from "../models/user";
 
 const router = express.Router();
 
@@ -17,10 +17,33 @@ router.post("/users", async (req: Request, res: Response) => {
     try {
         await user.save();
         const token = await user.generateAuthToken();
-        res.status(201).send({user, token});
+        res.status(201).send({ user, token });
     } catch (e) {
         res.status(400).send(e);
     }
+});
+
+// Login as an existing user
+router.post("/users/login", async (req: Request, res: Response) => {
+    const email = req.body.email;
+    const username = req.body.username;
+    const password = req.body.password;
+    let user: IUser;
+
+    try {
+        if (req.body.email) {
+            user = await User.findByEmailAndPassword(email, password);
+        } else if (req.body.username) {
+            user = await User.findByUsernameAndPassword(username, password);
+        } else {
+            return res.status(400).send("Must provide username or email");
+        }
+    } catch (e) {
+        return res.status(400).send(e);
+    }
+
+    const token = user.generateAuthToken();
+    res.send({ user, token });
 });
 
 export default router;
