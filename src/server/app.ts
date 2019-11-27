@@ -19,6 +19,7 @@ hbs.registerPartials(partialsPath);
 // Set the static directory
 app.use(express.static(publicDirectoryPath));
 
+app.use(express.json());
 app.use(chatRouter);
 
 export default app;
