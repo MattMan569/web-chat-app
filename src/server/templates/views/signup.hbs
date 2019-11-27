@@ -9,13 +9,13 @@
     <title>{{pageTitle}}</title>
 </head>
 
-<body>
+<body data-page={{page}}>
     {{> header}}
 
     <div class="main-content">
         <div class="signup">
             <h2>Signup</h2>
-            <form action="/join">
+            <form>
                 <label for="username">Username</label>
                 <input type="text" name="username" placeholder="Username" required>
 
