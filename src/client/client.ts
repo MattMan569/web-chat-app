@@ -1,16 +1,21 @@
 import axios from "axios";
+import signup from "./ts/signup";
 
-console.log("client");
+// One of: index, chat, login, signup
+const page = document.body.dataset.page;
 
-(async () => {
-    const raw = await axios.post("http://localhost:3000/users", {
-        email: "test@email.com",
-        password: "test123",
-        username: "testUser",
-    }, {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-    });
-})();
+switch (page) {
+    case "index": {
+        break;
+    }
+    case "chat": {
+        break;
+    }
+    case "login": {
+        break;
+    }
+    case "signup": {
+        signup();
+        break;
+    }
+}
