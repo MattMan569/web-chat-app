@@ -18,15 +18,15 @@ interface IUserDocument extends Document {
 }
 
 // Define User methods
-interface IUser extends IUserDocument {
-    toJSON(): IUserDocument;
+export interface IUser extends IUserDocument {
+    toJSON(): IUser;
     generateAuthToken(): IToken;
 }
 
 // Define User statics
 interface IUserModel extends Model<IUser> {
-    findByEmailAndPassword(email: string, password: string): IUserDocument;
-    findByUsernameAndPassword(username: string, password: string): IUserDocument;
+    findByEmailAndPassword(email: string, password: string): IUser;
+    findByUsernameAndPassword(username: string, password: string): IUser;
 }
 
 const loginError = new Error("Unable to login");
@@ -121,6 +121,15 @@ userSchema.statics.findByUsernameAndPassword = async (username: string, password
 
     return user;
 };
+
+// Hash the plain text password before saving
+userSchema.pre("save", async function(this: IUserDocument, next) {
+    if (this.isModified("password")) {
+        this.password = await bcrypt.hash(this.password, 8);
+    }
+
+    next();
+});
 
 const User = mongoose.model<IUser, IUserModel>("User", userSchema);
 
