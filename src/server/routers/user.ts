@@ -4,14 +4,21 @@ import User, { IUser } from "../models/user";
 
 const router = express.Router();
 
+// Setup the session
+const createSession = (session: Express.Session, user: IUser) => {
+    const userObj = user.toObject();
+    delete userObj.password;
+    session.user = userObj;
+    session.loggedIn = true;
+};
+
 // Create a new user and log in
 router.post("/users", async (req: Request, res: Response) => {
     const user = new User(req.body);
 
     try {
         await user.save();
-        req.session.user = user;
-        req.session.loggedIn = true;
+        createSession(req.session, user);
         res.redirect("/");
     } catch (e) {
         res.status(400).send(e);
@@ -39,9 +46,7 @@ router.post("/users/login", async (req: Request, res: Response) => {
             return res.redirect("/login?valid=false");
         }
 
-        req.session.user = user;
-        req.session.loggedIn = true;
-        console.log(req.session);
+        createSession(req.session, user);
         res.redirect("/");
     } catch (e) {
         return res.status(400).send(e);
