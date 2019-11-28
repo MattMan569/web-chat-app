@@ -1,4 +1,4 @@
-import express, {Request, Response} from "express";
+import express, { Request, Response } from "express";
 import auth from "../middleware/auth";
 
 const router = express.Router();
@@ -21,8 +21,10 @@ router.get("/", auth, (req: Request, res: Response) => {
 // Inside a chat room
 router.get("/chat", auth, (req: Request, res: Response) => {
     res.render("chat", {
+        loggedIn: req.session.loggedIn,
         page: "chat",
         pageTitle: websiteTitle,
+        username: req.session.user.username,
         websiteAuthor,
         websiteTitle,
     });
@@ -35,7 +37,7 @@ router.get("/login", (req: Request, res: Response) => {
     res.render("login", {
         invalid,
         page: "login",
-        pageTitle: `Login - ${websiteTitle}` ,
+        pageTitle: `Login - ${websiteTitle}`,
         websiteAuthor,
         websiteTitle,
     });
