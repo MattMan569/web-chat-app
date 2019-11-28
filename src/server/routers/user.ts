@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
-import User, { IToken, IUser } from "../models/user";
+import auth from "../middleware/auth";
+import User, { IUser } from "../models/user";
 
 const router = express.Router();
 
@@ -9,8 +10,9 @@ router.post("/users", async (req: Request, res: Response) => {
 
     try {
         await user.save();
-        const token = await user.generateAuthToken();
-        res.status(201).send({ user, token });
+        req.session.user = user;
+        req.session.loggedIn = true;
+        res.redirect("/");
     } catch (e) {
         res.status(400).send(e);
     }
@@ -35,39 +37,29 @@ router.post("/users/login", async (req: Request, res: Response) => {
         return res.status(400).send(e);
     }
 
-    const token = user.generateAuthToken();
-    res.send({ user, token });
+    res.send({ user });
 });
 
 // Logout
-router.post("/users/logout", async (req: Request, res: Response) => {
+router.post("/users/logout", auth, async (req: Request, res: Response) => {
     try {
-        // Remove the token the user is currently logged in with
-        req.body.user.tokens = req.body.user.tokens.filter((token: IToken) => {
-            return token.token !== req.body.token;
-        });
-        await req.body.user.save();
-
-        res.send();
+        // TODO
     } catch (e) {
         res.status(500).send(e);
     }
 });
 
 // Logout everywhere
-router.post("/users/logoutAll", async (req: Request, res: Response) => {
+router.post("/users/logoutAll", auth, async (req: Request, res: Response) => {
     try {
-        // Remove all tokens from the user
-        req.body.user.tokens = [];
-        await req.body.user.save();
-        res.send();
+        // TODO
     } catch (e) {
         res.status(500).send();
     }
 });
 
 // Get the user object making the request
-router.get("/users/me", async (req: Request, res: Response) => {
+router.get("/users/me", auth, async (req: Request, res: Response) => {
     res.send(req.body.user);
 });
 
