@@ -1,5 +1,5 @@
 import express, {Request, Response} from "express";
-import User from "../models/user";
+import auth from "../middleware/auth";
 
 const router = express.Router();
 
@@ -7,7 +7,7 @@ const websiteTitle = "Chat App";
 const websiteAuthor = "Matthew Polsom";
 
 // Room browser / home page
-router.get("/", (req: Request, res: Response) => {
+router.get("/", auth, (req: Request, res: Response) => {
     res.render("index", {
         page: "index",
         pageTitle: websiteTitle,
@@ -17,7 +17,7 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 // Inside a chat room
-router.get("/chat", (req: Request, res: Response) => {
+router.get("/chat", auth, (req: Request, res: Response) => {
     res.render("chat", {
         page: "chat",
         pageTitle: websiteTitle,
