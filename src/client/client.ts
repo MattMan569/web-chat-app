@@ -1,6 +1,3 @@
-import axios from "axios";
-import signup from "./ts/signup";
-
 // One of: index, chat, login, signup
 const page = document.body.dataset.page;
 
@@ -15,7 +12,6 @@ switch (page) {
         break;
     }
     case "signup": {
-        signup();
         break;
     }
 }
