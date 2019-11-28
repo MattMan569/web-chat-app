@@ -67,13 +67,13 @@ userSchema.statics.findByEmailAndPassword = async (email: string, password: stri
     const user = await User.findOne({ email });
 
     if (!user) {
-        throw loginError;
+        return null;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-        throw loginError;
+        return null;
     }
 
     return user;
@@ -84,13 +84,13 @@ userSchema.statics.findByUsernameAndPassword = async (username: string, password
     const user = await User.findOne({ username });
 
     if (!user) {
-        throw loginError;
+        return null;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-        throw loginError;
+        return null;
     }
 
     return user;
