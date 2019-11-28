@@ -56,8 +56,7 @@ app.use(express.static(publicDirectoryPath));
 app.use(chatRouter);
 app.use(userRouter);
 
-// TODO
-// Global 404
+// TODO global 404
 // app.get("*", (req: Request, res: Response) => {
 //
 // });
