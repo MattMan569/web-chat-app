@@ -28,7 +28,7 @@ router.get("/chat", auth, (req: Request, res: Response) => {
     });
 });
 
-// Login to an existing account
+// Log in to an existing account
 router.get("/login", (req: Request, res: Response) => {
     res.render("login", {
         page: "login",
