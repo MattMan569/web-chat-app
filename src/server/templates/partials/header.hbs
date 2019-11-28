@@ -1,3 +1,10 @@
 <header>
     <h1><a href="/">{{websiteTitle}}</a></h1>
+    {{#if loggedIn}}
+        {{username}}
+        <a href="/users/logout">Logout</a>
+    {{else}}
+        <a href="#">Login</a>
+        <a href="#">Signup</a>
+    {{/if}}
 </header>
