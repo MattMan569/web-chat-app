@@ -30,7 +30,10 @@ router.get("/chat", auth, (req: Request, res: Response) => {
 
 // Log in to an existing account
 router.get("/login", (req: Request, res: Response) => {
+    const invalid = (req.query.valid === "false");
+
     res.render("login", {
+        invalid,
         page: "login",
         pageTitle: `Login - ${websiteTitle}` ,
         websiteAuthor,

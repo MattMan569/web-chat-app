@@ -4,7 +4,7 @@ import User, { IUser } from "../models/user";
 
 const router = express.Router();
 
-// Create a new user
+// Create a new user and log in
 router.post("/users", async (req: Request, res: Response) => {
     const user = new User(req.body);
 
@@ -18,7 +18,7 @@ router.post("/users", async (req: Request, res: Response) => {
     }
 });
 
-// Login as an existing user
+// Log in as an existing user
 router.post("/users/login", async (req: Request, res: Response) => {
     const email = req.body.email;
     const username = req.body.username;
@@ -33,14 +33,22 @@ router.post("/users/login", async (req: Request, res: Response) => {
         } else {
             return res.status(400).send("Must provide username or email");
         }
+
+        // User not found with provided credentials
+        if (!user) {
+            return res.redirect("/login?valid=false");
+        }
+
+        req.session.user = user;
+        req.session.loggedIn = true;
+        console.log(req.session);
+        res.redirect("/");
     } catch (e) {
         return res.status(400).send(e);
     }
-
-    res.send({ user });
 });
 
-// Logout
+// Log out
 router.get("/users/logout", auth, async (req: Request, res: Response) => {
     try {
         req.session.destroy((e) => {
@@ -52,7 +60,7 @@ router.get("/users/logout", auth, async (req: Request, res: Response) => {
     }
 });
 
-// Logout everywhere
+// Log out everywhere
 router.post("/users/logoutAll", auth, async (req: Request, res: Response) => {
     try {
         // TODO
