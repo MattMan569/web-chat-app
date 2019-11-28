@@ -9,8 +9,10 @@ const websiteAuthor = "Matthew Polsom";
 // Room browser / home page
 router.get("/", auth, (req: Request, res: Response) => {
     res.render("index", {
+        loggedIn: req.session.loggedIn,
         page: "index",
         pageTitle: websiteTitle,
+        username: req.session.user.username,
         websiteAuthor,
         websiteTitle,
     });
