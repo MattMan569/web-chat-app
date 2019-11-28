@@ -41,9 +41,12 @@ router.post("/users/login", async (req: Request, res: Response) => {
 });
 
 // Logout
-router.post("/users/logout", auth, async (req: Request, res: Response) => {
+router.get("/users/logout", auth, async (req: Request, res: Response) => {
     try {
-        // TODO
+        req.session.destroy((e) => {
+            throw new Error(e);
+        });
+        res.redirect("/login");
     } catch (e) {
         res.status(500).send(e);
     }
