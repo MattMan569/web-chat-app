@@ -1,26 +1,17 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import mongoose, { Document, Model } from "mongoose";
 import validator from "validator";
-
-// Define the array of json web tokens
-export interface IToken {
-    _id: mongoose.Types.ObjectId;
-    token: string;
-}
 
 // Define the user document
 interface IUserDocument extends Document {
     email: string;
     password: string;
-    tokens: mongoose.Types.Array<IToken>;
     username: string;
 }
 
 // Define User methods
 export interface IUser extends IUserDocument {
     toJSON(): IUser;
-    generateAuthToken(): IToken;
 }
 
 // Define User statics
@@ -51,12 +42,6 @@ const userSchema = new mongoose.Schema({
         trim: true,
         type: String,
     },
-    tokens: [{
-        token: {
-            required: true,
-            type: String,
-        },
-    }],
     username: {
         maxlength: 32,
         minlength: 3,
@@ -73,23 +58,8 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.toJSON = function() {
     const user = this.toObject();
     delete user.password;
-    delete user.tokens;
 
     return user;
-};
-
-// Generate a json web token
-userSchema.methods.generateAuthToken = async function() {
-    const token = jwt.sign({
-        _id: this._id.toString(),
-    }, process.env.JWT_SECRET, {
-        expiresIn: "1 day",
-    });
-
-    this.tokens = this.tokens.concat({ token });
-    await this.save();
-
-    return token;
 };
 
 // Find a user by email and password
