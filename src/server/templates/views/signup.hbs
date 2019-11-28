@@ -15,7 +15,7 @@
     <div class="main-content">
         <div class="signup">
             <h2>Signup</h2>
-            <form id="signup-form">
+            <form action="/users" method="POST" id="signup-form">
                 <label for="username">Username</label>
                 <input type="text" name="username" placeholder="Username" required>
 
@@ -28,7 +28,7 @@
                 <label for="password-confirm">Confirm Your Password</label>
                 <input type="password" name="password-confirm" placeholder="password" required>
 
-                <button id="signup-btn">Sign Up</button>
+                <button type="submit" id="signup-btn">Sign Up</button>
             </form>
         </div>
     </div>
