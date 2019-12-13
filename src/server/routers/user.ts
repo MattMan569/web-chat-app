@@ -27,18 +27,17 @@ router.post("/users", async (req: Request, res: Response) => {
 
 // Log in as an existing user
 router.post("/users/login", async (req: Request, res: Response) => {
-    const email = req.body.email;
-    const username = req.body.username;
+    const usernameOrEmail = req.body.usernameOrEmail;
     const password = req.body.password;
     let user: IUser;
 
     try {
-        if (req.body.email) {
-            user = await User.findByEmailAndPassword(email, password);
-        } else if (req.body.username) {
-            user = await User.findByUsernameAndPassword(username, password);
-        } else {
-            return res.status(400).send("Must provide username or email");
+        // First try to find user by username
+        user = await User.findByUsernameAndPassword(usernameOrEmail, password);
+
+        // Then try to find user by email
+        if (!user) {
+            user = await User.findByEmailAndPassword(usernameOrEmail, password);
         }
 
         // User not found with provided credentials
