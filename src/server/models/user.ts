@@ -16,7 +16,6 @@ export interface IUser extends IUserDocument {
 
 // Define User statics
 interface IUserModel extends Model<IUser> {
-    findByEmailAndPassword(email: string, password: string): IUser;
     findByUsernameAndPassword(username: string, password: string): IUser;
 }
 
@@ -58,23 +57,6 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.toJSON = function() {
     const user = this.toObject();
     delete user.password;
-
-    return user;
-};
-
-// Find a user by email and password
-userSchema.statics.findByEmailAndPassword = async (email: string, password: string) => {
-    const user = await User.findOne({ email });
-
-    if (!user) {
-        return null;
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-        return null;
-    }
 
     return user;
 };

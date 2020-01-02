@@ -27,18 +27,13 @@ router.post("/users", async (req: Request, res: Response) => {
 
 // Log in as an existing user
 router.post("/users/login", async (req: Request, res: Response) => {
-    const usernameOrEmail = req.body.usernameOrEmail;
+    const username = req.body.username;
     const password = req.body.password;
     let user: IUser;
 
     try {
-        // First try to find user by username
-        user = await User.findByUsernameAndPassword(usernameOrEmail, password);
-
-        // Then try to find user by email
-        if (!user) {
-            user = await User.findByEmailAndPassword(usernameOrEmail, password);
-        }
+        // Try to find user by username and password
+        user = await User.findByUsernameAndPassword(username, password);
 
         // User not found with provided credentials
         if (!user) {
