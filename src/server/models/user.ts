@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import Cryptr from "cryptr";
 import mongoose, { Document, Model } from "mongoose";
 import validator from "validator";
 
@@ -78,10 +79,18 @@ userSchema.statics.findByUsernameAndPassword = async (username: string, password
     return user;
 };
 
-// Hash the plain text password before saving
+// Hash the password and email before saving
 userSchema.pre("save", async function(this: IUserDocument, next) {
+    // Hash the password with bcrypt
     if (this.isModified("password")) {
         this.password = await bcrypt.hash(this.password, 8);
+    }
+
+    // Encrypt the email with AES and store convert it to a utf-8 string
+    // so it may be decrypted for use later
+    if (this.isModified("email")) {
+        const cryptr = new Cryptr(process.env.AES_SECRET);
+        this.email = cryptr.encrypt(this.email);
     }
 
     next();
