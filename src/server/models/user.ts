@@ -89,8 +89,7 @@ userSchema.pre("save", async function(this: IUserDocument, next) {
     // Encrypt the email with AES and store convert it to a utf-8 string
     // so it may be decrypted for use later
     if (this.isModified("email")) {
-        const cryptr = new Cryptr(process.env.AES_SECRET);
-        this.email = cryptr.encrypt(this.email);
+        this.email = new Cryptr(process.env.AES_SECRET).encrypt(this.email);
     }
 
     next();
