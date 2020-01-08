@@ -13,14 +13,22 @@
     {{> header}}
 
     <div class="main-content">
-        <h2>Join a Room</h2>
-        <form>
-            <label for="display-name">Display Name</label>
-            <input type="text" name="display-name" placeholder="Display name" required>
-            <label for="room-name">Room Name</label>
-            <input type="text" name="room-name" placeholder="Room name" required>
-            <button>Join</button>
-        </form>
+        <div class="index">
+            <h2>Join a Room</h2>
+            <form>
+                <div class="form-group">
+                    <label for="display-name">Display Name</label>
+                    <input type="text" name="display-name" placeholder="Display name" required>
+                </div>
+                <div class="form-group">
+                    <label for="room-name">Room Name</label>
+                    <input type="text" name="room-name" placeholder="Room name" required>
+                </div>
+                <div class="form-group">
+                    <button>Join</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     {{> footer}}
