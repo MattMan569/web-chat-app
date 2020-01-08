@@ -7,10 +7,6 @@ body {
     background-color: #f1f1f1;
     margin: 0;
 
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-
     a {
         text-decoration: none;
         color: $link-text;
@@ -24,9 +20,9 @@ body {
 header {
     background-color: #ffffff;
     box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.3);
+    padding: 1em 2em;
     display: flex;
     justify-content: flex-end;
-    padding: 24px 48px;
 
     h1 {
         flex: 1;
@@ -43,7 +39,7 @@ header {
         position: relative;
 
         &:not(:last-child) {
-            margin-right: 24px;
+            margin-right: 1em;
         }
 
         &:hover {
@@ -75,6 +71,8 @@ header {
     background-color: #ffffff;
     box-shadow: 1px 1px 4px rgba($color: #000000, $alpha: 0.3);
     border-radius: 5px;
+    display: flex;
+    width: fit-content;
 
     h2 {
         margin: 16px auto;
@@ -128,7 +126,7 @@ footer {
     left: 0;
     width: 100%;
 
-    padding: 8px 32px;
+    padding: .75em 2em;
     background-color: #333333;
     color: $white-text;
 
