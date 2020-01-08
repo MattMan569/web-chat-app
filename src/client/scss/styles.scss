@@ -1,5 +1,9 @@
+$white-text: #dddddd;
+$black-text: #333333;
+
 body {
-    color: #333333;
+    color: $black-text;
+    background-color: #f1f1f1;
     margin: 0;
 
     display: flex;
@@ -7,20 +11,31 @@ body {
     min-height: 100vh;
 }
 
-footer {
-    padding: 8px 0 8px 32px;
-    background-color: #333333;
-    color: #dddddd;
+header {
+    background-color: #ffffff;
+    box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.3);
+    display: flex;
+    justify-content: flex-end;
+    padding: 24px;
 
-    p {
+    h1 {
+        flex: 1;
         margin: 0;
     }
-}
 
-header {
+    .header-content {
+        flex: 1;
+        margin: auto;
+        text-align: right;
+    }
+
     a {
         text-decoration: none;
         position: relative;
+        
+        &:not(:last-child) {
+            margin-right: 24px;
+        }
 
         &::after {
             content: "";
@@ -42,6 +57,50 @@ header {
 }
 
 .main-content {
-    margin: 0 auto;
-    flex: 1;
+    margin: 5vh auto auto auto;
+    padding: 8px;
+    background-color: #ffffff;
+    box-shadow: 1px 1px 4px rgba($color: #000000, $alpha: 0.3);
+    border-radius: 5px;
+
+    h2 {
+        margin: 16px auto;
+        text-align: center;
+    }
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    padding: 8px 32px;
+    background-color: #333333;
+    color: $white-text;
+
+    p {
+        margin: 0;
+    }
+}
+
+form {
+    .form-group {
+        display: flex;
+        justify-content: flex-end;
+
+        * {
+            padding: .2em;
+            margin: .5em;
+        }
+
+        label {
+            flex: 1;
+            padding-right: 1em;
+        }
+
+        input {
+            flex: 2;
+        }
+    }
 }

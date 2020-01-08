@@ -16,16 +16,23 @@
         <div class="login">
             <h2>Login</h2>
             <form action="/users/login" method="POST">
-                <label for="username">Username</label>
-                <input type="text" name="username" placeholder="username" required>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" placeholder="username" required>
+                </div>
 
-                <label for="password">Password</label>
-                <input type="password" name="password" placeholder="password" required>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" placeholder="password" required>
+                </div>
 
-                <button type="submit">Login</button>
+                <div class="form-group">
+                    <button type="submit">Login</button>
+                </div>
             </form>
+
             {{#if invalid}}
-                <p class="error-msg">Your login information is invalid</p>
+            <p class="error-msg">Your login information is invalid</p>
             {{/if}}
         </div>
     </div>
