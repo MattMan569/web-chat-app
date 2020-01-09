@@ -4,7 +4,7 @@ import mongoose, { Document, Model } from "mongoose";
 import validator from "validator";
 
 // Define the user document
-interface IUserDocument extends Document {
+export interface IUserDocument extends Document {
     email: string;
     password: string;
     username: string;
