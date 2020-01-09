@@ -2,10 +2,15 @@ $white-text: #dddddd;
 $black-text: #333333;
 $link-text: #167ac6;
 
+// Only manually set margins and padding
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     color: $black-text;
     background-color: #f1f1f1;
-    margin: 0;
 
     a {
         text-decoration: none;
@@ -26,7 +31,6 @@ header {
 
     h1 {
         flex: 1;
-        margin: 0;
     }
 
     .header-content {
@@ -65,37 +69,41 @@ header {
     }
 }
 
-.main-content {
-    margin: 2em auto auto auto;
-    padding: 1em;
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    padding: .75em 2em;
+    background-color: #333333;
+    color: $white-text;
+}
+
+main {
+    display: grid;
+
+    &.login-page, &.signup-page {
+        grid-template-columns: auto min-content auto;
+
+        article {
+            grid-column-start: 2;
+        }
+    }
+}
+
+article {
     background-color: #ffffff;
     box-shadow: 1px 1px 4px rgba($color: #000000, $alpha: 0.3);
     border-radius: 5px;
-    display: flex;
-    width: fit-content;
+    margin: 2em;
+    padding: 1em;
+}
 
+section {
     h2 {
-        margin: 16px auto;
         text-align: center;
-    }
-}
-
-.login, .signup {
-    p {
-        text-align: center;
-        margin-bottom: 0;
-    }
-}
-
-.login {
-    .forgot-links {
-        display: flex;
-        margin-top: 1em;
-
-        * {
-            flex: 1;
-            text-align: center;
-        }
+        margin-bottom: 1rem;
     }
 }
 
@@ -108,10 +116,15 @@ form {
         input {
             width: 20em;
             margin: .2em 0;
+            text-indent: .2em;
         }
 
         label {
             margin: .5em .5em .5em 0;
+        }
+
+        button {
+            padding: .2em;
         }
 
         &:last-child {
@@ -120,17 +133,21 @@ form {
     }
 }
 
-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-
-    padding: .75em 2em;
-    background-color: #333333;
-    color: $white-text;
+.login-links, .signup-links {
+    text-align: center;
 
     p {
-        margin: 0;
+        margin-top: 1em;
+    }
+
+    p:not(:last-child) {
+        margin-bottom: 1em;
+    }
+}
+
+.forgot-links {
+    display: flex;
+    a {
+        flex: 1;
     }
 }
