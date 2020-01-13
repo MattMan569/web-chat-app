@@ -36,12 +36,19 @@ app.use(express.urlencoded({
 // Setup session management
 const MongoStore = connectMongo(session);
 app.use(session({
+    cookie: {
+        maxAge: null,
+    },
     genid: (req) => uuidv4(),
     resave: false,
+    saveUninitialized: false, // Only create sessions on successful login
     secret: process.env.SESSION_SECRET,
     store: new MongoStore({
+        autoRemove: "interval",
+        autoRemoveInterval: 10,
         mongooseConnection: mongoose.connection,
     }),
+    unset: "destroy",
 }));
 
 // Setup hbs
