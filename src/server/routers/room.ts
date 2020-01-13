@@ -5,6 +5,6 @@ import Room, { IRoom } from "../models/room";
 const router = express.Router();
 
 // Create a room
-router.post("/rooms/create", async (req: Request, res: Response) => {
+// router.post("/rooms/create", async (req: Request, res: Response) => {
 
-});
+// });

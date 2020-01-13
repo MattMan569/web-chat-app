@@ -12,24 +12,44 @@
 <body data-page={{page}}>
     {{> header}}
 
-    <div class="main-content">
-        <div class="index">
-            <h2>Join a Room</h2>
-            <form>
-                <div class="form-group">
-                    <label for="display-name">Display Name</label>
-                    <input type="text" name="display-name" placeholder="Display name" required>
-                </div>
-                <div class="form-group">
-                    <label for="room-name">Room Name</label>
-                    <input type="text" name="room-name" placeholder="Room name" required>
-                </div>
-                <div class="form-group">
-                    <button>Join</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <main class="index-page">
+        <article class="join">
+            <section class="join-form">
+                <h2>Join</h2>
+                <form action="#">
+                    <div class="form-group">
+
+                    </div>
+                </form>
+            </section>
+        </article>
+
+        <article class="create">
+            <section class="create-form">
+                <h2>Create</h2>
+                <form action="#">
+                    <div class="form-group">
+                        <label for="name">Room Name</label>
+                        <input type="text" name="name" placeholder="room name" required>
+                    </div>
+
+                    <div class="form-group" title="Leave empty to make the room public">
+                        <label for="password">Password (optional)</label>
+                        <input type="password" name="password" placeholder="password (optional)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="capacity">Capacity (1 - 100)</label>
+                        <input type="number" name="capacity" value="100" min="1" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit">Create Room</button>
+                    </div>
+                </form>
+            </section>
+        </article>
+    </main>
 
     {{> footer}}
 
