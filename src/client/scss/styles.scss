@@ -28,10 +28,7 @@ header {
     padding: 1em 2em;
     display: flex;
     justify-content: flex-end;
-
-    h1 {
-        flex: 1;
-    }
+    align-items: center;
 
     .header-content {
         flex: 1;
@@ -171,8 +168,8 @@ form {
 
     #profile-btn {
         border-radius: 50%;
-        width: 64px;
-        height: 64px;
+        width: 48px;
+        height: 48px;
         border: 1px solid #000000;
         background-image: url("https://i.redd.it/wg2sq045qn541.gif");
         background-size: cover;
