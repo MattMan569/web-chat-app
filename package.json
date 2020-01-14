@@ -11,9 +11,11 @@
     "sass": "node-sass src/client/scss/styles.scss dist/client/css/styles.css --output-style=compressed",
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
-    "bundle": "browserify src/client/client.ts -p [ tsify ] -o dist/client/bundle.js",
+    "bundle:common": "browserify src/client/ts/common.ts -p [ tsify ] -o dist/client/js/common.js",
+    "bundle:index": "browserify src/client/ts/index.ts -p [ tsify ] -o dist/client/js/index.js",
+    "bundle:chat": "browserify src/client/ts/chat.ts -p [ tsify ] -o dist/client/js/chat.js",
     "start": "node dist/server",
-    "predev": "npm run clean && npm-run-all --parallel copy:* sass build bundle",
+    "predev": "npm run clean && npm-run-all --parallel copy:* sass build bundle:*",
     "dev": "env-cmd -f ./config/dev.env node dist/server",
     "test": "env-cmd -f ./config/test.env jest --runInBand || exit 0",
     "db": "C:/Users/matth/mongodb/bin/mongod.exe --dbpath=C:/Users/matth/mongodb-data"
