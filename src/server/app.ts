@@ -37,7 +37,7 @@ app.use(express.urlencoded({
 const MongoStore = connectMongo(session);
 app.use(session({
     cookie: {
-        maxAge: null,
+        maxAge: 604800000, // 1 week
     },
     genid: (req) => uuidv4(),
     resave: false,
