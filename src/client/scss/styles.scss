@@ -67,6 +67,10 @@ header {
             transform: scaleX(1);
         }
     }
+
+    .header-content a {
+        text-align: left;
+    }
 }
 
 footer {
@@ -151,3 +155,32 @@ form {
         flex: 1;
     }
 }
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+
+        a {
+            display: block;
+        }
+    }
+
+    #profile-btn {
+        border-radius: 50%;
+        width: 64px;
+        height: 64px;
+        border: 1px solid #000000;
+        background-image: url("https://i.redd.it/wg2sq045qn541.gif");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .show {
+        display: block;
+    }
+}
+

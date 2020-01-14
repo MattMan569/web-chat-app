@@ -3,8 +3,16 @@
 
     <div class="header-content">
         {{#if loggedIn}}
-        {{username}}
-        <a href="/users/logout">Logout</a>
+        <div class="dropdown">
+            <button class="dropdown-btn" id="profile-btn">
+                {{!-- <img src="https://i.redd.it/wg2sq045qn541.gif" alt="gif" width="128"> --}}
+            </button>
+            <div class="dropdown-content" id="profile-dropdown-content">
+                <p>{{username}}</p>
+                <a href="#/users/me">Profile</a>
+                <a href="/users/logout">Logout</a>
+            </div>
+        </div>
         {{else}}
         <a href="/login">Login</a>
         <a href="/signup">Signup</a>
