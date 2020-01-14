@@ -63,6 +63,9 @@ router.get("/users/logout", auth, async (req: Request, res: Response) => {
 router.post("/users/logoutAll", auth, async (req: Request, res: Response) => {
     try {
         // TODO
+        // Save session IDs to user db
+        // to list on user profile along
+        // with logout-all functionality
     } catch (e) {
         res.status(500).send();
     }
