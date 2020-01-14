@@ -160,10 +160,21 @@ form {
     .dropdown-content {
         display: none;
         position: absolute;
+        right: 0;
+        text-align: left;
+        padding: .5em;
+        background-color: #000000;
 
-        a {
-            display: block;
+        * {
+            color: $white-text;
+            display: inline-block;
+
+            &:not(:last-child) {
+                margin-bottom: .5em;
+            }
         }
+
+        
     }
 
     #profile-btn {
