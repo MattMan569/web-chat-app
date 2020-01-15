@@ -18,6 +18,7 @@ export interface IUser extends IUserDocument {
 // Define User statics
 interface IUserModel extends Model<IUser> {
     findByUsernameAndPassword(username: string, password: string): IUser;
+    findByUsername(username: string): IUser;
 }
 
 const loginError = new Error("Unable to login");
@@ -73,6 +74,16 @@ userSchema.statics.findByUsernameAndPassword = async (username: string, password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
+        return null;
+    }
+
+    return user;
+};
+
+userSchema.statics.findByUsername = async (username: string) => {
+    const user = await User.findOne({ username });
+
+    if (!user) {
         return null;
     }
 
