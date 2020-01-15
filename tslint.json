@@ -16,7 +16,8 @@
         "prefer-const":true,
         "no-console":false,
         "no-reference":false,
-        "no-var-requires":false
+        "no-var-requires":false,
+        "object-literal-sort-keys":false
     },
     "rulesDirectory": []
 }
