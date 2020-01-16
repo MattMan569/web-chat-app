@@ -11,12 +11,11 @@ $("#create-form").submit(function(e) {
         data: form.serialize(),
         statusCode: {
             200: (res) => {
-                // TODO redirect to and join room
-                console.log(res);
+                // Redirect to room and join
                 window.location.href = res;
             },
             400: (res) => {
-                // TODO display error
+                // Improper input
                 console.log(res);
             },
         },

@@ -9,6 +9,7 @@ const router = express.Router();
 router.post("/rooms/create", async (req: Request, res: Response) => {
     const user = await User.findByUsername(req.session.user.username);
 
+    // The current user is the room's owner and first user
     req.body.owner = user._id;
     req.body.users = [user._id];
 
@@ -24,7 +25,7 @@ router.post("/rooms/create", async (req: Request, res: Response) => {
                 return;
             }
 
-            // res.redirect(`/chat/?room=${p.id}`);
+            // Send the URL to redirect to
             res.send(`/chat?room=${p.id}`);
         });
     } catch (e) {
