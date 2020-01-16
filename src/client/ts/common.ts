@@ -4,7 +4,8 @@
 const profileButton = document.getElementById("profile-btn");
 const profileDropdownContent = document.getElementById("profile-dropdown-content");
 
-profileButton.addEventListener("click", (e: MouseEvent) => {
+// Add an event listener if the profile button is present
+profileButton?.addEventListener("click", (e: MouseEvent) => {
     profileDropdownContent.classList.toggle("show");
 });
 
