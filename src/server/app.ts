@@ -69,13 +69,9 @@ app.use(roomRouter);
 const websiteTitle = "Chat App";
 const websiteAuthor = "Matthew Polsom";
 
-// Global 404
+// Redirect home on 404
 app.get("*", (req: Request, res: Response) => {
-    res.render("notFound", {
-        pageTitle: "404 - Not Found",
-        websiteAuthor,
-        websiteTitle,
-    });
+    res.redirect("/");
 });
 
 export default app;
