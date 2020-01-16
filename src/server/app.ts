@@ -1,6 +1,6 @@
 import connectMongo from "connect-mongo";
 import cors from "cors";
-import express from "express";
+import express, { Request, Response } from "express";
 import session from "express-session";
 import hbs from "hbs";
 import mongoose from "mongoose";
@@ -65,9 +65,17 @@ app.use(chatRouter);
 app.use(userRouter);
 app.use(roomRouter);
 
-// TODO global 404
-// app.get("*", (req: Request, res: Response) => {
-//
-// });
+// TODO move to single file for all routers
+const websiteTitle = "Chat App";
+const websiteAuthor = "Matthew Polsom";
+
+// Global 404
+app.get("*", (req: Request, res: Response) => {
+    res.render("notFound", {
+        pageTitle: "404 - Not Found",
+        websiteAuthor,
+        websiteTitle,
+    });
+});
 
 export default app;
