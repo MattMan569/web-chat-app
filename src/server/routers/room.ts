@@ -33,4 +33,9 @@ router.post("/rooms/create", async (req: Request, res: Response) => {
     }
 });
 
+// Get all rooms
+router.get("/rooms", async (req: Request, res: Response) => {
+    res.send(await Room.find());
+});
+
 export default router;

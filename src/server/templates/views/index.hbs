@@ -14,14 +14,20 @@
 
     <main class="index-page">
         <article class="join">
-            <section class="join-form">
-                <h2>Join</h2>
-                <form action="#">
-                    <div class="form-group">
+            <h2>Join</h2>
 
-                    </div>
-                </form>
-            </section>
+            <div id="room-list">
+                {{!-- Used by handlebars to place rendered rooms --}}
+            </div>
+
+            <template id="room-item-template">
+                \{{#each rooms}}
+                <section class="room">
+                    <h3>\{{name}}</h3>
+                    <p>\{{users.length}} / \{{capacity}}</p>
+                </section>
+                \{{/each}}
+            </template>
         </article>
 
         <article class="create">
