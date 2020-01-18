@@ -23,10 +23,12 @@
             <template id="room-item-template">
                 \{{#each rooms}}
                 <section class="room">
-                    <button class="room-btn">
-                        <h3>\{{name}}</h3>
-                        <p>\{{users.length}} / \{{capacity}}</p>
-                    </button>
+                    <a href="/chat?room=\{{_id}}">
+                        <button class="room-btn">
+                            <h3>\{{name}}</h3>
+                            <p>\{{users.length}} / \{{capacity}}</p>
+                        </button>
+                    </a>
                 </section>
                 \{{/each}}
             </template>
