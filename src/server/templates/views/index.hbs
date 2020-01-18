@@ -23,8 +23,10 @@
             <template id="room-item-template">
                 \{{#each rooms}}
                 <section class="room">
-                    <h3>\{{name}}</h3>
-                    <p>\{{users.length}} / \{{capacity}}</p>
+                    <button class="room-btn">
+                        <h3>\{{name}}</h3>
+                        <p>\{{users.length}} / \{{capacity}}</p>
+                    </button>
                 </section>
                 \{{/each}}
             </template>
