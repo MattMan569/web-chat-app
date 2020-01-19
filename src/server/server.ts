@@ -3,6 +3,7 @@ import cors from "cors";
 import express, { Request, Response } from "express";
 import session from "express-session";
 import hbs from "hbs";
+import http from "http";
 import mongoose from "mongoose";
 import path from "path";
 import uuidv4 from "uuid/v4";
@@ -16,8 +17,9 @@ const publicDirectoryPath = path.join(__dirname, "../client");
 const viewsPath = path.join(__dirname, "./templates/views");
 const partialsPath = path.join(__dirname, "./templates/partials");
 
-// Create the express application
+// Create the express application and server
 const app = express();
+const server = http.createServer(app);
 
 // Use CORS
 // TODO: check if needed
@@ -74,4 +76,4 @@ app.get("*", (req: Request, res: Response) => {
     res.redirect("/");
 });
 
-export default app;
+export default server;

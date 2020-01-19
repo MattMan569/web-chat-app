@@ -1,7 +1,8 @@
-import app from "./app";
+import server from "./server";
+require("./socketIO/io");
 
 const port = process.env.PORT;
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server is up on port ${port}`);
 });
