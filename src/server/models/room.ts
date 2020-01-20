@@ -49,7 +49,6 @@ const roomSchema = new mongoose.Schema({
     },
     users: [{
         ref: User,
-        unique: true,
         type: Schema.Types.ObjectId,
     }],
 }, {
