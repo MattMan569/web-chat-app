@@ -7,7 +7,6 @@ const template = document.getElementById("room-item-template").innerHTML;
 const render = Handlebars.compile(template);
 
 const renderRooms = (rooms: IRoom[]) => {
-    console.log(rooms);
     document.getElementById("room-list").innerHTML = render({rooms});
 };
 
@@ -37,7 +36,6 @@ $.ajax({
     method: "GET",
     statusCode: {
         200: (res: IRoom[]) => {
-            console.log(res);
             renderRooms(res);
         },
     },
