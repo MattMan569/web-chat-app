@@ -1,7 +1,7 @@
 import connectMongo from "connect-mongo";
 import cors from "cors";
 import express, { Request, Response } from "express";
-import session from "express-session";
+import expressSession from "express-session";
 import hbs from "hbs";
 import http from "http";
 import mongoose from "mongoose";
@@ -37,8 +37,8 @@ app.use(express.urlencoded({
 }));
 
 // Setup session management
-const MongoStore = connectMongo(session);
-app.use(session({
+const MongoStore = connectMongo(expressSession);
+export const session = expressSession({
     cookie: {
         maxAge: 86400000, // 1 day
     },
@@ -52,7 +52,8 @@ app.use(session({
         mongooseConnection: mongoose.connection,
     }),
     unset: "destroy",
-}));
+});
+app.use(session);
 
 // Setup hbs
 app.set("view engine", "hbs");
