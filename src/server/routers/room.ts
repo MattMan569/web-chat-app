@@ -11,20 +11,21 @@ router.post("/rooms/create", async (req: Request, res: Response) => {
 
     // The current user is the room's owner and first user
     req.body.owner = user._id;
-    req.body.users = [user._id];
+    req.body.users = [];
 
     try {
-        const room = await new Room(req.body).save((e) => {
+        await new Room(req.body).save((e, room) => {
             if (e) {
                 console.log(e);
                 // TODO parse 'e' and send helpful error message
                 res.status(400).send("Error");
                 return;
             }
+
+            // Send the URL to redirect to
+            res.send(`/chat?room=${room._id}`);
         });
 
-        // Send the URL to redirect to
-        res.send(`/chat?room=${room.id}`);
     } catch (e) {
         console.log(e);
         res.status(400).send(e);
