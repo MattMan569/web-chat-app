@@ -44,14 +44,12 @@ const roomSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
     },
     password: {
-        maxlength: 50,
         trim: true,
         type: String,
     },
     users: [{
         ref: User,
         unique: true,
-        required: true,
         type: Schema.Types.ObjectId,
     }],
 }, {
@@ -91,9 +89,7 @@ roomSchema.statics.findByRoomName = async (name: string) => {
 roomSchema.pre("save", async function(this: IRoomDocument, next) {
     // Hash the password
     if (this.isModified("password")) {
-        // TODO replace and solve over character limit
-        // this.password = await brcrypt.hash(this.password, 8);
-        this.password = "";
+        this.password = await brcrypt.hash(this.password, 8);
     }
 
     next();
