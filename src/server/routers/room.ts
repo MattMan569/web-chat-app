@@ -14,21 +14,19 @@ router.post("/rooms/create", async (req: Request, res: Response) => {
     req.body.users = [user._id];
 
     try {
-        const room = new Room(req.body);
-
-        // Create and automatically join the room
-        await room.save((e, p) => {
+        const room = await new Room(req.body).save((e) => {
             if (e) {
                 console.log(e);
                 // TODO parse 'e' and send helpful error message
                 res.status(400).send("Error");
                 return;
             }
-
-            // Send the URL to redirect to
-            res.send(`/chat?room=${p.id}`);
         });
+
+        // Send the URL to redirect to
+        res.send(`/chat?room=${room.id}`);
     } catch (e) {
+        console.log(e);
         res.status(400).send(e);
     }
 });
