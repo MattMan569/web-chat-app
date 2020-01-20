@@ -17,8 +17,6 @@ io.on("connection", async (socket) => {
 
     // Remove the user from the room's array of users on disconnect
     socket.on("disconnect", async () => {
-        console.log(socket);
-
         try {
             await (await Room.findById(socket.handshake.headers.referer.split("room=").pop())).removeUserFromRoom(socket.handshake.session.user);
         } catch (e) {
