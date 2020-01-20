@@ -1,7 +1,7 @@
 import brcrypt from "bcryptjs";
 import mongoose, { Document, Model, Schema } from "mongoose";
 import validator from "validator";
-import User, { IUserDocument } from "./user";
+import User, { IUser } from "./user";
 
 // Define the room document
 interface IRoomDocument extends Document {
@@ -9,12 +9,14 @@ interface IRoomDocument extends Document {
     password: string;
     capacity: number;
     owner: { type: Schema.Types.ObjectId, ref: "User" };
-    users: [{ type: Schema.Types.ObjectId, ref: "User" }];
+    users: Array<{ type: Schema.Types.ObjectId, ref: "User" }>;
 }
 
 // Define Room methods
 export interface IRoom extends IRoomDocument {
     toJSON(): IRoom;
+    addUserToRoom(user: IUser): any;
+    removeUserFromRoom(user: IUser): any;
 }
 
 // Define Room statics
@@ -48,6 +50,7 @@ const roomSchema = new mongoose.Schema({
     },
     users: [{
         ref: User,
+        unique: true,
         required: true,
         type: Schema.Types.ObjectId,
     }],
@@ -59,6 +62,20 @@ roomSchema.methods.toJSON = function() {
     const room = this.toObject();
     delete room.password;
     return room;
+};
+
+roomSchema.methods.addUserToRoom = function(this: IRoom, user: IUser) {
+    this.users.push(user._id);
+    this.save();
+};
+
+roomSchema.methods.removeUserFromRoom = async function(this: IRoom, user: IUser) {
+    this.users = this.users.filter((id) => {
+        // tslint:disable-next-line: triple-equals
+        return id != user._id;
+    });
+
+    this.save();
 };
 
 roomSchema.statics.findByRoomName = async (name: string) => {
@@ -74,7 +91,9 @@ roomSchema.statics.findByRoomName = async (name: string) => {
 roomSchema.pre("save", async function(this: IRoomDocument, next) {
     // Hash the password
     if (this.isModified("password")) {
-        this.password = await brcrypt.hash(this.password, 8);
+        // TODO replace and solve over character limit
+        // this.password = await brcrypt.hash(this.password, 8);
+        this.password = "";
     }
 
     next();
