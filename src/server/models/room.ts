@@ -68,6 +68,7 @@ roomSchema.methods.addUserToRoom = function(this: IRoom, user: IUser) {
 
 roomSchema.methods.removeUserFromRoom = async function(this: IRoom, user: IUser) {
     this.users = this.users.filter((id) => {
+        // id is an object due to the ref field
         // tslint:disable-next-line: triple-equals
         return id != user._id;
     });
