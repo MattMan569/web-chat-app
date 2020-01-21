@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 import path from "path";
 import uuidv4 from "uuid/v4";
 require("./db/mongoose");
-import chatRouter from "./routers/chat";
+import mainRouter from "./routers/main";
 import roomRouter from "./routers/room";
 import userRouter from "./routers/user";
 
@@ -64,7 +64,7 @@ hbs.registerPartials(partialsPath);
 app.use(express.static(publicDirectoryPath));
 
 // Setup routers
-app.use(chatRouter);
+app.use(mainRouter);
 app.use(userRouter);
 app.use(roomRouter);
 
