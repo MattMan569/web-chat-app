@@ -12,9 +12,36 @@
 <body data-page={{page}}>
     {{> header}}
 
-    <div class="main-content">
+    <main class="chat-page">
+        <section class="messages">
+            <div id="message-list">
+                {{!-- List of rendered messages --}}
+                {{!-- Rendered by handlebars, placed by jQuery --}}
+            </div>
 
-    </div>
+            <template id="message-item-template">
+                <article class="message">
+                    <p class="created-at">\{{createdAt}}</p>
+                    <p class="sender">\{{sender}}</p>
+                    <p class="message-content">\{{message}}</p>
+                </article>
+            </template>
+        </section>
+
+        <section class="compose">
+            <article class="compose-form">
+                <form id="message-form" autocomplete="off">
+                    <fieldset id="form-controls">
+                        <div class="form-group">
+                            <textarea id="message-field" name="message" cols="100" rows="3" autofocus
+                                required></textarea>
+                            <button type="submit">Send</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </article>
+        </section>
+    </main>
 
     {{> footer}}
 
