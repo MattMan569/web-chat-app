@@ -18,11 +18,7 @@ const messageList = $("#message-list");
 $("#message-form").submit((e) => {
     e.preventDefault();
     formControls.attr("disabled", "disabled");
-    const message: ISocketIOMessage = {
-        message: messageField.val() as string,
-        createdAt: new Date(),
-        sender: "TODO", // TODO
-    };
+    const message = messageField.val() as string;
 
     socket.emit("sendMessage", message, () => {
         formControls.removeAttr("disabled");

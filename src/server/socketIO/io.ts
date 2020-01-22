@@ -29,8 +29,12 @@ io.on("connection", async (socket) => {
 
     // Send the specified message to all clients
     // TODO room only
-    socket.on("sendMessage", (message: ISocketIOMessage, callback) => {
-        io.emit("message", message);
+    socket.on("sendMessage", (message: string, callback) => {
+        io.emit("message",  {
+            message,
+            createdAt: new Date(),
+            sender: user.username,
+        } as ISocketIOMessage);
         callback();
     });
 
