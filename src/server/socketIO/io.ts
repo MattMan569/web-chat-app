@@ -44,6 +44,7 @@ io.on("connection", async (socket) => {
             const room = await Room.findById(roomId);
             await room.removeUserFromRoom(user);
             socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has left`));
+            // TODO delete when empty?
         } catch (e) {
             console.log(e);
         }
