@@ -20,17 +20,17 @@ io.on("connection", async (socket) => {
         console.log(e);
     }
 
-    // TODO join room
+    // Join the room and send a welcome message
     socket.on("join", async () => {
+        socket.join(roomId);
         const room = await Room.findById(roomId);
-        socket.emit("message", generateMessage(`Welcome to ${room.name}`));
-        socket.broadcast.emit("message", generateMessage(`${user.username} has joined`));
+        socket.emit("message", generateMessage(`Welcome to ${room.name}, ${user.username}`));
+        socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has joined`));
     });
 
-    // Send the specified message to all clients
-    // TODO room only
+    // Send the specified message to all clients in the room
     socket.on("sendMessage", (message: string, callback) => {
-        io.emit("message",  {
+        io.to(roomId).emit("message",  {
             message,
             createdAt: new Date(),
             sender: user.username,
@@ -38,13 +38,12 @@ io.on("connection", async (socket) => {
         callback();
     });
 
-    // Remove the user from the room's array of users on disconnect
-    // TODO message for room only
+    // Remove the user from the room
     socket.on("disconnect", async () => {
         try {
             const room = await Room.findById(roomId);
             await room.removeUserFromRoom(user);
-            socket.broadcast.emit("message", generateMessage(`${user.username} has left`));
+            socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has left`));
         } catch (e) {
             console.log(e);
         }
