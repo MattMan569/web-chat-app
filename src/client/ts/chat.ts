@@ -26,10 +26,7 @@ $("#message-form").submit((e) => {
 });
 
 socket.on("message", (message: ISocketIOMessage) => {
-    console.log(message);
-    const messageElement = render(message);
-    console.log(messageElement);
-    messageList.append(messageElement);
+    messageList.append(render(message));
 });
 
 socket.emit("join");
