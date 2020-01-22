@@ -4,8 +4,6 @@ import $ from "jquery";
 import socketio from "socket.io-client";
 import { ISocketIOMessage } from "./../../types/types";
 
-console.log("chat");
-
 const socket = socketio();
 
 const formControls = $("#form-controls");
