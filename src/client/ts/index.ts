@@ -1,7 +1,10 @@
+require("./common");
 import Handlebars from "handlebars";
 import $ from "jquery";
+import socketio from "socket.io-client";
 import { IRoom } from "./../../server/models/room";
-require("./common");
+
+const socket = socketio("/index");
 
 const template = document.getElementById("room-item-template").innerHTML;
 const render = Handlebars.compile(template);
