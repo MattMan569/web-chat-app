@@ -15,13 +15,13 @@ interface IRoomDocument extends Document {
 // Define Room methods
 export interface IRoom extends IRoomDocument {
     toJSON(): IRoom;
-    addUserToRoom(user: IUser): any;
-    removeUserFromRoom(user: IUser): any;
 }
 
 // Define Room statics
 export interface IRoomModel extends Model<IRoom> {
     findByRoomName(name: string): IRoom;
+    addUserToRoom(roomId: string | mongoose.Types.ObjectId, user: IUser): void;
+    removeUserFromRoom(roomId: string | mongoose.Types.ObjectId, user: IUser): void;
 }
 
 const roomSchema = new mongoose.Schema({
@@ -61,19 +61,24 @@ roomSchema.methods.toJSON = function() {
     return room;
 };
 
-roomSchema.methods.addUserToRoom = function(this: IRoom, user: IUser) {
-    this.users.push(user._id);
-    this.save();
-};
-
-roomSchema.methods.removeUserFromRoom = async function(this: IRoom, user: IUser) {
-    this.users = this.users.filter((id) => {
-        // id is an object due to the ref field
-        // tslint:disable-next-line: triple-equals
-        return id != user._id;
+roomSchema.statics.addUserToRoom = async (roomId: string | mongoose.Types.ObjectId, user: IUser) => {
+    const room = await Room.findByIdAndUpdate(roomId, {
+        $push: { users: user._id },
+    }, {
+        new: true,
     });
 
-    this.save();
+    Room.emit("roomUpdate", room);
+};
+
+roomSchema.statics.removeUserFromRoom = async (roomId: string | mongoose.Types.ObjectId, user: IUser) => {
+    const room = await Room.findByIdAndUpdate(roomId, {
+        $pull: { users: user._id },
+    }, {
+        new: true,
+    });
+
+    Room.emit("roomUpdate", room);
 };
 
 roomSchema.statics.findByRoomName = async (name: string) => {
