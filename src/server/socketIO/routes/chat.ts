@@ -12,11 +12,11 @@ const chatSocket = (io: Server) => {
     chat.use(sharedSession(session));
 
     chat.on("connection", async (socket) => {
-        const roomId = socket.handshake.headers.referer.split("room=").pop();
+        const roomId = socket.handshake.headers.referer.split("room=").pop() as string;
         const user = socket.handshake.session.user;
 
         try {
-            await (await Room.findById(roomId)).addUserToRoom(user);
+            Room.addUserToRoom(roomId, user);
         } catch (e) {
             console.log(e);
         }
@@ -42,8 +42,7 @@ const chatSocket = (io: Server) => {
         // Remove the user from the room
         socket.on("disconnect", async () => {
             try {
-                const room = await Room.findById(roomId);
-                await room.removeUserFromRoom(user);
+                Room.removeUserFromRoom(roomId, user);
                 socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has left`));
                 // TODO delete when empty?
             } catch (e) {
