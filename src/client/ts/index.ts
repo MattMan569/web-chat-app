@@ -43,3 +43,7 @@ $.ajax({
         },
     },
 });
+
+socket.on("roomUpdate", (room: IRoom) => {
+    console.log("update", room);
+});
