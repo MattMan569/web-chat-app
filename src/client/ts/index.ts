@@ -46,4 +46,8 @@ $.ajax({
 
 socket.on("roomUpdate", (room: IRoom) => {
     console.log("update", room);
+    // TODO
+    // check if room exists in list
+    // yes: update
+    // no: render new list item
 });
