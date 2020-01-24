@@ -16,6 +16,7 @@ const renderRooms = (rooms: IRoom[]) => {
     document.getElementById("room-list").innerHTML = render({rooms});
 };
 
+// Send the form then redirect to the created room
 $("#create-form").submit(function(e) {
     e.preventDefault();
     const form = $(this);
