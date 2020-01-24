@@ -9,6 +9,9 @@ const socket = socketio("/index");
 const template = document.getElementById("room-item-template").innerHTML;
 const render = Handlebars.compile(template);
 
+const templateOne = document.getElementById("room-item-template-one").innerHTML;
+const renderOne = Handlebars.compile(templateOne);
+
 const renderRooms = (rooms: IRoom[]) => {
     document.getElementById("room-list").innerHTML = render({rooms});
 };
@@ -34,6 +37,7 @@ $("#create-form").submit(function(e) {
     });
 });
 
+// Get the list of rooms from the server
 $.ajax({
     url: "/rooms",
     method: "GET",
@@ -44,10 +48,14 @@ $.ajax({
     },
 });
 
+// Update the room if it exists or create a new one if it doesn't
 socket.on("roomUpdate", (room: IRoom) => {
-    console.log("update", room);
-    // TODO
-    // check if room exists in list
-    // yes: update
-    // no: render new list item
+    const roomElement = $(`#${room._id}`);
+
+    // Length only exists if an element was found
+    if (roomElement.length) {
+        roomElement[0].outerHTML = renderOne(room);
+    } else {
+        $("#room-list").append(renderOne(room));
+    }
 });
