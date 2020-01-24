@@ -13,14 +13,10 @@ const indexSocket = (io: Server) => {
         console.log("index connection");
     });
 
-    const sendEvent = (event: string, room: IRoom) => {
-        index.emit(event, room);
-    };
-
     // Mongoose event listeners
 
     Room.on("roomUpdate", (room: IRoom) => {
-        sendEvent("roomUpdate", room);
+        index.emit("roomUpdate", room);
     });
 };
 
