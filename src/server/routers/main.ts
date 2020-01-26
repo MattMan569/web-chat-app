@@ -25,7 +25,7 @@ router.get("/chat", auth, async (req: Request, res: Response) => {
     const userId = req.session.user._id;
     const userAlreadyInRoom = (await Room.find({ _id: roomId, users: userId })).length > 0;
 
-    // TODO prevent request via ajax request on index page
+    // TODO kick other user instance and let this instance enter the room
     if (userAlreadyInRoom) {
         res.status(400).redirect("/");
         return;
