@@ -38,6 +38,11 @@ app.use(express.urlencoded({
 
 // Setup session management
 const MongoStore = connectMongo(expressSession);
+export const store = new MongoStore({
+    autoRemove: "interval",
+    autoRemoveInterval: 10,
+    mongooseConnection: mongoose.connection,
+});
 export const session = expressSession({
     cookie: {
         maxAge: 86400000, // 1 day
@@ -46,11 +51,7 @@ export const session = expressSession({
     resave: false,
     saveUninitialized: false, // Only create sessions on successful login
     secret: process.env.SESSION_SECRET,
-    store: new MongoStore({
-        autoRemove: "interval",
-        autoRemoveInterval: 10,
-        mongooseConnection: mongoose.connection,
-    }),
+    store,
     unset: "destroy",
 });
 app.use(session);
