@@ -14,6 +14,7 @@ router.get("/", auth, (req: Request, res: Response) => {
         page: "index",
         pageTitle: websiteTitle,
         username: req.session.user.username,
+        userId: req.session.user._id,
         websiteAuthor,
         websiteTitle,
     });
@@ -36,6 +37,7 @@ router.get("/chat", auth, async (req: Request, res: Response) => {
         page: "chat",
         pageTitle: websiteTitle,
         username: req.session.user.username,
+        userId: req.session.user._id,
         websiteAuthor,
         websiteTitle,
     });
