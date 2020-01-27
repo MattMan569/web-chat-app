@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import auth from "../middleware/auth";
+import Profile from "../models/profile";
 import User, { IUser } from "../models/user";
 
 const router = express.Router();
@@ -18,6 +19,11 @@ router.post("/users", async (req: Request, res: Response) => {
 
     try {
         await user.save();
+
+        Profile.create({
+            userId: user._id,
+        });
+
         createSession(req.session, user);
         res.redirect("/");
     } catch (e) {
@@ -71,8 +77,8 @@ router.post("/users/logoutAll", auth, async (req: Request, res: Response) => {
     }
 });
 
-// Get the user object making the request
-router.get("/users/me", auth, async (req: Request, res: Response) => {
+// Get the user profile of the user with the specified id
+router.get("/users/:id", auth, async (req: Request, res: Response) => {
     res.send(req.body.user);
 });
 
