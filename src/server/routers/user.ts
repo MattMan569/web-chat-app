@@ -78,8 +78,19 @@ router.post("/users/logoutAll", auth, async (req: Request, res: Response) => {
 });
 
 // Get the user profile of the user with the specified id
-router.get("/users/:id", auth, async (req: Request, res: Response) => {
-    res.send(req.body.user);
+router.get("/users", auth, async (req: Request, res: Response) => {
+    const profile = await Profile.findOne({ userId: req.query.user });
+
+    res.render("profile", {
+        loggedIn: req.session.loggedIn,
+        page: "index",
+        pageTitle: "Chat App - Profile",
+        profile,
+        username: req.session.user.username,
+        userId: req.session.user._id,
+        websiteAuthor: "Matthew Polsom",
+        websiteTitle: "Chat App",
+    });
 });
 
 export default router;
