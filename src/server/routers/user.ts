@@ -78,8 +78,8 @@ router.post("/users/logoutAll", auth, async (req: Request, res: Response) => {
 });
 
 // Get the user profile of the user with the specified id
-router.get("/users", auth, async (req: Request, res: Response) => {
-    const profile = await Profile.findOne({ userId: req.query.user });
+router.get("/users/:id", auth, async (req: Request, res: Response) => {
+    const profile = await Profile.findOne({ userId: req.params.id });
 
     res.render("profile", {
         loggedIn: req.session.loggedIn,
