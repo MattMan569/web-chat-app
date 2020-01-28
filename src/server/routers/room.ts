@@ -6,7 +6,7 @@ import User from "./../models/user";
 const router = express.Router();
 
 // Create a room
-router.post("/rooms/create", async (req: Request, res: Response) => {
+router.post("/rooms/create", auth, async (req: Request, res: Response) => {
     const user = await User.findByUsername(req.session.user.username);
 
     // The current user is the room's owner and first user
@@ -33,7 +33,7 @@ router.post("/rooms/create", async (req: Request, res: Response) => {
 });
 
 // Get all rooms
-router.get("/rooms", async (req: Request, res: Response) => {
+router.get("/rooms", auth, async (req: Request, res: Response) => {
     res.send(await Room.find());
 });
 
