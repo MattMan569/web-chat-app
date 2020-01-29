@@ -13,7 +13,7 @@
     {{> header}}
 
     <main class="index-page">
-        <article class="join">
+        <section class="join">
             <h2>Join</h2>
 
             <div id="room-list">
@@ -22,31 +22,31 @@
 
             <template id="room-item-template">
                 \{{#each rooms}}
-                <section class="room-item" id="\{{_id}}">
+                <article class="room-item" id="\{{_id}}">
                     <a href="/chat?room=\{{_id}}">
                         <button class="room-btn">
                             <h3>\{{name}}</h3>
                             <p>\{{users.length}} / \{{capacity}}</p>
                         </button>
                     </a>
-                </section>
+                </article>
                 \{{/each}}
             </template>
 
             <template id="room-item-template-one">
-                <section class="room-item" id="\{{_id}}">
+                <article class="room-item" id="\{{_id}}">
                     <a href="/chat?room=\{{_id}}">
                         <button class="room-btn">
                             <h3>\{{name}}</h3>
                             <p>\{{users.length}} / \{{capacity}}</p>
                         </button>
                     </a>
-                </section>
+                </article>
             </template>
-        </article>
+        </section>
 
-        <article class="create">
-            <section class="create-form">
+        <section class="create">
+            <article class="create-form">
                 <h2>Create</h2>
                 <form action="/rooms/create" method="POST" id="create-form">
                     <div class="form-group">
@@ -68,8 +68,8 @@
                         <button type="submit">Create Room</button>
                     </div>
                 </form>
-            </section>
-        </article>
+            </article>
+        </section>
     </main>
 
     {{> footer}}

@@ -13,8 +13,8 @@
     {{> header}}
 
     <main class="login-page">
-        <article>
-            <section class="login-form">
+        <section>
+            <article class="login-form">
                 <h2>Login</h2>
                 <form action="/users/login" method="POST">
                     <div class="form-group">
@@ -31,9 +31,9 @@
                         <button type="submit">Login</button>
                     </div>
                 </form>
-            </section>
+            </article>
 
-            <section class="login-links">
+            <article class="login-links">
                 {{!-- TODO move --}}
                 {{#if invalid}}
                 <p class="error-msg">Your login information is invalid</p>
@@ -45,8 +45,8 @@
                     <a href="#">I forgot my username</a>
                     <a href="#">I forgot my password</a>
                 </div>
-            </section>
-        </article>
+            </article>
+        </section>
     </main>
 
     {{> footer}}
