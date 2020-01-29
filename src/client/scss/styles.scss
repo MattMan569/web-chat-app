@@ -118,6 +118,23 @@ main {
             grid-area: "compose";
         }
     }
+
+    &.index-page {
+        grid-template-areas:
+            "join"
+            "create";
+        grid-template-rows: auto min-content;
+        min-height: 0;
+
+        .join {
+            grid-area: "join";
+            overflow-y: scroll;
+        }
+
+        .create {
+            grid-area: "create";
+        }
+    }
 }
 
 section {
@@ -126,14 +143,14 @@ section {
     border-radius: 5px;
     margin: 2em;
     padding: 1em;
-}
 
-article {
     h2 {
         text-align: center;
         margin-bottom: 1rem;
     }
+}
 
+article {
     &.room-item {
         button {
             width: 100%;
