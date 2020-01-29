@@ -9,6 +9,14 @@ $link-text: #167ac6;
 }
 
 body {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "main"
+        "footer";
+    grid-template-rows: min-content auto min-content;
+    height: 100vh;
+
     color: $black-text;
     background-color: #f1f1f1;
 
@@ -23,6 +31,7 @@ body {
 }
 
 header {
+    grid-area: header;
     background-color: #ffffff;
     box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.3);
     padding: 1em 2em;
@@ -71,10 +80,7 @@ header {
 }
 
 footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    grid-area: footer;
 
     padding: .75em 2em;
     background-color: #333333;
@@ -82,6 +88,7 @@ footer {
 }
 
 main {
+    grid-area: main;
     display: grid;
 
     &.login-page, &.signup-page {
@@ -89,6 +96,24 @@ main {
 
         article {
             grid-column-start: 2;
+        }
+    }
+
+    &.chat-page {
+        grid-template-areas:
+            "messages"
+            "compose";
+        grid-template-rows: auto min-content;
+        min-height: 0;
+
+        .messages {
+            grid-area: "messages";
+            overflow-y: scroll;
+            max-height: 100%;
+        }
+
+        .compose {
+            grid-area: "compose";
         }
     }
 }
@@ -197,4 +222,3 @@ form {
         display: block;
     }
 }
-
