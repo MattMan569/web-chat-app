@@ -22,7 +22,11 @@
             <template id="message-item-template">
                 <article class="message">
                     <p class="created-at">\{{createdAt}}</p>
-                    <p class="sender">\{{sender}}</p>
+                    \{{#if _id}}
+                        <a href="users/\{{_id}}" target="_blank" class="sender">\{{sender}}</a>
+                    \{{else}}
+                        <p class="sender">\{{sender}}</p>
+                    \{{/if}}
                     <p class="message-content">\{{message}}</p>
                 </article>
             </template>

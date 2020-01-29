@@ -35,6 +35,7 @@ const chatSocket = (io: Server) => {
                 message,
                 createdAt: new Date(),
                 sender: user.username,
+                _id: user._id,
             } as ISocketIOMessage);
             callback();
         });
