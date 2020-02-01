@@ -15,13 +15,13 @@ const createSession = (session: Express.Session, user: IUser) => {
 
 // Create a new user and log in
 router.post("/users", async (req: Request, res: Response) => {
-    const user = new User(req.body);
-
     try {
-        await user.save();
+        const user = await User.create(req.body);
 
         Profile.create({
             userId: user._id,
+            description: "Edit me!",
+            online: true,
         });
 
         createSession(req.session, user);
