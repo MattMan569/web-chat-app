@@ -9,6 +9,7 @@ import path from "path";
 import uuidv4 from "uuid/v4";
 require("./db/mongoose");
 import mainRouter from "./routers/main";
+import profileRouter from "./routers/profile";
 import roomRouter from "./routers/room";
 import userRouter from "./routers/user";
 
@@ -66,8 +67,9 @@ app.use(express.static(publicDirectoryPath));
 
 // Setup routers
 app.use(mainRouter);
-app.use(userRouter);
+app.use(profileRouter);
 app.use(roomRouter);
+app.use(userRouter);
 
 // TODO move to single file for all routers
 const websiteTitle = "Chat App";
