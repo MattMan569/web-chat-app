@@ -62,6 +62,22 @@ app.set("view engine", "hbs");
 app.set("views", viewsPath);
 hbs.registerPartials(partialsPath);
 
+hbs.registerHelper("ifeq", function(this: any, a, b, options) {
+    // tslint:disable-next-line: triple-equals
+    if (a == b) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
+hbs.registerHelper("ifnoteq", function(this: any, a, b, options) {
+    // tslint:disable-next-line: triple-equals
+    if (a != b) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
 // Set the static directory
 app.use(express.static(publicDirectoryPath));
 
