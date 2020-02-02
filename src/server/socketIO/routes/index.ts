@@ -9,10 +9,6 @@ const indexSocket = (io: Server) => {
     const index = io.of("/index");
     index.use(sharedSession(session));
 
-    index.on("connection", async (socket) => {
-        console.log("index connection");
-    });
-
     // Mongoose event listeners
 
     Room.on("roomUpdate", (room: IRoom) => {
