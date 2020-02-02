@@ -56,8 +56,12 @@ router.post("/users/login", async (req: Request, res: Response) => {
 // Log out
 router.get("/users/logout", auth, async (req: Request, res: Response) => {
     try {
-        req.session.destroy((e) => {
-            throw new Error(e);
+        req.session.destroy((err) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+                return;
+            }
         });
         res.redirect("/login");
     } catch (e) {
