@@ -19,9 +19,13 @@
             <article class="description">
                 <h3>Description</h3>
                 <p class="description" id="description">{{profile.description}}</p>
+
+                {{!-- Only allow editing if the profile belongs to the viewing user --}}
+                {{#ifeq profile.userId userId}}
                 <div id="description-buttons">
                     {{!-- Used by jQuery to place the edit, cancel, and save buttons --}}
                 </div>
+                {{/ifeq}}
             </article>
 
             <p class="is-online">{{profile.online}}</p>
