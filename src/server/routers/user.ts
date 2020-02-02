@@ -43,13 +43,13 @@ router.post("/users/login", async (req: Request, res: Response) => {
 
         // User not found with provided credentials
         if (!user) {
-            return res.redirect("/login?valid=false");
+            return res.status(400).send("Your login information is invalid.");
         }
 
         createSession(req.session, user);
-        res.redirect("/");
+        res.send("/");
     } catch (e) {
-        return res.status(400).send(e);
+        return res.status(500).send(e);
     }
 });
 

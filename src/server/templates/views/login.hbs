@@ -16,7 +16,7 @@
         <section>
             <article class="login-form">
                 <h2>Login</h2>
-                <form action="/users/login" method="POST">
+                <form action="/users/login" id="login-form" method="POST">
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" name="username" placeholder="username" required>
@@ -33,12 +33,11 @@
                 </form>
             </article>
 
-            <article class="login-links">
-                {{!-- TODO move --}}
-                {{#if invalid}}
-                <p class="error-msg">Your login information is invalid</p>
-                {{/if}}
+            <div class="errors">
+                <p class="err-msg" id="err-msg"></p>
+            </div>
 
+            <article class="login-links">
                 <p>Don't have an account? <a href="/signup">Sign up here.</a></p>
 
                 <div class="forgot-links">
