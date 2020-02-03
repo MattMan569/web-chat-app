@@ -14,7 +14,7 @@ const template = $("#message-item-template").html();
 const render = Handlebars.compile(template);
 const messageList = $("#message-list");
 
-const submitMessageForm = (e: JQuery.SubmitEvent) => {
+messageForm.submit((e) => {
     e.preventDefault();
     formControls.attr("disabled", "disabled");
     const message = messageField.val() as string;
@@ -24,10 +24,6 @@ const submitMessageForm = (e: JQuery.SubmitEvent) => {
         messageField.val("");
         messageField.focus();
     });
-};
-
-messageForm.submit((e) => {
-    submitMessageForm(e);
 });
 
 messageForm.keypress((e) => {
@@ -35,18 +31,6 @@ messageForm.keypress((e) => {
         messageForm.submit();
     }
 });
-
-// $("#message-form").submit((e) => {
-//     e.preventDefault();
-//     formControls.attr("disabled", "disabled");
-//     const message = messageField.val() as string;
-
-//     socket.emit("sendMessage", message, () => {
-//         formControls.removeAttr("disabled");
-//         messageField.val("");
-//         messageField.focus();
-//     });
-// });
 
 socket.on("message", (message: ISocketIOMessage) => {
     messageList.append(render(message));
