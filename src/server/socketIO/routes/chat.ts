@@ -45,6 +45,15 @@ const chatSocket = (io: Server) => {
             callback();
         });
 
+        // Kick the specified user
+        socket.on("kick", (socketId: string) => {
+            try {
+                chat.connected[socketId].disconnect();
+            } catch (e) {
+                console.log(e);
+            }
+        });
+
         // Remove the user from the room
         socket.on("disconnect", async () => {
             try {

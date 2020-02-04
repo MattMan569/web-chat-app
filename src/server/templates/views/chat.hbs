@@ -13,6 +13,20 @@
     {{> header}}
 
     <main class="chat-page">
+        <section class="users">
+            <div id="user-list">
+                {{!-- List of users currently in the room --}}
+                {{!-- Rendered by handlebars, placed by jQuery --}}
+            </div>
+
+            <template id="user-item-template">
+                <article class="user-item" id="\{{socketId}}">
+                    <p class="username">\{{user.username}}</p>
+                    <button type="button" class="kick">Kick</button>
+                </article>
+            </template>
+        </section>
+
         <section class="messages">
             <div id="message-list">
                 {{!-- List of rendered messages --}}
@@ -23,9 +37,9 @@
                 <article class="message">
                     <p class="created-at">\{{createdAt}}</p>
                     \{{#if _id}}
-                        <a href="users/\{{_id}}" target="_blank" class="sender">\{{sender}}</a>
+                    <a href="users/\{{_id}}" target="_blank" class="sender">\{{sender}}</a>
                     \{{else}}
-                        <p class="sender">\{{sender}}</p>
+                    <p class="sender">\{{sender}}</p>
                     \{{/if}}
                     <p class="message-content">\{{message}}</p>
                 </article>
