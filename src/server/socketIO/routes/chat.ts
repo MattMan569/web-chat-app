@@ -23,10 +23,15 @@ const chatSocket = (io: Server) => {
 
         // Join the room and send a welcome message
         socket.on("join", async () => {
-            socket.join(roomId);
-            const room = await Room.findById(roomId);
-            socket.emit("message", generateMessage(`Welcome to ${room.name}, ${user.username}`));
-            socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has joined`));
+            try {
+                socket.join(roomId);
+                const room = await Room.findById(roomId);
+                socket.emit("message", generateMessage(`Welcome to ${room.name}, ${user.username}`));
+                socket.broadcast.to(roomId).emit("userJoin", { user, socketId: socket.id });
+                socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has joined`));
+            } catch (e) {
+                console.log(e);
+            }
         });
 
         // Send the specified message to all clients in the room
@@ -44,6 +49,7 @@ const chatSocket = (io: Server) => {
         socket.on("disconnect", async () => {
             try {
                 Room.removeUserFromRoom(roomId, user);
+                socket.broadcast.to(roomId).emit("userLeave", { user, socketId: socket.id });
                 socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has left`));
                 // TODO delete when empty?
             } catch (e) {
