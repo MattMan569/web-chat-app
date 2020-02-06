@@ -16,7 +16,8 @@ const chatSocket = (io: Server) => {
         const user = socket.handshake.session.user;
 
         try {
-            Room.addUserToRoom(roomId, user);
+            const room = await Room.addUserToRoom(roomId, user);
+            Room.emit("roomUpdate", room);
         } catch (e) {
             console.log(e);
         }
@@ -48,7 +49,15 @@ const chatSocket = (io: Server) => {
         // Kick the specified user
         socket.on("kick", (socketId: string) => {
             try {
-                chat.connected[socketId].disconnect();
+                const targetUser = chat.connected[socketId];
+
+                targetUser.emit("message", {
+                    message: "You have been kicked.",
+                    createdAt: new Date(),
+                    sender: "SERVER",
+                });
+
+                targetUser.disconnect();
             } catch (e) {
                 console.log(e);
             }
@@ -57,7 +66,13 @@ const chatSocket = (io: Server) => {
         // Remove the user from the room
         socket.on("disconnect", async () => {
             try {
-                Room.removeUserFromRoom(roomId, user);
+                try {
+                    const room = await Room.removeUserFromRoom(roomId, user);
+                    Room.emit("roomUpdate", room);
+                } catch (e) {
+                    console.log(e);
+                }
+
                 socket.broadcast.to(roomId).emit("userLeave", { user, socketId: socket.id });
                 socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has left`));
                 // TODO delete when empty?
