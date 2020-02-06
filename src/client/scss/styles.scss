@@ -106,13 +106,18 @@ main {
 
     &.chat-page {
         grid-template-areas:
-            "messages"
-            "compose";
+            "users messages"
+            "users compose";
         grid-template-rows: auto min-content;
+        // grid-template-columns: auto auto;
         min-height: 0; // Prevents messages grid section from expanding. It just works.
 
+        .users {
+            grid-area: users;
+        }
+
         .messages {
-            grid-area: "messages";
+            grid-area: messages;
             overflow-y: scroll;
         }
 
@@ -121,7 +126,11 @@ main {
         }
 
         .compose {
-            grid-area: "compose";
+            grid-area: compose;
+            
+            textarea {
+                resize: none;
+            }
         }
     }
 
