@@ -20,10 +20,12 @@
             </div>
 
             <template id="user-item-template">
+                \{{#each roomUserList}}
                 <article class="user-item" id="\{{socketId}}">
                     <p class="username">\{{user.username}}</p>
                     <button type="button" class="kick">Kick</button>
                 </article>
+                \{{/each}}
             </template>
         </section>
 

@@ -1,9 +1,15 @@
 import sharedSession from "express-socket.io-session";
 import { Server } from "socket.io";
 import { ISocketIOMessage } from "./../../../types/types";
-import Room from "./../../models/room";
+import Room, { IRoom } from "./../../models/room";
+import { IUser } from "./../../models/user";
 import { session } from "./../../server";
 import { generateMessage } from "./../util/message";
+
+export interface IRoomUser {
+    user: IUser;
+    socketId: string;
+}
 
 // Socket connection from the chat page
 // Handle the sending of messages and the room db
@@ -11,9 +17,16 @@ const chatSocket = (io: Server) => {
     const chat = io.of("/chat");
     chat.use(sharedSession(session));
 
+    let usersInRoom: IRoomUser[] = [];
+
     chat.on("connection", async (socket) => {
         const roomId = socket.handshake.headers.referer.split("room=").pop() as string;
         const user = socket.handshake.session.user;
+
+        usersInRoom.push({
+            user,
+            socketId: socket.id,
+        });
 
         try {
             const room = await Room.addUserToRoom(roomId, user);
@@ -28,8 +41,8 @@ const chatSocket = (io: Server) => {
                 socket.join(roomId);
                 const room = await Room.findById(roomId);
                 socket.emit("message", generateMessage(`Welcome to ${room.name}, ${user.username}`));
-                socket.broadcast.to(roomId).emit("userJoin", { user, socketId: socket.id });
                 socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has joined`));
+                chat.to(roomId).emit("userListUpdate", usersInRoom);
             } catch (e) {
                 console.log(e);
             }
@@ -66,14 +79,12 @@ const chatSocket = (io: Server) => {
         // Remove the user from the room
         socket.on("disconnect", async () => {
             try {
-                try {
-                    const room = await Room.removeUserFromRoom(roomId, user);
-                    Room.emit("roomUpdate", room);
-                } catch (e) {
-                    console.log(e);
-                }
-
-                socket.broadcast.to(roomId).emit("userLeave", { user, socketId: socket.id });
+                const room = await Room.removeUserFromRoom(roomId, user);
+                usersInRoom = usersInRoom.filter((roomUser) => {
+                    return roomUser.socketId !== socket.id;
+                });
+                Room.emit("roomUpdate", room);
+                chat.to(roomId).emit("userListUpdate", usersInRoom);
                 socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has left`));
                 // TODO delete when empty?
             } catch (e) {

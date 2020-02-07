@@ -3,6 +3,7 @@ import Handlebars from "handlebars";
 import $ from "jquery";
 import socketio from "socket.io-client";
 import { IUser } from "./../../server/models/user";
+import { IRoomUser } from "./../../server/socketIO/routes/chat";
 import { ISocketIOMessage } from "./../../types/types";
 
 interface IUserEvent {
@@ -57,16 +58,8 @@ socket.on("message", (message: ISocketIOMessage) => {
     messageList.append(renderMessage(message));
 });
 
-// Add the new user to the room's user list
-socket.on("userJoin", ({user, socketId}: IUserEvent) => {
-    userList.append(renderUser({user, socketId}));
-});
-
-// Remove the user from the room's user list
-socket.on("userLeave", ({user, socketId}: IUserEvent) => {
-    // The socket's id contains special characters that jQuery will not accept
-    // so they must be escaped
-    $(`#${$.escapeSelector(socketId)}`).remove();
+socket.on("userListUpdate", (roomUserList: IRoomUser[]) => {
+    userList[0].innerHTML = renderUser({ roomUserList });
 });
 
 socket.emit("join");
