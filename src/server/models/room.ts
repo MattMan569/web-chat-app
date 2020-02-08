@@ -85,7 +85,7 @@ roomSchema.statics.addUserToRoom = async (roomId: string | mongoose.Types.Object
 
 roomSchema.statics.removeUserFromRoom = async (roomId: string | mongoose.Types.ObjectId, user: IUser) => {
     return Room.findByIdAndUpdate(roomId, {
-        $pull: { users: user._id },
+        $pull: { users: { user: user._id } },
     }, {
         new: true,
     }).exec();
