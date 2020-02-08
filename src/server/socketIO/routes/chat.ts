@@ -46,19 +46,12 @@ const chatSocket = (io: Server) => {
             }
         }
 
-        // Add the user to the room's user list
-        // TODO remove join & put all here, vice versa, ?
-        try {
-            const room = await Room.addUserToRoom(roomId, user, socket.id);
-            Room.emit("roomUpdate", room);
-        } catch (e) {
-            console.log(e);
-        }
-
         // Join the room and send a welcome message
         socket.on("join", async () => {
             try {
-                const room = await (await Room.findById(roomId)).populate("users.user").execPopulate();
+                // const room = await (await Room.findById(roomId)).populate("users.user").execPopulate();
+                const room = await (await Room.addUserToRoom(roomId, user, socket.id)).populate("users.user").execPopulate();
+                Room.emit("roomUpdate", room);
                 socket.join(roomId);
                 socket.emit("message", generateMessage(`Welcome to ${room.name}, ${user.username}`));
                 socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has joined`));
