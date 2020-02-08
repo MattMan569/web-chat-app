@@ -46,7 +46,7 @@ export const store = new MongoStore({
 });
 export const session = expressSession({
     cookie: {
-        maxAge: 86400000, // 1 day
+        maxAge: 604800000, // 7 days
     },
     genid: (req) => uuidv4(),
     resave: false,
