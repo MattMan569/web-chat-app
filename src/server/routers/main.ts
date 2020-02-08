@@ -22,17 +22,6 @@ router.get("/", auth, (req: Request, res: Response) => {
 
 // Inside a chat room
 router.get("/chat", auth, async (req: Request, res: Response) => {
-    const roomId = req.query.room;
-    const userId = req.session.user._id;
-    const userAlreadyInRoom = (await Room.find({ _id: roomId, users: userId })).length > 0;
-
-    // TODO kick other user instance and let this instance enter the room
-    // FIXME always true on refresh in Chrome
-    if (userAlreadyInRoom) {
-        res.status(400).redirect("/");
-        return;
-    }
-
     res.render("chat", {
         loggedIn: req.session.loggedIn,
         page: "chat",
