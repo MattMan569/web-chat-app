@@ -6,11 +6,6 @@ import { IUser } from "./../../server/models/user";
 import { IRoomUser } from "./../../server/socketIO/routes/chat";
 import { ISocketIOMessage } from "./../../types/types";
 
-interface IUserEvent {
-    user: IUser;
-    socketId: string;
-}
-
 const socket = socketio("/chat");
 
 // Form elements
