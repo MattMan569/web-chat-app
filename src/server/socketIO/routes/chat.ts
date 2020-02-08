@@ -24,7 +24,6 @@ const chatSocket = (io: Server) => {
     chat.on("connection", async (socket) => {
         const roomId = socket.handshake.headers.referer.split("room=").pop() as string;
         const user = socket.handshake.session.user;
-        // const userAlreadyInRoom = (await Room.find({ "_id": roomId, "users.user": user._id })).length > 0;
         const userAlreadyInRoom = (await Room.findOne({ "_id": roomId, "users.user": user._id }));
 
         // Kick the other user instance and remove it from the db
