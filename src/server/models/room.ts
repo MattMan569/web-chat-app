@@ -9,7 +9,13 @@ interface IRoomDocument extends Document {
     password: string;
     capacity: number;
     owner: { type: Schema.Types.ObjectId, ref: "User" };
-    users: Array<{ type: Schema.Types.ObjectId, ref: "User" }>;
+    users: Array<{
+        socketId: string,
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        },
+    }>;
 }
 
 // Define Room methods
@@ -20,7 +26,7 @@ export interface IRoom extends IRoomDocument {
 // Define Room statics
 export interface IRoomModel extends Model<IRoom> {
     findByRoomName(name: string): IRoom;
-    addUserToRoom(roomId: string | mongoose.Types.ObjectId, user: IUser): Promise<IRoom>;
+    addUserToRoom(roomId: string | mongoose.Types.ObjectId, user: IUser, socketId: string): Promise<IRoom>;
     removeUserFromRoom(roomId: string | mongoose.Types.ObjectId, user: IUser): Promise<IRoom>;
 }
 
@@ -48,8 +54,11 @@ const roomSchema = new mongoose.Schema({
         type: String,
     },
     users: [{
-        ref: User,
-        type: Schema.Types.ObjectId,
+        socketId: String,
+        user: {
+            ref: User,
+            type: Schema.Types.ObjectId,
+        },
     }],
 }, {
     timestamps: true,
@@ -61,9 +70,14 @@ roomSchema.methods.toJSON = function() {
     return room;
 };
 
-roomSchema.statics.addUserToRoom = async (roomId: string | mongoose.Types.ObjectId, user: IUser) => {
+roomSchema.statics.addUserToRoom = async (roomId: string | mongoose.Types.ObjectId, user: IUser, socketId: string) => {
+    const userObj = {
+        socketId,
+        user: user._id,
+    };
+
     return Room.findByIdAndUpdate(roomId, {
-        $push: { users: user._id },
+        $push: { users: userObj },
     }, {
         new: true,
     }).exec();
