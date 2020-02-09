@@ -20,10 +20,18 @@
             </div>
 
             <template id="user-item-template">
-                \{{#each roomUserList}}
+                \{{#each room.users}}
                 <article class="user-item" id="\{{socketId}}">
                     <p class="username">\{{user.username}}</p>
+                    {{!-- 
+                        Only display the kick button if the client is the owner
+                        And only on users that are not the aforementioned owner
+                    --}}
+                    \{{#ifeq ../room.owner ../client._id}}
+                    \{{#ifnoteq user._id ../client._id}}
                     <button type="button" class="kick">Kick</button>
+                    \{{/ifnoteq}}
+                    \{{/ifeq}}
                 </article>
                 \{{/each}}
             </template>
