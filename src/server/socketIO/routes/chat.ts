@@ -72,8 +72,17 @@ const chatSocket = (io: Server) => {
         });
 
         // Kick the specified user
-        socket.on("kick", (socketId: string) => {
+        socket.on("kick", async (socketId: string) => {
             try {
+                const room = await Room.findById(roomId);
+
+                // Owner is object due to ref property
+                // tslint:disable-next-line: triple-equals
+                if (room.owner != user._id) {
+                    socket.emit("message", generateMessage("Only room owners may kick users."));
+                    return;
+                }
+
                 const targetUser = chat.connected[socketId];
 
                 targetUser.emit("message", {
