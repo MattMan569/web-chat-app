@@ -19,8 +19,6 @@ const chatSocket = (io: Server) => {
     const chat = io.of("/chat");
     chat.use(sharedSession(session));
 
-    // let usersInRoom: IRoomUser[] = [];
-
     chat.on("connection", async (socket) => {
         const roomId = socket.handshake.headers.referer.split("room=").pop() as string;
         const user = socket.handshake.session.user;
@@ -48,13 +46,13 @@ const chatSocket = (io: Server) => {
         // Join the room and send a welcome message
         socket.on("join", async () => {
             try {
-                // const room = await (await Room.findById(roomId)).populate("users.user").execPopulate();
                 const room = await (await Room.addUserToRoom(roomId, user, socket.id)).populate("users.user").execPopulate();
                 Room.emit("roomUpdate", room);
                 socket.join(roomId);
+                socket.emit("userData", user);
                 socket.emit("message", generateMessage(`Welcome to ${room.name}, ${user.username}`));
                 socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has joined`));
-                chat.to(roomId).emit("userListUpdate", room.users);
+                chat.to(roomId).emit("userListUpdate", room);
             } catch (e) {
                 console.log(e);
             }
@@ -103,7 +101,7 @@ const chatSocket = (io: Server) => {
             try {
                 const room = await (await Room.removeUserFromRoom(roomId, user)).populate("users.user").execPopulate();
                 Room.emit("roomUpdate", room);
-                chat.to(roomId).emit("userListUpdate", room.users);
+                chat.to(roomId).emit("userListUpdate", room);
                 socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has left`));
                 // TODO delete when empty?
             } catch (e) {
