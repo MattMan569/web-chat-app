@@ -1,5 +1,7 @@
 import { IUser } from "../server/models/user";
 
+// TODO move all types here
+
 // Extend the cookie to include the user
 declare global {
     namespace Express {
