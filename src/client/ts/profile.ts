@@ -9,6 +9,7 @@ const socket = socketio("/profile");
 const deleteBtn = $("#delete-user-btn");
 const descBtns = $("#description-buttons");
 
+// Delete the user sending the request
 deleteBtn.click(() => {
     $.ajax({
         url: "/users",
@@ -21,6 +22,8 @@ deleteBtn.click(() => {
     });
 });
 
+// Change the paragraph to a text area with the text pre-populated
+// Add the appropriate buttons with proper listeners.
 const handleEdit = () => {
     descBtns.children().remove();
 
