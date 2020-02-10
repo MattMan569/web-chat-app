@@ -2,10 +2,24 @@ require("./common");
 import $ from "jquery";
 import socketio from "socket.io-client";
 import Profile, { IProfile } from "./../../server/models/profile";
+import { IUser } from "./../../server/models/user";
 
 const socket = socketio("/profile");
 
+const deleteBtn = $("#delete-user-btn");
 const descBtns = $("#description-buttons");
+
+deleteBtn.click(() => {
+    $.ajax({
+        url: "/users",
+        method: "DELETE",
+        statusCode: {
+            200: async (res: Promise<IUser>) => {
+                console.log(await res);
+            },
+        },
+    });
+});
 
 const handleEdit = () => {
     descBtns.children().remove();

@@ -31,6 +31,21 @@ router.post("/users", async (req: Request, res: Response) => {
     }
 });
 
+// Delete the specified user
+router.delete("/users", auth, async (req: Request, res: Response) => {
+    try {
+        const user = await User.findByIdAndDelete(req.session.user._id);
+        req.session.destroy((err) => {
+            if (err) {
+                console.log(err);
+            }
+        });
+        res.send(user);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
 // Log in as an existing user
 router.post("/users/login", async (req: Request, res: Response) => {
     const username = req.body.username;
