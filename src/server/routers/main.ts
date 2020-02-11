@@ -35,8 +35,14 @@ router.get("/chat", auth, async (req: Request, res: Response) => {
 
 // Log in to an existing account
 router.get("/login", (req: Request, res: Response) => {
+    if (req.session.loggedIn) {
+        res.redirect("/");
+        return;
+    }
+
     const invalid = (req.query.valid === "false");
 
+    // TODO replace "invalid" with ajax result
     res.render("login", {
         invalid,
         page: "login",
@@ -48,6 +54,11 @@ router.get("/login", (req: Request, res: Response) => {
 
 // Sign up for an account
 router.get("/signup", (req: Request, res: Response) => {
+    if (req.session.loggedIn) {
+        res.redirect("/");
+        return;
+    }
+
     res.render("signup", {
         page: "signup",
         pageTitle: `Signup - ${websiteTitle}`,
