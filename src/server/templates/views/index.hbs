@@ -9,7 +9,7 @@
     <title>{{pageTitle}}</title>
 </head>
 
-<body data-page={{page}}>
+<body>
     {{> header}}
 
     <main class="index-page">
@@ -29,6 +29,9 @@
                             <p>\{{users.length}} / \{{capacity}}</p>
                         </button>
                     </a>
+                    <a href="/rooms/config/\{{_id}}">
+                        <button class="room-config-btn">Configure Room</button>
+                    </a>
                 </article>
                 \{{/each}}
             </template>
@@ -40,6 +43,9 @@
                             <h3>\{{name}}</h3>
                             <p>\{{users.length}} / \{{capacity}}</p>
                         </button>
+                    </a>
+                    <a href="/rooms/config/\{{_id}}">
+                        <button class="room-config-btn">Configure Room</button>
                     </a>
                 </article>
             </template>

@@ -17,6 +17,7 @@
     "bundle:index": "browserify src/client/ts/index.ts -p [ tsify ] -o dist/client/js/index.js",
     "bundle:chat": "browserify src/client/ts/chat.ts -p [ tsify ] -o dist/client/js/chat.js",
     "bundle:profile": "browserify src/client/ts/profile.ts -p [ tsify ] -o dist/client/js/profile.js",
+    "bundle:config": "browserify src/client/ts/config.ts -p [ tsify ] -o dist/client/js/config.js",
     "start": "env-cmd -f ./config/dev.env node dist/server",
     "predev": "npm run clean && npm-run-all --parallel copy:* sass build bundle:*",
     "dev": "env-cmd -f ./config/dev.env node dist/server",

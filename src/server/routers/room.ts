@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import auth from "../middleware/auth";
 import Room, { IRoom } from "../models/room";
 import User from "./../models/user";
+import { getRouterOptions, websiteInfo } from "./util/routerOptions";
 
 const router = express.Router();
 
@@ -35,6 +36,20 @@ router.post("/rooms/create", auth, async (req: Request, res: Response) => {
 // Get all rooms
 router.get("/rooms", auth, async (req: Request, res: Response) => {
     res.send(await Room.find());
+});
+
+// Get a specific room
+router.get("/rooms/:id", auth, async (req: Request, res: Response) => {
+    res.send(Room.findById(req.params.id).exec());
+});
+
+// Show the room's cofiguration page
+router.get("/rooms/config/:id", auth, async (req: Request, res: Response) => {
+    const room = await Room.findById(req.params.id);
+    res.render("config", {
+        ...getRouterOptions(req, `Configure - ${websiteInfo.websiteTitle}`),
+        room,
+    });
 });
 
 export default router;

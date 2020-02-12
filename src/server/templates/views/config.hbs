@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>{{pageTitle}}</title>
+</head>
+
+<body>
+    {{> header}}
+
+    <main class="config-page">
+        <section class="config">
+            {{!-- Name of the room --}}
+            <article class="room-name">
+                <p>{{room.name}}</p>
+            </article>
+
+            {{!-- Maximum room capacity --}}
+            <article class="room-capacity">
+                <p>{{room.capacity}}</p>
+            </article>
+
+            {{!-- List of room moderators by username --}}
+            <article class="room-moderators"></article>
+
+            {{!-- Optional --}}
+            <article class="room-password"></article>
+
+            {{!-- Room must be joined by name --}}
+            <article class="room-hidden"></article>
+
+            {{!-- List of banned users by username --}}
+            <article class="room-banned-users"></article>
+
+            {{!-- Permanently delete the room --}}
+            <article class="room-delete"></article>
+        </section>
+    </main>
+
+    {{> footer}}
+
+    <script src="/js/config.js"></script>
+</body>
+
+</html>

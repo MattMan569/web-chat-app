@@ -167,8 +167,18 @@ section {
 
 article {
     &.room-item {
-        button {
+        display: grid;
+        grid-template-areas: "room-btn config-btn";
+        grid-template-columns: 1fr min-content;
+
+        button.room-btn {
+            grid-area: room-btn;
             width: 100%;
+        }
+
+        button.room-config-btn {
+            grid-area: config-btn;
+            height: 100%;
         }
     }
 }
