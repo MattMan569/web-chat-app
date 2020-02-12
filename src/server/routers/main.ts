@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import auth from "../middleware/auth";
 import Room from "../models/room";
+import { getRouterOptions, websiteInfo } from "./util/routerOptions";
 
 const router = express.Router();
 
@@ -10,26 +11,14 @@ const websiteAuthor = "Matthew Polsom";
 // Room browser / home page
 router.get("/", auth, (req: Request, res: Response) => {
     res.render("index", {
-        loggedIn: req.session.loggedIn,
-        page: "index",
-        pageTitle: websiteTitle,
-        username: req.session.user.username,
-        userId: req.session.user._id,
-        websiteAuthor,
-        websiteTitle,
+        ...getRouterOptions(req, websiteInfo.websiteTitle),
     });
 });
 
 // Inside a chat room
 router.get("/chat", auth, async (req: Request, res: Response) => {
     res.render("chat", {
-        loggedIn: req.session.loggedIn,
-        page: "chat",
-        pageTitle: websiteTitle,
-        username: req.session.user.username,
-        userId: req.session.user._id,
-        websiteAuthor,
-        websiteTitle,
+        ...getRouterOptions(req, `Chat - ${websiteInfo.websiteTitle}`),
     });
 });
 
@@ -44,11 +33,7 @@ router.get("/login", (req: Request, res: Response) => {
 
     // TODO replace "invalid" with ajax result
     res.render("login", {
-        invalid,
-        page: "login",
-        pageTitle: `Login - ${websiteTitle}`,
-        websiteAuthor,
-        websiteTitle,
+        ...getRouterOptions(req, `Login - ${websiteInfo.websiteTitle}`),
     });
 });
 
@@ -60,10 +45,7 @@ router.get("/signup", (req: Request, res: Response) => {
     }
 
     res.render("signup", {
-        page: "signup",
-        pageTitle: `Signup - ${websiteTitle}`,
-        websiteAuthor,
-        websiteTitle,
+        ...getRouterOptions(req, `Sign Up - ${websiteInfo.websiteTitle}`),
     });
 });
 
