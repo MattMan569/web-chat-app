@@ -1,4 +1,5 @@
 import brcrypt from "bcryptjs";
+import Cryptr from "cryptr";
 import mongoose, { Document, Model, Schema } from "mongoose";
 import validator from "validator";
 import User, { IUser } from "./user";
@@ -102,9 +103,9 @@ roomSchema.statics.findByRoomName = async (name: string) => {
 };
 
 roomSchema.pre("save", async function(this: IRoomDocument, next) {
-    // Hash the password
+    // Encrypt the password
     if (this.isModified("password")) {
-        this.password = await brcrypt.hash(this.password, 8);
+        this.password = new Cryptr(process.env.AES_SECRET).encrypt(this.password);
     }
 
     next();

@@ -1,5 +1,6 @@
 import connectMongo from "connect-mongo";
 import cors from "cors";
+import Cryptr from "cryptr";
 import express, { Request, Response } from "express";
 import expressSession from "express-session";
 import hbs from "hbs";
@@ -76,6 +77,10 @@ hbs.registerHelper("ifnoteq", function(this: any, a, b, options) {
         return options.fn(this);
     }
     return options.inverse(this);
+});
+
+hbs.registerHelper("decrypt", (password: string) => {
+    return new Cryptr(process.env.AES_SECRET).decrypt(password);
 });
 
 // Set the static directory

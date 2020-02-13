@@ -14,8 +14,8 @@
 
     <main class="config-page">
         <section class="config">
-            <h2>Configure</h2>
-            
+            <h2>Configure - {{room.name}}</h2>
+
             {{!-- Name of the room --}}
             <article class="room-name">
                 <p>{{room.name}}</p>
@@ -30,7 +30,7 @@
             <article class="room-moderators"></article>
 
             {{!-- Optional --}}
-            <article class="room-password"></article>
+            <article class="room-password">{{decrypt room.password}}</article>
 
             {{!-- Room must be joined by name --}}
             <article class="room-hidden"></article>
