@@ -21,7 +21,7 @@
 
             <template id="user-item-template">
                 \{{#each room.users}}
-                <article class="user-item" id="\{{socketId}}">
+                <article class="user-item" id="\{{socketId}}" title="\{{user.username}}">
                     <p class="username">\{{user.username}}</p>
                     {{!-- 
                         Only display the kick button if the client is the owner

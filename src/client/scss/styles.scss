@@ -109,11 +109,12 @@ main {
             "users messages"
             "users compose";
         grid-template-rows: auto min-content;
-        // grid-template-columns: auto auto;
+        grid-template-columns: 15rem auto;
         min-height: 0; // Prevents messages grid section from expanding. It just works.
 
         .users {
             grid-area: users;
+            overflow-x: hidden;
         }
 
         .messages {
@@ -160,7 +161,7 @@ section {
     padding: 1em;
 
     h2 {
-        text-align: center;
+        text-align: left;
         margin-bottom: 1rem;
     }
 }
