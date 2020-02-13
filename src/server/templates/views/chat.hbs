@@ -45,7 +45,7 @@
 
             <template id="message-item-template">
                 <article class="message">
-                    <p class="created-at">\{{createdAt}}</p>
+                    <p class="created-at">\{{createdAt.[1]}}<br>\{{createdAt.[0]}}</p>
                     \{{#if _id}}
                     <a href="users/\{{_id}}" target="_blank" class="sender">\{{sender}}</a>
                     \{{else}}

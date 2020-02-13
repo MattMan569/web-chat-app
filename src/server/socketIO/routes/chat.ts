@@ -62,7 +62,7 @@ const chatSocket = (io: Server) => {
         socket.on("sendMessage", (message: string, callback) => {
             chat.to(roomId).emit("message", {
                 message,
-                createdAt: new Date(),
+                createdAt: (new Date()).toLocaleString().split(","),
                 sender: user.username,
                 _id: user._id,
             } as ISocketIOMessage);

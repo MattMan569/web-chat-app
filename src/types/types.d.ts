@@ -16,5 +16,5 @@ declare global {
 export interface ISocketIOMessage {
     sender: string;
     message: string;
-    createdAt: Date;
+    createdAt: Array<string>;
 }
