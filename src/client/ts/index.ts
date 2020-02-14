@@ -6,15 +6,8 @@ import { IRoom } from "./../../server/models/room";
 
 const socket = socketio("/index");
 
-const template = document.getElementById("room-item-template").innerHTML;
+const template = $("#room-item-template").html();
 const render = Handlebars.compile(template);
-
-const templateOne = document.getElementById("room-item-template-one").innerHTML;
-const renderOne = Handlebars.compile(templateOne);
-
-const renderRooms = (rooms: IRoom[]) => {
-    document.getElementById("room-list").innerHTML = render({rooms});
-};
 
 // Send the form then redirect to the created room
 $("#create-form").submit(function(e) {
@@ -43,8 +36,8 @@ $.ajax({
     url: "/rooms",
     method: "GET",
     statusCode: {
-        200: (res: IRoom[]) => {
-            renderRooms(res);
+        200: (room: IRoom) => {
+            $("#room-list").html(render({rooms: room}));
         },
     },
 });
@@ -52,11 +45,12 @@ $.ajax({
 // Update the room if it exists or create a new one if it doesn't
 socket.on("roomUpdate", (room: IRoom) => {
     const roomElement = $(`#${room._id}`);
+    const rooms = [room];
 
     // Length only exists if an element was found
     if (roomElement.length) {
-        roomElement[0].outerHTML = renderOne(room);
+        roomElement[0].outerHTML = render({rooms});
     } else {
-        $("#room-list").append(renderOne(room));
+        $("#room-list").append(render({rooms}));
     }
 });
