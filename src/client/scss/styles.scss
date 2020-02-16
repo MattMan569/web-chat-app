@@ -18,7 +18,7 @@ body {
     height: 100vh;
 
     color: $black-text;
-    background-color: #f1f1f1;
+    background-color: #fafafa;
 
     a {
         text-decoration: none;
@@ -109,28 +109,54 @@ main {
             "users messages"
             "users compose";
         grid-template-rows: auto min-content;
-        grid-template-columns: 15rem auto;
+        grid-template-columns: 10rem auto;
         min-height: 0; // Prevents messages grid section from expanding. It just works.
 
         .users {
             grid-area: users;
             overflow-x: hidden;
+            margin-right: 0;
         }
 
         .messages {
             grid-area: messages;
             overflow-y: scroll;
+            overflow-wrap: break-word;
+            margin-bottom: 0;
+        }
+
+        .message {
+            display: grid;
+            grid-template-areas:
+                "created-at message-content"
+                "sender message-content";
+            grid-template-columns: 8rem auto;
+            margin-bottom: .5rem;
+        }
+
+        .created-at {
+            grid-area: created-at;
         }
 
         .message-content {
+            grid-area: message-content;
             white-space: pre-line;
+        }
+
+        .sender {
+            grid-area: sender;
         }
 
         .compose {
             grid-area: compose;
-            
-            textarea {
-                resize: none;
+
+            .form-group {
+                margin: 0;
+                
+                button {
+                    border: none;
+                    width: 5rem;
+                }
             }
         }
     }
@@ -145,6 +171,7 @@ main {
         .join {
             grid-area: "join";
             overflow-y: scroll;
+            margin-bottom: 0;
         }
 
         .create {
@@ -208,6 +235,13 @@ form {
             margin-bottom: 0;
         }
     }
+}
+
+textarea {
+    width: 100%;
+    resize: none;
+    outline: none;
+    border: none;
 }
 
 .login-links, .signup-links {
