@@ -1,12 +1,9 @@
 import express, { Request, Response } from "express";
 import auth from "../middleware/auth";
-import Room from "../models/room";
+import roomAuth from "../middleware/roomAuth";
 import { getRouterOptions, websiteInfo } from "./util/routerOptions";
 
 const router = express.Router();
-
-const websiteTitle = "Chat App";
-const websiteAuthor = "Matthew Polsom";
 
 // Room browser / home page
 router.get("/", auth, (req: Request, res: Response) => {
@@ -16,7 +13,7 @@ router.get("/", auth, (req: Request, res: Response) => {
 });
 
 // Inside a chat room
-router.get("/chat", auth, async (req: Request, res: Response) => {
+router.get("/chat", [auth, roomAuth], async (req: Request, res: Response) => {
     res.render("chat", {
         ...getRouterOptions(req, `Chat - ${websiteInfo.websiteTitle}`),
     });
@@ -29,9 +26,6 @@ router.get("/login", (req: Request, res: Response) => {
         return;
     }
 
-    const invalid = (req.query.valid === "false");
-
-    // TODO replace "invalid" with ajax result
     res.render("login", {
         ...getRouterOptions(req, `Login - ${websiteInfo.websiteTitle}`),
     });

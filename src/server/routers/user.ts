@@ -9,6 +9,7 @@ const router = express.Router();
 const createSession = (session: Express.Session, user: IUser) => {
     const userObj = user.toObject();
     delete userObj.password;
+    session.authorizedRooms = [];
     session.user = userObj;
     session.loggedIn = true;
 };

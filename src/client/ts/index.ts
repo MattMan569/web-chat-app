@@ -9,6 +9,24 @@ const socket = socketio("/index");
 const template = $("#room-item-template").html();
 const render = Handlebars.compile(template);
 
+const joinRoom = (roomId: string, password: string, link: string) => {
+    $.ajax({
+        url: `/rooms/join/${roomId}`,
+        method: "POST",
+        data: {
+            password,
+        },
+        statusCode: {
+            200: () => {
+                window.location.href = link;
+            },
+            401: () => {
+                console.log("401");
+            },
+        },
+    });
+};
+
 // Send the form then redirect to the created room
 $("#create-form").submit(function(e) {
     e.preventDefault();
@@ -37,7 +55,28 @@ $.ajax({
     method: "GET",
     statusCode: {
         200: (room: IRoom) => {
+            // Render the rooms
             $("#room-list").html(render({rooms: room}));
+
+            // Add an event listener to every rendered room
+            $("a.room-btn-link").each(function() {
+                const anchor = this as HTMLAnchorElement;
+
+                anchor.addEventListener("click", (ev) => {
+                    ev.preventDefault();
+                    const link = anchor.href;
+                    const roomId = link.split("=")[1];
+                    let password = "";
+
+                    // Prompt for the password if the room is locked
+                    if (anchor.dataset.locked === "true") {
+                        // TODO get password
+                        password = "123";
+                    }
+
+                    joinRoom(roomId, password, link);
+                });
+            });
         },
     },
 });
@@ -52,5 +91,7 @@ socket.on("roomUpdate", (room: IRoom) => {
         roomElement[0].outerHTML = render({rooms});
     } else {
         $("#room-list").append(render({rooms}));
+        // TODO
+        // $("#room-list").append(render({rooms})).click(...);
     }
 });

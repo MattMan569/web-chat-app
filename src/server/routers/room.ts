@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import auth from "../middleware/auth";
 import Room, { IRoom } from "../models/room";
+import roomAuth from "./../middleware/roomAuth";
 import User from "./../models/user";
 import { getRouterOptions, websiteInfo } from "./util/routerOptions";
 
@@ -11,6 +12,7 @@ router.post("/rooms/create", auth, async (req: Request, res: Response) => {
     const user = await User.findByUsername(req.session.user.username);
 
     // The current user is the room's owner and first user
+    // TODO check if users is init is needed
     req.body.owner = user._id;
     req.body.users = [];
 
@@ -22,6 +24,9 @@ router.post("/rooms/create", auth, async (req: Request, res: Response) => {
                 res.status(400).send("Error");
                 return;
             }
+
+            // Authorize the creator for the new room
+            req.session.authorizedRooms.push(room._id);
 
             // Send the URL to redirect to
             res.send(`/chat?room=${room._id}`);
@@ -41,6 +46,30 @@ router.get("/rooms", auth, async (req: Request, res: Response) => {
 // Get a specific room
 router.get("/rooms/:id", auth, async (req: Request, res: Response) => {
     res.send(Room.findById(req.params.id).exec());
+});
+
+// Authorize the user for the specified room
+router.post("/rooms/join/:id", auth, async (req: Request, res: Response) => {
+    const roomId = req.params.id;
+    const password = req.body.password;
+
+    if (req.session.authorizedRooms.includes(roomId)) {
+        return res.send();
+    }
+
+    const room = await Room.findById(roomId);
+
+    if (room.comparePassword(password)) {
+        req.session.authorizedRooms.push(roomId);
+        return res.send();
+    }
+
+    res.status(401).send();
+});
+
+// Deauthorize the user for the specified room
+router.post("/rooms/leave/:id", auth, async (req: Request, res: Response) => {
+    // TODO
 });
 
 // Show the room's cofiguration page

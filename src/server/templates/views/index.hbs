@@ -23,10 +23,13 @@
             <template id="room-item-template">
                 \{{#each rooms}}
                 <article class="room-item" id="\{{_id}}">
-                    <a href="/chat?room=\{{_id}}">
+                    <a href="/chat?room=\{{_id}}" class="room-btn-link" data-locked=\{{locked}}>
                         <button class="room-btn">
                             <h3>\{{name}}</h3>
                             <p>\{{users.length}} / \{{capacity}}</p>
+                            \{{#if locked}}
+                            <p>&bemptyv;</p>
+                            \{{/if}}
                         </button>
                     </a>
                     <a href="/rooms/config/\{{_id}}">
@@ -62,6 +65,17 @@
                 </form>
             </article>
         </section>
+
+        <div id="join-popup">
+            <button id="close-popup">X</button>
+
+            <div class="popup-content">
+                <label for="room-password">Room Password</label>
+                <input type="password" name="room-password" id="room-password">
+                <button>Cancel</button>
+                <button>Join</button>
+            </div>
+        </div>
     </main>
 
     {{> footer}}

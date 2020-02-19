@@ -8,6 +8,7 @@ declare global {
         // tslint:disable-next-line: interface-name
         interface Session {
             user: IUser;
+            authorizedRooms: string[];
         }
     }
 }

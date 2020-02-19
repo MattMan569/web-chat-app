@@ -8,6 +8,7 @@ import User, { IUser } from "./user";
 interface IRoomDocument extends Document {
     name: string;
     password: string;
+    locked: boolean; // true if password is non-empty
     capacity: number;
     owner: { type: Schema.Types.ObjectId, ref: "User" };
     users: Array<{
@@ -21,6 +22,7 @@ interface IRoomDocument extends Document {
 
 // Define Room methods
 export interface IRoom extends IRoomDocument {
+    comparePassword(password: string): boolean;
     toJSON(): IRoom;
 }
 
@@ -54,6 +56,9 @@ const roomSchema = new mongoose.Schema({
         trim: true,
         type: String,
     },
+    locked: {
+        type: Boolean,
+    },
     users: [{
         socketId: String,
         user: {
@@ -65,7 +70,12 @@ const roomSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-roomSchema.methods.toJSON = function() {
+roomSchema.methods.comparePassword = function(this: IRoom, password: string) {
+    const roomPassword = new Cryptr(process.env.AES_SECRET).decrypt(this.password);
+    return roomPassword === password;
+};
+
+roomSchema.methods.toJSON = function(this: IRoom) {
     const room = this.toObject();
     delete room.password;
     return room;
@@ -105,6 +115,7 @@ roomSchema.statics.findByRoomName = async (name: string) => {
 roomSchema.pre("save", async function(this: IRoomDocument, next) {
     // Encrypt the password
     if (this.isModified("password")) {
+        this.locked = this.password !== "";
         this.password = new Cryptr(process.env.AES_SECRET).encrypt(this.password);
     }
 
