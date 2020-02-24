@@ -21,8 +21,6 @@ const partialsPath = path.join(__dirname, "./templates/partials");
 
 // Create the express application and server
 const app = express();
-
-// TODO use openSSL
 const server = http.createServer(app);
 
 // Use CORS
