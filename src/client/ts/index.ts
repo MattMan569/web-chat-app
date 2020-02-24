@@ -56,7 +56,7 @@ $.ajax({
     statusCode: {
         200: (room: IRoom) => {
             // Render the rooms
-            $("#room-list").html(render({rooms: room}));
+            $("#room-list").html(render({ rooms: room }));
 
             // Add an event listener to every rendered room
             $("a.room-btn-link").each(function() {
@@ -88,10 +88,25 @@ socket.on("roomUpdate", (room: IRoom) => {
 
     // Length only exists if an element was found
     if (roomElement.length) {
+        // Modify the existing room element
         roomElement[0].outerHTML = render({rooms});
     } else {
-        $("#room-list").append(render({rooms}));
-        // TODO
-        // $("#room-list").append(render({rooms})).click(...);
+        // Create a new room element
+        const html = $(render({rooms}));
+        const id = html.attr("id");
+        $("#room-list").append(html);
+
+        $(`#${id}`).find("a:first").click(function() {
+            const anchor = $(this);
+            const link = anchor.attr("href");
+            const roomId = link.split("=")[1];
+            let password = "";
+
+            if (anchor.data("locked") === "true") {
+                password = "123";
+            }
+
+            joinRoom(roomId, password, link);
+        });
     }
 });
