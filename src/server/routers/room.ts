@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import auth from "../middleware/auth";
 import Room, { IRoom } from "../models/room";
-import roomAuth from "./../middleware/roomAuth";
 import User from "./../models/user";
 import { getRouterOptions, websiteInfo } from "./util/routerOptions";
 
@@ -53,23 +52,38 @@ router.post("/rooms/join/:id", auth, async (req: Request, res: Response) => {
     const roomId = req.params.id;
     const password = req.body.password;
 
+    // User was already authorized
+    // TODO consider removing, auth then remove on join
+    // so password must always be entered
     if (req.session.authorizedRooms.includes(roomId)) {
         return res.send();
     }
 
     const room = await Room.findById(roomId);
 
+    // Check the provided password against the room's password
     if (room.comparePassword(password)) {
+        // Authorize the user to enter the room
         req.session.authorizedRooms.push(roomId);
-        return res.send();
-    }
 
-    res.status(401).send();
+        // Must save to prevent race conditions with roomAuth
+        req.session.save((err) => {
+            if (err) {
+                return res.status(500).send(err);
+            }
+
+            return res.send();
+        });
+    } else {
+        // Password mismatch
+        res.status(401).send();
+    }
 });
 
 // Deauthorize the user for the specified room
 router.post("/rooms/leave/:id", auth, async (req: Request, res: Response) => {
     // TODO
+    // deuathorize on kick or leave
 });
 
 // Show the room's cofiguration page
