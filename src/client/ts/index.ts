@@ -78,23 +78,8 @@ $.ajax({
             $("#room-list").html(render({ rooms: room }));
 
             // Add an event listener to every rendered room
-            $("a.room-btn-link").each(function() {
-                const anchor = this as HTMLAnchorElement;
-
-                anchor.addEventListener("click", (ev) => {
-                    ev.preventDefault();
-                    const link = anchor.href;
-                    const roomId = link.split("=")[1];
-                    let password = "";
-
-                    // Prompt for the password if the room is locked
-                    if (anchor.dataset.locked === "true") {
-                        // TODO get password
-                        password = "123";
-                    }
-
-                    joinRoom(roomId, password, link);
-                });
+            $(".room-item").each(function() {
+                roomAttachClickEvent($(this));
             });
         },
     },
