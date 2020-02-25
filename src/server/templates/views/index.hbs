@@ -66,14 +66,13 @@
             </article>
         </section>
 
-        <div id="join-popup">
-            <button id="close-popup">X</button>
-
-            <div class="popup-content">
+        {{!-- Overlay for to get the password for locked rooms --}}
+        <div id="join-overlay" class="overlay">
+            <div class="overlay-content">
                 <label for="room-password">Room Password</label>
                 <input type="password" name="room-password" id="room-password">
-                <button>Cancel</button>
-                <button>Join</button>
+                <button id="join-overlay-cancel-btn">Cancel</button>
+                <button id="join-overlay-join-btn">Join</button>
             </div>
         </div>
     </main>
