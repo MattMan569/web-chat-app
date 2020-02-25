@@ -56,21 +56,16 @@ const roomAttachClickEvent = (element: JQuery<HTMLElement>) => {
         const anchor = $(this);
         const link = anchor.attr("href");
         const roomId = link.split("=")[1];
-        // let password = "";
 
         if (anchor.data("locked") === true) {
-            // TODO overlay
-            // password = "123";
-
-            makeOverlay((complete, pswd) => {
-                console.log("make overlay done");
-
+            makeOverlay((complete, password) => {
                 // User canceled
                 if (!complete) {
                     return;
                 }
 
-                joinRoom(roomId, pswd, link, (error) => {
+                joinRoom(roomId, password, link, (error) => {
+                    // TODO show 401 in overlay
                     console.log(error);
                 });
             });
