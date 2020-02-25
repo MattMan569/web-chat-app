@@ -4,8 +4,6 @@ import $ from "jquery";
 import socketio from "socket.io-client";
 import { IRoom } from "./../../server/models/room";
 
-// TODO fix disasterous event handler attachment code
-
 const socket = socketio("/index");
 
 const template = $("#room-item-template").html();
@@ -29,6 +27,22 @@ const joinRoom = (roomId: string, password: string, link: string) => {
                 console.log(res);
             },
         },
+    });
+};
+
+const roomAttachClickEvent = (element: JQuery<HTMLElement>) => {
+    element.find("a:first").click(function() {
+        const anchor = $(this);
+        const link = anchor.attr("href");
+        const roomId = link.split("=")[1];
+        let password = "";
+
+        if (anchor.data("locked") === "true") {
+            // TODO overlay
+            password = "123";
+        }
+
+        joinRoom(roomId, password, link);
     });
 };
 
@@ -96,37 +110,13 @@ socket.on("roomUpdate", (room: IRoom) => {
         // Modify the existing room element
         roomElement[0].outerHTML = render({rooms});
 
-        $(`#${room._id}`).find("a:first").click(function(ev) {
-            ev.preventDefault();
-            const anchor = $(this);
-            const link = anchor.attr("href");
-            const roomId = link.split("=")[1];
-            let password = "";
-
-            if (anchor.data("locked") === "true") {
-                password = "123";
-            }
-
-            joinRoom(roomId, password, link);
-        });
+        roomAttachClickEvent($(`#${room._id}`));
     } else {
         // Create a new room element
         const html = $(render({rooms}));
         const id = html.attr("id");
         $("#room-list").append(html);
 
-        $(`#${id}`).find("a:first").click(function(ev) {
-            ev.preventDefault();
-            const anchor = $(this);
-            const link = anchor.attr("href");
-            const roomId = link.split("=")[1];
-            let password = "";
-
-            if (anchor.data("locked") === "true") {
-                password = "123";
-            }
-
-            joinRoom(roomId, password, link);
-        });
+        roomAttachClickEvent($(`#${id}`));
     }
 });
