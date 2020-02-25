@@ -4,6 +4,8 @@ import $ from "jquery";
 import socketio from "socket.io-client";
 import { IRoom } from "./../../server/models/room";
 
+// TODO fix disasterous event handler attachment code
+
 const socket = socketio("/index");
 
 const template = $("#room-item-template").html();
@@ -21,7 +23,10 @@ const joinRoom = (roomId: string, password: string, link: string) => {
                 window.location.href = link;
             },
             401: () => {
-                console.log("401");
+                console.log("joinRoom 401");
+            },
+            500: (res) => {
+                console.log(res);
             },
         },
     });
@@ -90,13 +95,28 @@ socket.on("roomUpdate", (room: IRoom) => {
     if (roomElement.length) {
         // Modify the existing room element
         roomElement[0].outerHTML = render({rooms});
+
+        $(`#${room._id}`).find("a:first").click(function(ev) {
+            ev.preventDefault();
+            const anchor = $(this);
+            const link = anchor.attr("href");
+            const roomId = link.split("=")[1];
+            let password = "";
+
+            if (anchor.data("locked") === "true") {
+                password = "123";
+            }
+
+            joinRoom(roomId, password, link);
+        });
     } else {
         // Create a new room element
         const html = $(render({rooms}));
         const id = html.attr("id");
         $("#room-list").append(html);
 
-        $(`#${id}`).find("a:first").click(function() {
+        $(`#${id}`).find("a:first").click(function(ev) {
+            ev.preventDefault();
             const anchor = $(this);
             const link = anchor.attr("href");
             const roomId = link.split("=")[1];
