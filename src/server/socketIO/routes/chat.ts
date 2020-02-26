@@ -106,6 +106,22 @@ const chatSocket = (io: Server) => {
                 // TODO delete when empty?
             } catch (e) {
                 console.log(e);
+            } finally {
+                // Deauthorize the user for the current room
+                socket.handshake.session.reload((err) => {
+                    if (err) {
+                        return console.log("chat.ts disconnect", err);
+                    }
+                    socket.handshake.session.authorizedRooms =
+                        socket.handshake.session.authorizedRooms.filter((curRoomId) => {
+                            return curRoomId !== roomId;
+                        });
+                    socket.handshake.session.save((err2) => {
+                        if (err2) {
+                            return console.log("chat.ts disconnect", err2);
+                        }
+                    });
+                });
             }
         });
     });
