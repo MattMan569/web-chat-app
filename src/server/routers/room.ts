@@ -81,9 +81,16 @@ router.post("/rooms/join/:id", auth, async (req: Request, res: Response) => {
 });
 
 // Deauthorize the user for the specified room
+// TODO needed?
 router.post("/rooms/leave/:id", auth, async (req: Request, res: Response) => {
-    // TODO
-    // deuathorize on kick or leave
+    const roomId = req.params.id;
+
+    // Remove the specified roomId from the session
+    if (req.session.authorizedRooms.includes(roomId)) {
+        req.session.authorizedRooms = req.session.authorizedRooms.filter((curRoomId) => {
+            return curRoomId !== roomId;
+        });
+    }
 });
 
 // Show the room's cofiguration page
