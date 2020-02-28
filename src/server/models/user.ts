@@ -8,6 +8,7 @@ export interface IUserDocument extends Document {
     email: string;
     password: string;
     username: string;
+    avatar: Buffer;
 }
 
 // Define User methods
@@ -50,6 +51,9 @@ const userSchema = new mongoose.Schema({
         trim: true,
         type: String,
         unique: true,
+    },
+    avatar: {
+        type: Buffer,
     },
 }, {
     timestamps: true,

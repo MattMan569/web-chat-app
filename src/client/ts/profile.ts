@@ -96,3 +96,33 @@ const getDescriptionEl = (description: string) => {
 };
 
 descBtns.append(getEditBtnEl());
+
+// Upload the new profile picture whenever a new file is selected
+$("#avatar-upload").change(function() {
+    const formData = new FormData();
+    const file = $(this).prop("files")[0];
+    formData.append("avatar", file);
+
+    $.ajax({
+        url: "/users/upload/avatar",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        statusCode: {
+            200: (res: string) => {
+                // Change the profile picture
+                $("#profile-btn").css("background-image", `url(${res})`);
+            },
+            400: (res) => {
+                // Bad file
+                // TODO display error
+                console.log(res);
+            },
+            500: (res) => {
+                // TODO display error
+                console.log(res);
+            },
+        },
+    });
+});

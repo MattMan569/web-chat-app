@@ -4,7 +4,7 @@
     <div class="header-content">
         {{#if loggedIn}}
         <div class="dropdown">
-            <button class="dropdown-btn" id="profile-btn"></button>
+            <button class="dropdown-btn" id="profile-btn" style="background-image: url({{avatar}});"></button>
             <div class="dropdown-content" id="profile-dropdown-content">
                 <p>{{username}}</p>
                 <a href="/users/{{userId}}">Profile</a>

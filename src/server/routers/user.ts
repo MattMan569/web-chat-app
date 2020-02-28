@@ -1,14 +1,41 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
+import fs from "fs";
+import multer from "multer";
+import sharp from "sharp";
 import auth from "../middleware/auth";
 import Profile from "../models/profile";
 import User, { IUser } from "../models/user";
+import { getRouterOptions } from "./util/routerOptions";
 
 const router = express.Router();
+
+const upload = multer({
+    limits: {
+        fileSize: 1048576, // 1 MiB
+    },
+    fileFilter(req, file, callback) {
+        try {
+            // Images only
+            if (!file.originalname.match(/\.(tiff?|pjp(eg)?|jfif|tif|gif|svgz?|bmp|png|jpe?g?|webp|ico|xbm|dib|ai|drw|pct|psp|xcf|psd|raw)$/i)) {
+                // TODO reject or generate error?
+                callback(undefined, false);
+            }
+
+            callback(undefined, true);
+        } catch (e) {
+            callback(e);
+        }
+    },
+});
 
 // Setup the session
 const createSession = (session: Express.Session, user: IUser) => {
     const userObj = user.toObject();
     delete userObj.password;
+    // delete userObj.avatar;
+
+    // Convert the binary buffer to a usable base64 string for <img/> src
+    userObj.avatar = `data:image/png;base64,${Buffer.from(user.avatar).toString("base64")}`;
     session.authorizedRooms = [];
     session.user = userObj;
     session.loggedIn = true;
@@ -47,6 +74,35 @@ router.delete("/users", auth, async (req: Request, res: Response) => {
     }
 });
 
+// Upload a profile picture
+router.post("/users/upload/avatar", [auth, upload.single("avatar")], async (req: Request, res: Response) => {
+    try {
+        // Convert the image to a 250px X 250px PNG
+        const image = await sharp(req.file.buffer).png().resize(250, 250).toBuffer();
+
+        const user = await User.findByIdAndUpdate(req.session.user._id, {
+            avatar: image,
+        }, {
+            new: true,
+        });
+
+        // HACK fix typings to allow string on user.avatar
+        const sessionUser = req.session.user as any;
+        sessionUser.avatar = `data:image/png;base64,${Buffer.from(user.avatar).toString("base64")}`;
+        req.session.user.avatar = sessionUser.avatar;
+
+        res.send(`data:image/png;base64,${Buffer.from(user.avatar).toString("base64")}`);
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
+    }
+}, (error: multer.MulterError, req: Request, res: Response, next: NextFunction) => {
+    console.log(error);
+    res.status(400).send({
+        error: error.message,
+    });
+});
+
 // Log in as an existing user
 router.post("/users/login", async (req: Request, res: Response) => {
     const username = req.body.username;
@@ -65,6 +121,7 @@ router.post("/users/login", async (req: Request, res: Response) => {
         createSession(req.session, user);
         res.send("/");
     } catch (e) {
+        console.log(e);
         return res.status(500).send(e);
     }
 });
@@ -81,6 +138,7 @@ router.get("/users/logout", auth, async (req: Request, res: Response) => {
         });
         res.redirect("/login");
     } catch (e) {
+        console.log(e);
         res.status(500).send(e);
     }
 });
@@ -102,14 +160,8 @@ router.get("/users/:id", auth, async (req: Request, res: Response) => {
     const profile = await Profile.findOne({ userId: req.params.id });
 
     res.render("profile", {
-        loggedIn: req.session.loggedIn,
-        page: "index",
-        pageTitle: "Chat App - Profile",
         profile,
-        username: req.session.user.username,
-        userId: req.session.user._id,
-        websiteAuthor: "Matthew Polsom",
-        websiteTitle: "Chat App",
+        ...getRouterOptions(req, `Profile - ${req.session.user.username}`),
     });
 });
 
