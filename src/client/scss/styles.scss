@@ -208,6 +208,29 @@ article {
         button.room-btn {
             grid-area: room-btn;
             width: 100%;
+            height: 100%;
+            
+            .room-btn-grid {
+                display: grid;
+                grid-template-areas: "capacity name lock-icon";
+                grid-template-columns: 6rem min-content auto;
+                align-items: center;
+
+                h3 {
+                    grid-area: name;
+                }
+    
+                .capacity {
+                    grid-area: capacity;
+                    height: min-content
+                }
+    
+                .locked-icon {
+                    grid-area: lock-icon;
+                    text-align: left;
+                    padding-left: 1rem;
+                }
+            }
         }
 
         button.room-config-btn {
@@ -333,6 +356,7 @@ textarea {
         // background-image set inline by Handlebars
         background-size: cover;
         background-position: center;
+        background-color: white;
     }
 
     .show {

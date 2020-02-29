@@ -25,11 +25,14 @@
                 <article class="room-item" id="\{{_id}}">
                     <a href="/chat?room=\{{_id}}" class="room-btn-link" data-locked=\{{locked}}>
                         <button class="room-btn">
-                            <h3>\{{name}}</h3>
-                            <p>\{{users.length}} / \{{capacity}}</p>
-                            \{{#if locked}}
-                            <p>&bemptyv;</p>
-                            \{{/if}}
+                            {{!-- Must be in div due to Chromium bug --}}
+                            <div class="room-btn-grid">
+                                <h3>\{{name}}</h3>
+                                <span class="capacity">\{{users.length}} / \{{capacity}}</span>
+                                \{{#if locked}}
+                                <span class="locked-icon">&bemptyv;</span>
+                                \{{/if}}
+                            </div>
                         </button>
                     </a>
                     <a href="/rooms/config/\{{_id}}">
