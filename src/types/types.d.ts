@@ -19,3 +19,10 @@ export interface ISocketIOMessage {
     message: string;
     createdAt: Array<string>;
 }
+
+// Typing for jQuery's $.when($.ajax).done
+export interface IjQDoneAjax<T> extends Array<T | JQuery.Ajax.SuccessTextStatus | JQuery.jqXHR<any>> {
+    0: T;
+    1: JQuery.Ajax.SuccessTextStatus;
+    2: JQuery.jqXHR<any>;
+}

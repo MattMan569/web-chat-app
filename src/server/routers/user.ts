@@ -128,6 +128,16 @@ router.get("/users/logout", auth, async (req: Request, res: Response) => {
     }
 });
 
+// Get the information of the user making the request
+router.get("/users/me", auth, async (req: Request, res: Response) => {
+    try {
+        res.send(await User.findById(req.session.user._id));
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
+    }
+});
+
 // Get the user profile of the user with the specified id
 router.get("/users/:id", auth, async (req: Request, res: Response) => {
     const profile = await Profile.findOne({ userId: req.params.id });

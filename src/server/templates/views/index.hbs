@@ -35,9 +35,11 @@
                             </div>
                         </button>
                     </a>
+                    \{{#ifeq owner ../me._id}}
                     <a href="/rooms/config/\{{_id}}">
                         <button class="room-config-btn">Configure Room</button>
                     </a>
+                    \{{/ifeq}}
                 </article>
                 \{{/each}}
             </template>

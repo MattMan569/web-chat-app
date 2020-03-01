@@ -2,12 +2,34 @@ require("./common");
 import Handlebars from "handlebars";
 import $ from "jquery";
 import socketio from "socket.io-client";
+import { IUser } from "../../server/models/user";
 import { IRoom } from "./../../server/models/room";
+import { IjQDoneAjax } from "./../../types/types";
+
+// TODO move helpers file for both server and client
+Handlebars.registerHelper("ifeq", function(this: any, a, b, options) {
+    // tslint:disable-next-line: triple-equals
+    if (a == b) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
+Handlebars.registerHelper("ifnoteq", function(this: any, a, b, options) {
+    // tslint:disable-next-line: triple-equals
+    if (a != b) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
 
 const socket = socketio("/index");
 
 const template = $("#room-item-template").html();
 const render = Handlebars.compile(template);
+
+// Current user
+let me: IUser;
 
 // TODO non-optional callback to handle 500 err
 const joinRoom = (roomId: string, password: string, link: string, callback?: (error: string) => void) => {
@@ -98,20 +120,49 @@ $("#create-form").submit(function(e) {
 });
 
 // Get the list of rooms from the server
-$.ajax({
-    url: "/rooms",
-    method: "GET",
-    statusCode: {
-        200: (room: IRoom) => {
-            // Render the rooms
-            $("#room-list").html(render({ rooms: room }));
+// $.ajax({
+//     url: "/rooms",
+//     method: "GET",
+//     statusCode: {
+//         200: (rooms: IRoom[]) => {
+//             // Render the rooms
+//             $("#room-list").html(render({ rooms }));
 
-            // Add an event listener to every rendered room
-            $(".room-item").each(function() {
-                roomAttachClickEvent($(this));
-            });
-        },
-    },
+//             // Add an event listener to every rendered room
+//             $(".room-item").each(function() {
+//                 roomAttachClickEvent($(this));
+//             });
+//         },
+//     },
+// });
+
+// Get the current user
+const getMe = () => {
+    return $.ajax({
+        url: "/users/me",
+        method: "GET",
+    });
+};
+
+// Get the list of rooms from the server
+const getRooms = () => {
+    return $.ajax({
+        url: "/rooms",
+        method: "GET",
+    });
+};
+
+$.when(getRooms(), getMe()).done((roomData: IjQDoneAjax<IRoom[]>, userData: IjQDoneAjax<IUser>) => {
+    me = userData[0];
+    const rooms = roomData[0];
+
+    // Render the rooms
+    $("#room-list").html(render({ rooms, me }));
+
+    // Add an event listener to every rendered room
+    $(".room-item").each(function() {
+        roomAttachClickEvent($(this));
+    });
 });
 
 // Update the room if it exists or create a new one if it doesn't
