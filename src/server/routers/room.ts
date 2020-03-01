@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import auth from "../middleware/auth";
+import roomOwner from "../middleware/roomOwner";
 import Room, { IRoom } from "../models/room";
 import User from "./../models/user";
 import { getRouterOptions, websiteInfo } from "./util/routerOptions";
@@ -94,7 +95,7 @@ router.post("/rooms/leave/:id", auth, async (req: Request, res: Response) => {
 });
 
 // Show the room's cofiguration page
-router.get("/rooms/config/:id", auth, async (req: Request, res: Response) => {
+router.get("/rooms/config/:id", [auth, roomOwner], async (req: Request, res: Response) => {
     const room = await Room.findById(req.params.id);
     res.render("config", {
         ...getRouterOptions(req, `Configure - ${websiteInfo.websiteTitle}`),
