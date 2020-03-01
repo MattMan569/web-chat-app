@@ -59,21 +59,6 @@ router.post("/users", async (req: Request, res: Response) => {
     }
 });
 
-// Delete the specified user
-router.delete("/users", auth, async (req: Request, res: Response) => {
-    try {
-        const user = await User.findByIdAndDelete(req.session.user._id);
-        req.session.destroy((err) => {
-            if (err) {
-                console.log(err);
-            }
-        });
-        res.send(user);
-    } catch (e) {
-        res.status(500).send(e);
-    }
-});
-
 // Upload a profile picture
 router.post("/users/upload/avatar", [auth, upload.single("avatar")], async (req: Request, res: Response) => {
     try {
@@ -143,6 +128,33 @@ router.get("/users/logout", auth, async (req: Request, res: Response) => {
     }
 });
 
+// Get the user profile of the user with the specified id
+router.get("/users/:id", auth, async (req: Request, res: Response) => {
+    const profile = await Profile.findOne({ userId: req.params.id });
+
+    res.render("profile", {
+        profile,
+        ...getRouterOptions(req, `Profile - ${req.session.user.username}`),
+    });
+});
+
+// Delete the specified user
+router.delete("/users", auth, async (req: Request, res: Response) => {
+    try {
+        const user = await User.findByIdAndDelete(req.session.user._id);
+        req.session.destroy((err) => {
+            if (err) {
+                console.log(err);
+            }
+        });
+        res.send(user);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+/*
+
 // Log out everywhere
 router.post("/users/logoutAll", auth, async (req: Request, res: Response) => {
     try {
@@ -155,14 +167,6 @@ router.post("/users/logoutAll", auth, async (req: Request, res: Response) => {
     }
 });
 
-// Get the user profile of the user with the specified id
-router.get("/users/:id", auth, async (req: Request, res: Response) => {
-    const profile = await Profile.findOne({ userId: req.params.id });
-
-    res.render("profile", {
-        profile,
-        ...getRouterOptions(req, `Profile - ${req.session.user.username}`),
-    });
-});
+*/
 
 export default router;
