@@ -204,6 +204,7 @@ article {
         display: grid;
         grid-template-areas: "room-btn config-btn";
         grid-template-columns: 1fr min-content;
+        height: 2rem;
 
         button.room-btn {
             grid-area: room-btn;
