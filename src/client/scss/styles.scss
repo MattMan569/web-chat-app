@@ -3,11 +3,6 @@ $black-text: #333333;
 $link-text: #167ac6;
 $bg-color: #fafafa;
 
-/* TODO
-    - left align index's room button contents
-        - (capacity) (name) (lock symbol)
-*/
-
 // Only manually set margins and padding
 * {
     margin: 0;
@@ -204,7 +199,7 @@ article {
         display: grid;
         grid-template-areas: "room-btn config-btn";
         grid-template-columns: 1fr min-content;
-        height: 2rem;
+        height: 2.5rem;
 
         button.room-btn {
             grid-area: room-btn;
