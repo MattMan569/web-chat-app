@@ -115,11 +115,12 @@ $("#avatar-upload").change(function() {
                 $("#profile-btn").css("background-image", `url(${res})`);
             },
             400: (res) => {
-                // Bad file
+                // Incorrect file format
                 // TODO display error
                 console.log(res);
             },
             500: (res) => {
+                // Server cannot process file
                 // TODO display error
                 console.log(res);
             },
