@@ -48,8 +48,6 @@ profileSchema.methods.addFriend = async function(this: IProfile, friend: IUser) 
     if (this.friends.indexOf(friend._id) === -1) {
         this.friends.push(friend._id);
     }
-
-    // TODO see if save is required
     this.save();
 };
 
