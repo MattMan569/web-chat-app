@@ -38,6 +38,42 @@ router.post("/rooms/create", auth, async (req: Request, res: Response) => {
     }
 });
 
+// Ban the specified user
+router.post("/rooms/ban", auth, async (req: Request, res: Response) => {
+    try {
+        const roomId = req.body.roomId;
+        const username = req.body.username;
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(400).send("Invalid username");
+        }
+
+        res.send(await Room.banUser(roomId, user));
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
+    }
+});
+
+// Unban the specified user
+router.post("/rooms/unban", auth, async (req: Request, res: Response) => {
+    try {
+        const roomId = req.body.roomId;
+        const userId = req.body.userId;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(400).send("Invalid user ID");
+        }
+
+        res.send(await Room.unbanUser(roomId, user));
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
+    }
+});
+
 // Get all rooms
 router.get("/rooms", auth, async (req: Request, res: Response) => {
     res.send(await Room.find());
@@ -96,7 +132,7 @@ router.post("/rooms/leave/:id", auth, async (req: Request, res: Response) => {
 
 // Show the room's cofiguration page
 router.get("/rooms/config/:id", [auth, roomOwner], async (req: Request, res: Response) => {
-    const room = await Room.findById(req.params.id);
+    const room = await (await Room.findById(req.params.id).populate("bannedUsers", "username")).execPopulate();
     res.render("config", {
         ...getRouterOptions(req, `Configure - ${websiteInfo.websiteTitle}`),
         room,

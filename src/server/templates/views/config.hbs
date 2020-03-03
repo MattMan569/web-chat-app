@@ -36,7 +36,24 @@
             <article class="room-hidden"></article>
 
             {{!-- List of banned users by username --}}
-            <article class="room-banned-users"></article>
+            <article class="room-banned-users-list">
+                <h3>Banned Users</h3>
+                <span>{{room.bannedUsers}}</span>
+                <div class="banned-users-list">
+                    {{#each room.bannedUsers}}
+                    <div class="banned-user-item" id="{{_id}}">
+                        <span class="username">{{username}}</span>
+                        <button class="unban-user-btn" class="unban-user-btn" data-user-id="{{_id}}">Unban</button>
+                    </div>
+                    {{/each}}
+                </div>
+            </article>
+
+            <article class="ban-user">
+                <label for="ban-user">Ban User</label>
+                <input type="text" name="ban-user" id="ban-user-input">
+                <button id="ban-user-btn">Ban</button>
+            </article>
 
             {{!-- Permanently delete the room --}}
             <article class="room-delete"></article>

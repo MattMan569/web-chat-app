@@ -95,6 +95,16 @@ const chatSocket = (io: Server) => {
             }
         });
 
+        // Ban the specified user
+        socket.on("ban", async (userId: string) => {
+            try {
+                const bannedUser = await User.findById(userId);
+                Room.banUser(roomId, bannedUser);
+            } catch (e) {
+                console.log(e);
+            }
+        });
+
         // Remove the user from the room
         // TODO do not run on user kick
         socket.on("disconnect", async () => {

@@ -18,6 +18,10 @@ interface IRoomDocument extends Document {
             ref: "User",
         },
     }>;
+    bannedUsers: Array<{
+            type: Schema.Types.ObjectId,
+            ref: "User",
+    }>;
 }
 
 // Define Room methods
@@ -31,6 +35,8 @@ export interface IRoomModel extends Model<IRoom> {
     findByRoomName(name: string): IRoom;
     addUserToRoom(roomId: string | mongoose.Types.ObjectId, user: IUser, socketId: string): Promise<IRoom>;
     removeUserFromRoom(roomId: string | mongoose.Types.ObjectId, user: IUser): Promise<IRoom>;
+    banUser(roomId: string, user: IUser): Promise<IRoom>;
+    unbanUser(roomId: string, user: IUser): Promise<IRoom>;
 }
 
 const roomSchema = new mongoose.Schema({
@@ -65,6 +71,10 @@ const roomSchema = new mongoose.Schema({
             ref: User,
             type: Schema.Types.ObjectId,
         },
+    }],
+    bannedUsers: [{
+        ref: User,
+        type: Schema.Types.ObjectId,
     }],
 }, {
     timestamps: true,
@@ -110,6 +120,26 @@ roomSchema.statics.findByRoomName = async (name: string) => {
     }
 
     return room;
+};
+
+// Add the user to the room's banned user list
+roomSchema.statics.banUser = async (roomId: string, user: IUser) => {
+    return Room.findByIdAndUpdate(roomId, {
+        $addToSet: {
+            bannedUsers: user._id,
+        },
+    }, {
+        new: true,
+    }).exec();
+};
+
+// Remove the user from the room's banned user list
+roomSchema.statics.unbanUser = async (roomId: string, user: IUser) => {
+    return Room.findByIdAndUpdate(roomId, {
+        $pull: { bannedUsers: user._id },
+    }, {
+        new: true,
+    }).exec();
 };
 
 roomSchema.pre("save", async function(this: IRoomDocument, next) {
