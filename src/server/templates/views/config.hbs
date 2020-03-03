@@ -18,19 +18,19 @@
 
             {{!-- Name of the room --}}
             <article class="room-name">
-                <p>{{room.name}}</p>
+                <p>Name: {{room.name}}</p>
             </article>
 
             {{!-- Maximum room capacity --}}
             <article class="room-capacity">
-                <p>{{room.capacity}}</p>
+                <p>Capacity: {{room.capacity}}</p>
             </article>
 
             {{!-- List of room moderators by username --}}
             <article class="room-moderators"></article>
 
             {{!-- Optional --}}
-            <article class="room-password">{{decrypt room.password}}</article>
+            <article class="room-password">Password: {{decrypt room.password}}</article>
 
             {{!-- Room must be joined by name --}}
             <article class="room-hidden"></article>
@@ -38,20 +38,21 @@
             {{!-- List of banned users by username --}}
             <article class="room-banned-users-list">
                 <h3>Banned Users</h3>
-                <span>{{room.bannedUsers}}</span>
                 <div class="banned-users-list">
                     {{#each room.bannedUsers}}
                     <div class="banned-user-item" id="{{_id}}">
                         <span class="username">{{username}}</span>
                         <button class="unban-user-btn" class="unban-user-btn" data-user-id="{{_id}}">Unban</button>
                     </div>
+                    {{else}}
+                    <span>There are no banned users.</span>
                     {{/each}}
                 </div>
             </article>
 
             <article class="ban-user">
                 <label for="ban-user">Ban User</label>
-                <input type="text" name="ban-user" id="ban-user-input">
+                <input type="text" name="ban-user" id="ban-user-input" placeholder="username">
                 <button id="ban-user-btn">Ban</button>
             </article>
 
