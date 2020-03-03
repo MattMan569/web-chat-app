@@ -11,10 +11,8 @@ const router = express.Router();
 router.post("/rooms/create", auth, async (req: Request, res: Response) => {
     const user = await User.findByUsername(req.session.user.username);
 
-    // The current user is the room's owner and first user
-    // TODO check if users is init is needed
+    // The current user is the room's owner
     req.body.owner = user._id;
-    req.body.users = [];
 
     try {
         await new Room(req.body).save((e, room) => {
