@@ -17,8 +17,7 @@ const upload = multer({
         try {
             // Images only
             if (!file.originalname.match(/\.(tiff?|pjp(eg)?|jfif|tif|gif|svgz?|bmp|png|jpe?g?|webp|ico|xbm|dib|ai|drw|pct|psp|xcf|psd|raw)$/i)) {
-                // TODO reject or generate error?
-                callback(undefined, false);
+                callback(new Error("Incorrect file format"));
             }
 
             callback(undefined, true);
@@ -78,7 +77,7 @@ router.post("/users/upload/avatar", [auth, upload.single("avatar")], async (req:
 
         res.send(`data:image/png;base64,${Buffer.from(user.avatar).toString("base64")}`);
     } catch (e) {
-        console.log(e);
+        console.trace(e);
         res.status(500).send(e);
     }
 }, (error: multer.MulterError, req: Request, res: Response, next: NextFunction) => {
