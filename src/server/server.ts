@@ -91,10 +91,6 @@ app.use(profileRouter);
 app.use(roomRouter);
 app.use(userRouter);
 
-// TODO move to single file for all routers
-const websiteTitle = "Chat App";
-const websiteAuthor = "Matthew Polsom";
-
 // Redirect home on 404
 app.get("*", (req: Request, res: Response) => {
     res.redirect("/");

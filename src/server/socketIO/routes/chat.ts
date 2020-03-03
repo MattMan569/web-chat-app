@@ -113,7 +113,6 @@ const chatSocket = (io: Server) => {
                 Room.emit("roomUpdate", room);
                 chat.to(roomId).emit("userListUpdate", room);
                 socket.broadcast.to(roomId).emit("message", generateMessage(`${user.username} has left`));
-                // TODO delete when empty?
             } catch (e) {
                 console.log(e);
             } finally {
