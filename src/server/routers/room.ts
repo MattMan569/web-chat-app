@@ -137,4 +137,14 @@ router.get("/rooms/config/:id", [auth, roomOwner], async (req: Request, res: Res
     });
 });
 
+router.delete("/rooms/:id", [auth, roomOwner], async (req: Request, res: Response) => {
+    try {
+        const room = await Room.findByIdAndDelete(req.params.id);
+        res.send(room);
+    } catch (e) {
+        console.trace(e);
+        res.status(500).send(e);
+    }
+});
+
 export default router;

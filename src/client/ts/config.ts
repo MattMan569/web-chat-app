@@ -1,5 +1,6 @@
 require("./common");
 import $ from "jquery";
+import { IRoom } from "./../../server/models/room";
 
 $("#ban-user-btn").click(() => {
     const username = $("#ban-user-input").val();
@@ -38,5 +39,26 @@ $(".unban-user-btn").each(function() {
                 },
             },
         });
+    });
+});
+
+$("#delete-room-btn").click(() => {
+    const roomId = $(location).attr("href").split("/").pop();
+
+    $.ajax({
+        url: `/rooms/${roomId}`,
+        method: "DELETE",
+        statusCode: {
+            200: (room: IRoom) => {
+                console.log(room);
+                window.location.href = "/";
+            },
+            401: (res) => {
+                console.log(res);
+            },
+            500: (res) => {
+                console.log(res);
+            },
+        },
     });
 });
