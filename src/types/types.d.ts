@@ -2,12 +2,17 @@ import { IUser } from "../server/models/user";
 
 // TODO move all types here
 
+// Modified User object that is placed in the session variable
+interface ISessionUser extends IUser {
+    avatar: never;
+}
+
 // Extend the cookie to include the user
 declare global {
     namespace Express {
         // tslint:disable-next-line: interface-name
         interface Session {
-            user: IUser;
+            user: ISessionUser;
             authorizedRooms: string[];
         }
     }

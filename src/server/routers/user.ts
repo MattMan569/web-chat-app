@@ -31,10 +31,8 @@ const upload = multer({
 const createSession = (session: Express.Session, user: IUser) => {
     const userObj = user.toObject();
     delete userObj.password;
-    // delete userObj.avatar;
+    delete userObj.avatar;
 
-    // Convert the binary buffer to a usable base64 string for <img/> src
-    userObj.avatar = `data:image/png;base64,${Buffer.from(user.avatar).toString("base64")}`;
     session.authorizedRooms = [];
     session.user = userObj;
     session.loggedIn = true;
@@ -69,11 +67,6 @@ router.post("/users/upload/avatar", [auth, upload.single("avatar")], async (req:
         }, {
             new: true,
         });
-
-        // HACK fix typings to allow string on user.avatar
-        const sessionUser = req.session.user as any;
-        sessionUser.avatar = `data:image/png;base64,${Buffer.from(user.avatar).toString("base64")}`;
-        req.session.user.avatar = sessionUser.avatar;
 
         res.send(`data:image/png;base64,${Buffer.from(user.avatar).toString("base64")}`);
     } catch (e) {
