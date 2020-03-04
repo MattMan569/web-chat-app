@@ -72,16 +72,6 @@ router.post("/rooms/unban", auth, async (req: Request, res: Response) => {
     }
 });
 
-// Get all rooms
-router.get("/rooms", auth, async (req: Request, res: Response) => {
-    res.send(await Room.find());
-});
-
-// Get a specific room
-router.get("/rooms/:id", auth, async (req: Request, res: Response) => {
-    res.send(Room.findById(req.params.id).exec());
-});
-
 // Authorize the user for the specified room
 router.post("/rooms/join/:id", auth, async (req: Request, res: Response) => {
     const roomId = req.params.id;
@@ -126,6 +116,16 @@ router.post("/rooms/leave/:id", auth, async (req: Request, res: Response) => {
             return curRoomId !== roomId;
         });
     }
+});
+
+// Get all rooms
+router.get("/rooms", auth, async (req: Request, res: Response) => {
+    res.send(await Room.find());
+});
+
+// Get a specific room
+router.get("/rooms/:id", auth, async (req: Request, res: Response) => {
+    res.send(Room.findById(req.params.id).exec());
 });
 
 // Show the room's cofiguration page
