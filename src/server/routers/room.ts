@@ -86,6 +86,11 @@ router.post("/rooms/join/:id", auth, async (req: Request, res: Response) => {
 
     const room = await Room.findById(roomId);
 
+    // Room not found
+    if (!room) {
+        return res.status(404).redirect("/");
+    }
+
     // Check the provided password against the room's password
     if (room.comparePassword(password)) {
         // Authorize the user to enter the room
