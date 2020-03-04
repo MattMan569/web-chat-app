@@ -1,10 +1,8 @@
 require("./common");
 import $ from "jquery";
-import socketio from "socket.io-client";
-import Profile, { IProfile } from "./../../server/models/profile";
+import localforage from "localforage";
+import { IProfile } from "./../../server/models/profile";
 import { IUser } from "./../../server/models/user";
-
-const socket = socketio("/profile");
 
 const deleteBtn = $("#delete-user-btn");
 const descBtns = $("#description-buttons");
@@ -110,9 +108,14 @@ $("#avatar-upload").change(function() {
         processData: false,
         contentType: false,
         statusCode: {
-            200: (res: string) => {
+            200: (avatar: string) => {
                 // Change the profile picture
-                $("#profile-btn").css("background-image", `url(${res})`);
+                localforage.setItem("avatar", avatar, (err) => {
+                    if (err) {
+                        return console.log(err);
+                    }
+                    $("#profile-btn").css("background-image", `url(${avatar})`);
+                });
             },
             400: (res) => {
                 // Incorrect file format
