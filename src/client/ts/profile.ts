@@ -13,6 +13,7 @@ deleteBtn.click(() => {
         url: "/users",
         method: "DELETE",
         statusCode: {
+            // TODO redirect, no promise
             200: async (res: Promise<IUser>) => {
                 console.log(await res);
             },
