@@ -185,3 +185,8 @@ socket.on("roomUpdate", (room: IRoom) => {
         roomAttachClickEvent($(`#${id}`));
     }
 });
+
+// Remove a deleted room from the room list
+socket.on("roomDelete", (room: IRoom) => {
+    $(`#${room._id}`).remove();
+});

@@ -14,6 +14,10 @@ const indexSocket = (io: Server) => {
     Room.on("roomUpdate", (room: IRoom) => {
         index.emit("roomUpdate", room);
     });
+
+    Room.on("roomDelete", (room: IRoom) => {
+        index.emit("roomDelete", room);
+    });
 };
 
 export default indexSocket;

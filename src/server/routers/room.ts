@@ -145,6 +145,7 @@ router.get("/rooms/config/:id", [auth, roomOwner], async (req: Request, res: Res
 router.delete("/rooms/:id", [auth, roomOwner], async (req: Request, res: Response) => {
     try {
         const room = await Room.findByIdAndDelete(req.params.id);
+        Room.emit("roomDelete", room);
         res.send(room);
     } catch (e) {
         console.trace(e);
