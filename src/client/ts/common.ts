@@ -5,6 +5,12 @@ import { IUser } from "../../server/models/user";
 // Code common among all pages
 // Header, footer, etc.
 
+localforage.config({
+    name: "chatApp",
+    storeName: "Chat_App",
+    description: "Express chat application by Matthew Polsom",
+});
+
 const profileButton = document.getElementById("profile-btn");
 const profileDropdownContent = document.getElementById("profile-dropdown-content");
 
