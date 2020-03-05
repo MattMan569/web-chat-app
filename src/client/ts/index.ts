@@ -31,24 +31,18 @@ const render = Handlebars.compile(template);
 // Current user
 let me: IUser;
 
-// TODO non-optional callback to handle 500 err
-const joinRoom = (roomId: string, password: string, link: string, callback?: (error: string) => void) => {
+const joinRoom = (roomId: string, password: string, link: string, callback: (error: any) => void) => {
     $.ajax({
         url: `/rooms/join/${roomId}`,
         method: "POST",
         data: {
             password,
         },
-        statusCode: {
-            200: () => {
-                window.location.href = link;
-            },
-            401: () => {
-                callback("401");
-            },
-            500: (res) => {
-                console.log(res);
-            },
+        success: () => {
+            window.location.href = link;
+        },
+        error: (err) => {
+            callback(err);
         },
     });
 };
@@ -92,7 +86,10 @@ const roomAttachClickEvent = (element: JQuery<HTMLElement>) => {
                 });
             });
         } else {
-            joinRoom(roomId, "", link);
+            joinRoom(roomId, "", link, (err) => {
+                // TODO display
+                console.log(err);
+            });
         }
     });
 };
