@@ -1,4 +1,3 @@
-import { Socket } from "dgram";
 import sharedSession from "express-socket.io-session";
 import { Server } from "socket.io";
 import { ISocketIOMessage } from "./../../../types/types";
@@ -83,12 +82,7 @@ const chatSocket = (io: Server) => {
 
                 const targetUser = chat.connected[socketId];
 
-                targetUser.emit("message", {
-                    message: "You have been kicked.",
-                    createdAt: new Date(),
-                    sender: "SERVER",
-                });
-
+                targetUser.emit("message", generateMessage("You have been kicked."));
                 targetUser.disconnect();
             } catch (e) {
                 console.log(e);
