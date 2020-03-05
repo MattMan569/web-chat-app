@@ -15,7 +15,6 @@ export interface IProfile extends IProfileDocument {
     removeFriend(friend: IUser): void;
     changeDescription(newDescription: string): void;
     setOnline(isOnline: boolean): void;
-    // TODO toJSON remove friends list from profile if private?
 }
 
 // Define statics
