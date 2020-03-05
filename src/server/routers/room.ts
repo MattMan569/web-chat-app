@@ -74,39 +74,43 @@ router.post("/rooms/unban", auth, async (req: Request, res: Response) => {
 
 // Authorize the user for the specified room
 router.post("/rooms/join/:id", auth, async (req: Request, res: Response) => {
-    const roomId = req.params.id;
-    const password = req.body.password;
+    try {
+        const roomId = req.params.id;
+        const password = req.body.password;
 
-    // User was already authorized
-    // TODO consider removing, auth then remove on join
-    // so password must always be entered
-    if (req.session.authorizedRooms.includes(roomId)) {
-        return res.send();
-    }
-
-    const room = await Room.findById(roomId);
-
-    // Room not found
-    if (!room) {
-        return res.status(404).redirect("/");
-    }
-
-    // Check the provided password against the room's password
-    if (room.comparePassword(password)) {
-        // Authorize the user to enter the room
-        req.session.authorizedRooms.push(roomId);
-
-        // Must save to prevent race conditions with roomAuth
-        req.session.save((err) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-
+        // User was already authorized
+        // TODO consider removing, auth then remove on join
+        // so password must always be entered
+        if (req.session.authorizedRooms.includes(roomId)) {
             return res.send();
-        });
-    } else {
-        // Password mismatch
-        res.status(401).send();
+        }
+
+        const room = await Room.findById(roomId);
+
+        // Room not found
+        if (!room) {
+            return res.status(404).redirect("/");
+        }
+
+        // Check the provided password against the room's password
+        if (room.comparePassword(password)) {
+            // Authorize the user to enter the room
+            req.session.authorizedRooms.push(roomId);
+
+            // Must save to prevent race conditions with roomAuth
+            req.session.save((err) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+
+                return res.send();
+            });
+        } else {
+            // Password mismatch
+            res.status(401).send("Incorrect password");
+        }
+    } catch (e) {
+        res.status(500).send("Internal server error");
     }
 });
 
