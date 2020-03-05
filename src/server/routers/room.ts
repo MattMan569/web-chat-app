@@ -92,6 +92,11 @@ router.post("/rooms/join/:id", auth, async (req: Request, res: Response) => {
             return res.status(404).redirect("/");
         }
 
+        // Room capacity has been reached
+        if (room.users.length >= room.capacity) {
+            return res.status(400).send("Room is full");
+        }
+
         // Check the provided password against the room's password
         if (room.comparePassword(password)) {
             // Authorize the user to enter the room
