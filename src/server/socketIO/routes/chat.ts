@@ -31,11 +31,7 @@ const chatSocket = (io: Server) => {
             try {
                 await Room.removeUserFromRoom(roomId, user);
 
-                duplicateSocket.emit("message", {
-                    message: "You have been kicked.",
-                    createdAt: new Date(),
-                    sender: "SERVER",
-                });
+                duplicateSocket.emit("message", generateMessage("You have been kicked by the server. (You joined multiple times)"));
                 duplicateSocket.disconnect();
             } catch (e) {
                 console.log(e);
@@ -82,7 +78,7 @@ const chatSocket = (io: Server) => {
 
                 const targetUser = chat.connected[socketId];
 
-                targetUser.emit("message", generateMessage("You have been kicked."));
+                targetUser.emit("message", generateMessage("You have been kicked by the room owner."));
                 targetUser.disconnect();
             } catch (e) {
                 console.log(e);
