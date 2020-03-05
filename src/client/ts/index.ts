@@ -5,6 +5,7 @@ import socketio from "socket.io-client";
 import { IUser } from "../../server/models/user";
 import { IRoom } from "./../../server/models/room";
 import { IjQDoneAjax } from "./../../types/types";
+import { showModalTimed } from "./util/jQueryUtil";
 
 // TODO move helpers file for both server and client
 Handlebars.registerHelper("ifeq", function(this: any, a, b, options) {
@@ -31,7 +32,7 @@ const render = Handlebars.compile(template);
 // Current user
 let me: IUser;
 
-const joinRoom = (roomId: string, password: string, link: string, callback: (error: any) => void) => {
+const joinRoom = (roomId: string, password: string, link: string, callback: (error: JQuery.jqXHR<any>) => void) => {
     $.ajax({
         url: `/rooms/join/${roomId}`,
         method: "POST",
@@ -59,6 +60,8 @@ const makeOverlay = (callback: (complete: boolean, password?: string) => void) =
     $("#join-overlay-cancel-btn").click(() => {
         $("#join-overlay-join-btn").unbind();
         $("#join-overlay").css("display", "none");
+        $("#join-overlay-error").text("");
+        $("#room-password").val("");
         callback(false);
     });
 };
@@ -81,14 +84,21 @@ const roomAttachClickEvent = (element: JQuery<HTMLElement>) => {
                 }
 
                 joinRoom(roomId, password, link, (error) => {
-                    // TODO show 401 in overlay
-                    console.log(error);
+                    // Incorrect password
+                    if (error.status === 401) {
+                        // Show message on overlay
+                        $("#join-overlay-error").text(error.responseText);
+                    } else {
+                        // TODO close overlay first
+                        // Show modal with error
+                        showModalTimed("#error-msg-modal", error.responseText, 2000);
+                    }
                 });
             });
         } else {
-            joinRoom(roomId, "", link, (err) => {
-                // TODO display
-                console.log(err);
+            joinRoom(roomId, "", link, (error) => {
+                // Show modal with error
+                showModalTimed("#error-msg-modal", error.responseText, 2000);
             });
         }
     });

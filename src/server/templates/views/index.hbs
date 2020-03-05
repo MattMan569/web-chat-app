@@ -77,11 +77,15 @@
                 <div class="overlay-content">
                     <label for="room-password">Room Password</label>
                     <input type="password" name="room-password" id="room-password">
+                    <p class="error" id="join-overlay-error"></p>
                     <button id="join-overlay-cancel-btn">Cancel</button>
                     <button id="join-overlay-join-btn">Join</button>
                 </div>
             </div>
         </div>
+
+        {{!-- Modal for displaying errors and information --}}
+        <div class="modal" id="error-msg-modal"></div>
     </main>
 
     {{> footer}}

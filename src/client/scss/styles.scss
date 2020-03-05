@@ -209,7 +209,7 @@ article {
             .room-btn-grid {
                 display: grid;
                 grid-template-areas: "capacity name lock-icon";
-                grid-template-columns: 6rem min-content auto;
+                grid-template-columns: 6rem max-content auto;
                 align-items: center;
 
                 h3 {
@@ -279,6 +279,7 @@ textarea {
     right: 0;
     bottom: 0;
     background-color: rgba($color: #000000, $alpha: 0.5);
+    z-index: 2; // Ensure the overlay covers the modal
 
     .grid-wrapper {
         display: grid;
@@ -299,6 +300,28 @@ textarea {
             font-weight: bold;
         }
     }
+
+    // Make the error msg always take space
+    .error::after {
+        content: "|\00a0\00a0"; // &nbsp;
+        visibility: hidden;
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    width: 20rem;
+    height: 1rem;
+    top: 6rem;
+    left: 50%;
+    margin-left: -10rem; // center horizontally
+
+    background-color: white;
+    border: 2px $link-text solid;
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
 }
 
 .login-links, .signup-links {
