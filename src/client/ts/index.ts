@@ -119,23 +119,6 @@ $("#create-form").submit(function(e) {
     });
 });
 
-// Get the list of rooms from the server
-// $.ajax({
-//     url: "/rooms",
-//     method: "GET",
-//     statusCode: {
-//         200: (rooms: IRoom[]) => {
-//             // Render the rooms
-//             $("#room-list").html(render({ rooms }));
-
-//             // Add an event listener to every rendered room
-//             $(".room-item").each(function() {
-//                 roomAttachClickEvent($(this));
-//             });
-//         },
-//     },
-// });
-
 // Get the current user
 const getMe = () => {
     return $.ajax({
