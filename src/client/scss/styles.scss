@@ -312,7 +312,7 @@ textarea {
     display: none;
     position: fixed;
     width: 20rem;
-    height: 1rem;
+    height: min-content;
     top: 6rem;
     left: 50%;
     margin-left: -10rem; // center horizontally
