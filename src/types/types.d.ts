@@ -1,7 +1,5 @@
 import { IUser } from "../server/models/user";
 
-// TODO move all types here
-
 // Modified User object that is placed in the session variable
 interface ISessionUser extends IUser {
     avatar: never;
