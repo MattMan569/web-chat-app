@@ -22,7 +22,7 @@
             <template id="user-item-template">
                 \{{#each room.users}}
                 <article class="user-item" id="\{{socketId}}" title="\{{user.username}}">
-                    <a href="/users/\{{user._id}}" class="username">\{{user.username}}</a>
+                    <a href="/users/\{{user._id}}" class="username" target="_blank">\{{user.username}}</a>
                     {{!-- 
                         Only display the kick button if the client is the owner
                         And only on users that are not the aforementioned owner
