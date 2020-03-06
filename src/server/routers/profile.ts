@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import auth from "./../middleware/auth";
-import Profile, { IProfile } from "./../models/profile";
+import Profile from "./../models/profile";
 
 const router = express.Router();
 
