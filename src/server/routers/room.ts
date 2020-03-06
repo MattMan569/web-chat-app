@@ -132,6 +132,28 @@ router.post("/rooms/leave/:id", auth, async (req: Request, res: Response) => {
     }
 });
 
+// Change the room's name
+router.patch("/rooms/name", auth, async (req: Request, res: Response) => {
+    try {
+        const roomId = req.headers.referer.split("/").pop();
+
+        const room = await Room.findByIdAndUpdate(roomId, {
+            name: req.body.name,
+        }, {
+            new: true,
+        });
+        res.send(room);
+    } catch (error) {
+        if (error.codeName === "DuplicateKey") {
+            res.status(400).send("Room name is already taken.");
+            return;
+        }
+
+        console.log(error);
+        res.status(500).send("Internal server error.");
+    }
+});
+
 // Get all rooms
 router.get("/rooms", auth, async (req: Request, res: Response) => {
     res.send(await Room.find());

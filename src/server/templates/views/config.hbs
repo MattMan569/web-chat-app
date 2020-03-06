@@ -18,7 +18,13 @@
 
             {{!-- Name of the room --}}
             <article class="room-name">
-                <p>Name: {{room.name}}</p>
+                <div>
+                    Name:
+                    <span id="name">{{room.name}}</span>
+                </div>
+                <div id="name-buttons">
+                    {{!-- Used by jQuery to place the edit, cancel, and save buttons --}}
+                </div>
             </article>
 
             {{!-- Maximum room capacity --}}
