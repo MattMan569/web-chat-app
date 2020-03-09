@@ -142,6 +142,7 @@ router.patch("/rooms/name", auth, async (req: Request, res: Response) => {
         }, {
             new: true,
         });
+        Room.emit("roomUpdate", room);
         res.send(room);
     } catch (error) {
         if (error.codeName === "DuplicateKey") {
