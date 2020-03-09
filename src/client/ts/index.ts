@@ -163,7 +163,7 @@ socket.on("roomUpdate", (room: IRoom) => {
     // Length only exists if an element was found
     if (roomElement.length) {
         // Modify the existing room element
-        roomElement[0].outerHTML = render({ rooms });
+        roomElement[0].outerHTML = render({ rooms, me });
 
         roomAttachClickEvent($(`#${room._id}`));
     } else {
