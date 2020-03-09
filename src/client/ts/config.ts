@@ -43,7 +43,9 @@ const editName = () => {
                     name: inputEl.val(),
                 },
                 success: (res: IRoom) => {
+                    // Replace the <input> with the new name and update the header
                     inputEl.replaceWith(getNameEl(res.name));
+                    $("#room-name-header").text(`Configure - ${res.name}`);
                 },
                 error: (res) => {
                     // TODO modal
