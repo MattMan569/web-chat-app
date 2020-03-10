@@ -198,7 +198,7 @@ router.patch("/rooms/capacity", auth, async (req: Request, res: Response) => {
         }, {
             new: true,
         });
-
+        Room.emit("roomUpdate", room);
         res.send(room);
     } catch (error) {
         console.log(error);
