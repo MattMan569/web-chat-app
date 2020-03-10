@@ -80,7 +80,6 @@ const editPassword = () => {
     const pswdEl = $("#password");
     const pswdHtml = pswdEl[0].outerHTML;
     const pswdText = pswdEl.text();
-    console.log("pswdText", pswdText);
     const inputEl = $(`<input type="text" value="${pswdText}"/>`);
 
     const saveBtnEl = $("<button/>", {
