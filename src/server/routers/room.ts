@@ -1,3 +1,4 @@
+import Cryptr from "cryptr";
 import express, { Request, Response } from "express";
 import auth from "../middleware/auth";
 import roomOwner from "../middleware/roomOwner";
@@ -152,6 +153,30 @@ router.patch("/rooms/name", auth, async (req: Request, res: Response) => {
 
         console.log(error);
         res.status(500).send("Internal server error.");
+    }
+});
+
+// Change the room's password
+router.patch("/rooms/password", auth, async (req: Request, res: Response) => {
+    try {
+        const roomId = req.headers.referer.split("/").pop();
+        const password = new Cryptr(process.env.AES_SECRET).encrypt(req.body.password);
+        const locked = req.body.password !== "";
+
+        const room = await Room.findByIdAndUpdate(roomId, {
+            password,
+            locked,
+        }, {
+            new: true,
+        });
+
+        res.send({
+            room,
+            password: req.body.password,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal server error");
     }
 });
 

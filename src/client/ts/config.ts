@@ -3,12 +3,13 @@ import $ from "jquery";
 import { IRoom } from "./../../server/models/room";
 
 const nameBtns = $("#name-buttons");
+const pswdBtns = $("#password-buttons");
 
-// Create the element for storing the room's name
-const getNameEl = (name: string) => {
+// Create the element for labeling the modifiable field
+const getSpanLabelEl = (id: string, text: string) => {
     return $("<span/>", {
-        id: "name",
-        text: name,
+        id,
+        text,
     });
 };
 
@@ -44,7 +45,7 @@ const editName = () => {
                 },
                 success: (res: IRoom) => {
                     // Replace the <input> with the new name and update the header
-                    inputEl.replaceWith(getNameEl(res.name));
+                    inputEl.replaceWith(getSpanLabelEl("name", res.name));
                     $("#room-name-header").text(`Configure - ${res.name}`);
                 },
                 error: (res) => {
@@ -73,7 +74,55 @@ const editName = () => {
     nameBtns.append(cancelBtnEl, saveBtnEl);
 };
 
+const editPassword = () => {
+    pswdBtns.children().remove();
+
+    const pswdEl = $("#password");
+    const pswdHtml = pswdEl[0].outerHTML;
+    const pswdText = pswdEl.text();
+    console.log("pswdText", pswdText);
+    const inputEl = $(`<input type="text" value="${pswdText}"/>`);
+
+    const saveBtnEl = $("<button/>", {
+        text: "Save",
+        id: "save-password-btn",
+        click: async () => {
+            await $.ajax({
+                url: "/rooms/password",
+                method: "PATCH",
+                data: {
+                    password: inputEl.val(),
+                },
+                success: (res: {room: IRoom, password: string}) => {
+                    inputEl.replaceWith(getSpanLabelEl("password", res.password));
+                },
+                error: (res) => {
+                    // TODO modal
+                    console.log(res);
+                },
+            });
+
+            pswdBtns.children().remove();
+            pswdBtns.append(getEditBtnEl("edit-password-btn", editPassword));
+        },
+    });
+
+    const cancelBtnEl = $("<button/>", {
+        text: "Cancel",
+        id: "cancel-password-btn",
+        click: async () => {
+            inputEl.replaceWith(pswdHtml);
+            pswdBtns.children().remove();
+            pswdBtns.append(getEditBtnEl("edit-password-btn", editPassword));
+        },
+    });
+
+    pswdEl.replaceWith(inputEl);
+    pswdBtns.append(cancelBtnEl, saveBtnEl);
+};
+
 nameBtns.append(getEditBtnEl("edit-name-btn", editName));
+pswdBtns.append(getEditBtnEl("edit-password-btn", editPassword));
 
 // Ban the specified user by username
 $("#ban-user-btn").click(() => {

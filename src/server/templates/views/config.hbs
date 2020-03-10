@@ -36,7 +36,13 @@
             <article class="room-moderators"></article>
 
             {{!-- Optional --}}
-            <article class="room-password">Password: {{decrypt room.password}}</article>
+            <article class="room-password">
+                <div>
+                    Password:
+                    <span id="password">{{decrypt room.password}}</span>
+                </div>
+                <div id="password-buttons"></div>
+            </article>
 
             {{!-- Room must be joined by name --}}
             <article class="room-hidden"></article>
