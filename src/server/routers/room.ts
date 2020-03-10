@@ -133,6 +133,8 @@ router.post("/rooms/leave/:id", auth, async (req: Request, res: Response) => {
     }
 });
 
+// TODO make sure requester is room owner
+
 // Change the room's name
 router.patch("/rooms/name", auth, async (req: Request, res: Response) => {
     try {
@@ -174,6 +176,30 @@ router.patch("/rooms/password", auth, async (req: Request, res: Response) => {
             room,
             password: req.body.password,
         });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal server error");
+    }
+});
+
+// Change the room's capacity
+router.patch("/rooms/capacity", auth, async (req: Request, res: Response) => {
+    try {
+        const roomId = req.headers.referer.split("/").pop();
+        const capacity = req.body.capacity;
+
+        if (capacity < 1 || capacity > 100) {
+            res.status(400).send("Invalid capacity value");
+            return;
+        }
+
+        const room = await Room.findByIdAndUpdate(roomId, {
+            capacity: req.body.capacity,
+        }, {
+            new: true,
+        });
+
+        res.send(room);
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal server error");

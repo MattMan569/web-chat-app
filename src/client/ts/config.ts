@@ -4,6 +4,7 @@ import { IRoom } from "./../../server/models/room";
 
 const nameBtns = $("#name-buttons");
 const pswdBtns = $("#password-buttons");
+const capacityBtns = $("#capacity-buttons");
 
 // Create the element for labeling the modifiable field
 const getSpanLabelEl = (id: string, text: string) => {
@@ -120,8 +121,55 @@ const editPassword = () => {
     pswdBtns.append(cancelBtnEl, saveBtnEl);
 };
 
+const editCapacity = () => {
+    capacityBtns.children().remove();
+
+    const capacityEl = $("#capacity");
+    const capacityHtml = capacityEl[0].outerHTML;
+    const capacityText = capacityEl.text();
+    const inputEl = $(`<input type="number" value="${capacityText}" min="1" max="100"/>`);
+
+    const saveBtnEl = $("<button/>", {
+        text: "Save",
+        id: "save-capacity-btn",
+        click: async () => {
+            await $.ajax({
+                url: "/rooms/capacity",
+                method: "PATCH",
+                data: {
+                    capacity: inputEl.val(),
+                },
+                success: (res: IRoom) => {
+                    inputEl.replaceWith(getSpanLabelEl("capacity", res.capacity.toString()));
+                },
+                error: (res) => {
+                    // TODO modal
+                    console.log(res);
+                },
+            });
+
+            capacityBtns.children().remove();
+            capacityBtns.append(getEditBtnEl("edit-capacity-btn", editCapacity));
+        },
+    });
+
+    const cancelBtnEl = $("<button/>", {
+        text: "Cancel",
+        id: "cancel-capacity-btn",
+        click: async () => {
+            inputEl.replaceWith(capacityHtml);
+            capacityBtns.children().remove();
+            capacityBtns.append(getEditBtnEl("edit-capacity-btn", editCapacity));
+        },
+    });
+
+    capacityEl.replaceWith(inputEl);
+    capacityBtns.append(cancelBtnEl, saveBtnEl);
+};
+
 nameBtns.append(getEditBtnEl("edit-name-btn", editName));
 pswdBtns.append(getEditBtnEl("edit-password-btn", editPassword));
+capacityBtns.append(getEditBtnEl("edit-capacity-btn", editCapacity));
 
 // Ban the specified user by username
 $("#ban-user-btn").click(() => {

@@ -29,7 +29,11 @@
 
             {{!-- Maximum room capacity --}}
             <article class="room-capacity">
-                <p>Capacity: {{room.capacity}}</p>
+                <div>
+                    Capacity:
+                    <span id="capacity">{{room.capacity}}</span>
+                </div>
+                <div id="capacity-buttons"></div>
             </article>
 
             {{!-- List of room moderators by username --}}
