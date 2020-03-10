@@ -27,16 +27,17 @@ $.ajax({
     url: "/users/me",
     method: "GET",
     cache: true,
-    statusCode: {
-        200: (me: IUser) => {
-            // Store the avatar client-side
-            localforage.setItem("avatar", me.avatar, (err, avatar) => {
-                if (err) {
-                    return console.log(err);
-                }
-                $("#profile-btn").css("background-image", `url(data:image/png;base64,${avatar})`);
-            });
-        },
+    success: (me: IUser) => {
+        // Store the avatar client-side
+        localforage.setItem("avatar", me.avatar, (err, avatar) => {
+            if (err) {
+                return console.log(err);
+            }
+            $("#profile-btn").css("background-image", `url(data:image/png;base64,${avatar})`);
+        });
+    },
+    error: (res) => {
+        console.log(res);
     },
 });
 
