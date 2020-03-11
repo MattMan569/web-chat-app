@@ -1,5 +1,4 @@
 import express, { NextFunction, Request, Response } from "express";
-import fs from "fs";
 import multer from "multer";
 import sharp from "sharp";
 import auth from "../middleware/auth";
@@ -132,12 +131,22 @@ router.get("/users/me", auth, async (req: Request, res: Response) => {
 
 // Get the user profile of the user with the specified id
 router.get("/users/:id", auth, async (req: Request, res: Response) => {
-    const profile = await Profile.findOne({ userId: req.params.id });
+    try {
+        const profile = Profile.findOne({ userId: req.params.id });
+        const user = User.findById(req.params.id);
 
-    res.render("profile", {
-        profile,
-        ...getRouterOptions(req, `Profile - ${req.session.user.username}`),
-    });
+        Promise.all([profile, user]).then((data) => {
+            const avatar = data[1].avatar?.toString("base64");
+            res.render("profile", {
+                profile: data[0],
+                avatar,
+                ...getRouterOptions(req, `Profile - ${req.session.user.username}`),
+            });
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
 });
 
 // Delete the specified user

@@ -17,7 +17,9 @@
             <h2>Profile</h2>
 
             {{!-- Profile pic, username, location --}}
-            <article class="basic-info"></article>
+            <article class="basic-info">
+                <img src="data:image/png;base64,{{avatar}}" alt="User's avatar" width="125" height="125">
+            </article>
 
             {{!-- User's self description --}}
             <article class="description">
@@ -32,16 +34,17 @@
                 {{/ifeq}}
             </article>
 
+            {{#ifeq profile.userId userId}}
             <div class="form-group">
                 <label for="avatar-upload">Change Your Profile Picture</label>
                 <input type="file" name="avatar-upload" id="avatar-upload" accept="image/*">
             </div>
 
-            <p class="is-online">{{profile.online}}</p>
-
             <article class="delete-user">
                 <button id="delete-user-btn" title="This is irreversible.">Delete your profile</button>
             </article>
+            {{/ifeq}}
+
         </section>
     </main>
 
