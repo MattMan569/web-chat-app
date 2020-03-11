@@ -11,7 +11,6 @@ export const getRouterOptions = (req: Express.Request, pageTitle: string) => {
         // user: req.session.user,
         username: req.session.user?.username,
         userId: req.session.user?._id,
-        avatar: req.session.user?.avatar,
         ...websiteInfo,
     };
 };
