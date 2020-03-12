@@ -49,22 +49,22 @@
             <h2>Create</h2>
             <article class="create-form">
                 <form action="/rooms/create" method="POST" id="create-form">
-                    <div class="form-group">
+                    <div class="form-group name">
                         <label for="name">Room Name</label>
                         <input type="text" name="name" placeholder="room name" required>
                     </div>
 
-                    <div class="form-group" title="Leave empty to make the room public">
+                    <div class="form-group password" title="Leave empty to make the room public">
                         <label for="password">Password (optional)</label>
                         <input type="password" name="password" placeholder="password (optional)">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group capacity">
                         <label for="capacity">Capacity (1 - 100)</label>
                         <input type="number" name="capacity" value="100" min="1" max="100" required>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group button">
                         <button type="submit">Create Room</button>
                     </div>
                 </form>

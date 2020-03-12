@@ -177,6 +177,43 @@ main {
 
         .create {
             grid-area: "create";
+
+            form {
+                display: grid;
+                grid-template-areas:
+                    "name password capacity"
+                    "button button button";
+                grid-template-columns: 3fr 2fr 1fr;
+                column-gap: 1rem;
+            }
+
+            .form-group {
+                label {
+                    width: min-content;
+                    margin: 0 .5rem 0 0;
+                }
+
+                input {
+                    width: 100%;
+                }
+
+                &.name {
+                    grid-area: name;
+                }
+
+                &.password {
+                    grid-area: password;
+                }
+
+                &.capacity {
+                    grid-area: capacity;
+                }
+
+                &.button {
+                    grid-area: button;
+                    text-align: right;
+                }
+            }
         }
     }
 }
