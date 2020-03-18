@@ -105,6 +105,58 @@ main {
         }
     }
 
+    &.profile-page {
+        * {
+            margin-bottom: 1rem;
+        }
+
+        section {
+            width: 100%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h3, #description-buttons {
+            display: inline;
+        }
+
+        textarea {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-width: 5rem;
+            height: 5rem;
+            max-height: 20rem;
+            min-height: 2rem;
+            border: 1px black solid;
+            resize: both;
+        }
+
+        #description {
+            white-space: pre;
+        }
+
+        .basic-info {
+            display: grid;
+            grid-template-areas: "avatar username";
+            grid-template-columns: min-content min-content;
+            column-gap: 1rem;
+
+            img {
+                grid-area: avatar;
+                border: thick $link-text solid;
+                border-radius: 1rem;
+            }
+
+            span {
+                grid-area: username;
+                font-weight: bold;
+                font-size: 160%;
+            }
+        }
+    }
+
     &.chat-page {
         grid-template-areas:
             "users messages"
@@ -169,6 +221,13 @@ main {
         grid-template-rows: auto min-content;
         min-height: 0;
 
+        section {
+            width: 100%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         .join {
             grid-area: "join";
             overflow-y: scroll;
@@ -183,7 +242,7 @@ main {
                 grid-template-areas:
                     "name password capacity"
                     "button button button";
-                grid-template-columns: 3fr 2fr 1fr;
+                grid-template-columns: 3fr 2fr 2fr;
                 column-gap: 1rem;
             }
 

@@ -16,25 +16,27 @@
         <section class="profile">
             <h2>Profile</h2>
 
-            {{!-- Profile pic, username, location --}}
+            {{!-- Profile pic, username --}}
             <article class="basic-info">
                 <img src="data:image/png;base64,{{avatar}}" alt="User's avatar" width="125" height="125">
+                <span>{{profile.userId.username}}</span>
             </article>
 
             {{!-- User's self description --}}
             <article class="description">
                 <h3>Description</h3>
-                <p class="description" id="description">{{profile.description}}</p>
 
                 {{!-- Only allow editing if the profile belongs to the viewing user --}}
-                {{#ifeq profile.userId userId}}
+                {{#ifeq profile.userId._id userId}}
                 <div id="description-buttons">
                     {{!-- Used by jQuery to place the edit, cancel, and save buttons --}}
                 </div>
                 {{/ifeq}}
+
+                <p class="description" id="description">{{profile.description}}</p>
             </article>
 
-            {{#ifeq profile.userId userId}}
+            {{#ifeq profile.userId._id userId}}
             <div class="form-group">
                 <label for="avatar-upload">Change Your Profile Picture</label>
                 <input type="file" name="avatar-upload" id="avatar-upload" accept="image/*">

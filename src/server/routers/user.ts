@@ -132,13 +132,15 @@ router.get("/users/me", auth, async (req: Request, res: Response) => {
 // Get the user profile of the user with the specified id
 router.get("/users/:id", auth, async (req: Request, res: Response) => {
     try {
-        const profile = Profile.findOne({ userId: req.params.id });
+        const profileQuery = Profile.findOne({ userId: req.params.id });
         const user = User.findById(req.params.id);
 
-        Promise.all([profile, user]).then((data) => {
+        Promise.all([profileQuery, user]).then(async (data) => {
             const avatar = data[1].avatar?.toString("base64");
+            const profile = await data[0].populate("userId", "username").execPopulate();
+
             res.render("profile", {
-                profile: data[0],
+                profile,
                 avatar,
                 ...getRouterOptions(req, `Profile - ${req.session.user.username}`),
             });
