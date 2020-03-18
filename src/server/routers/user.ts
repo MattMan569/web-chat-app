@@ -166,20 +166,4 @@ router.delete("/users", auth, async (req: Request, res: Response) => {
     }
 });
 
-/*
-
-// Log out everywhere
-router.post("/users/logoutAll", auth, async (req: Request, res: Response) => {
-    try {
-        // TODO
-        // Save session IDs to user db
-        // to list on user profile along
-        // with logout-all functionality
-    } catch (e) {
-        res.status(500).send();
-    }
-});
-
-*/
-
 export default router;
