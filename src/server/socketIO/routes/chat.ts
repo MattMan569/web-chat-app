@@ -96,7 +96,6 @@ const chatSocket = (io: Server) => {
         });
 
         // Remove the user from the room
-        // TODO do not run on user kick
         socket.on("disconnect", async () => {
             try {
                 const room = await (await Room.removeUserFromRoom(roomId, user)).populate("users.user").execPopulate();
