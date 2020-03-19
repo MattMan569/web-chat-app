@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>{{pageTitle}}</title>
+</head>
+
+<body>
+    {{> header}}
+
+    <main class="signup-page">
+        <section>
+            <article class="signup-form">
+                <h2>Sign Up</h2>
+                <form action="/users" method="POST">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" placeholder="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" placeholder="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" placeholder="password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password-confirm">Confirm</label>
+                        <input type="password" name="password-confirm" placeholder="password confirmation" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit">Sign Up</button>
+                    </div>
+                </form>
+            </article>
+
+            <article class="signup-links">
+                <p>Already have an account? <a href="/login">Log in here.</a></p>
+            </article>
+        </section>
+    </main>
+
+    {{> footer}}
+
+    <script src="/js/signup.js"></script>
+</body>
+
+</html>

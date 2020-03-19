@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>{{pageTitle}}</title>
+</head>
+
+<body>
+    {{> header}}
+
+    <main class="config-page">
+        <section class="config">
+            <h2 id="room-name-header">Configure - {{room.name}}</h2>
+
+            {{!-- Name of the room --}}
+            <article class="room-name">
+                <div>
+                    Name:
+                    <span id="name">{{room.name}}</span>
+                </div>
+                <div id="name-buttons">
+                    {{!-- Used by jQuery to place the edit, cancel, and save buttons --}}
+                </div>
+            </article>
+
+            {{!-- Maximum room capacity --}}
+            <article class="room-capacity">
+                <div>
+                    Capacity:
+                    <span id="capacity">{{room.capacity}}</span>
+                </div>
+                <div id="capacity-buttons"></div>
+            </article>
+
+            {{!-- Password - Optional --}}
+            <article class="room-password">
+                <div>
+                    Password:
+                    <span id="password">{{decrypt room.password}}</span>
+                </div>
+                <div id="password-buttons"></div>
+            </article>
+
+            {{!-- List of banned users by username --}}
+            <article class="room-banned-users-list">
+                <h3>Banned Users</h3>
+                <div class="banned-users-list">
+                    {{#each room.bannedUsers}}
+                    <div class="banned-user-item" id="{{_id}}">
+                        <span class="username">{{username}}</span>
+                        <button class="unban-user-btn" class="unban-user-btn" data-user-id="{{_id}}">Unban</button>
+                    </div>
+                    {{else}}
+                    <span>There are no banned users.</span>
+                    {{/each}}
+                </div>
+            </article>
+
+            {{!-- Ban a user by username --}}
+            <article class="ban-user">
+                <label for="ban-user">Ban User</label>
+                <input type="text" name="ban-user" id="ban-user-input" placeholder="username">
+                <button id="ban-user-btn">Ban</button>
+            </article>
+
+            {{!-- Permanently delete the room --}}
+            <article class="room-delete">
+                {{!-- TODO prompt for confirmation --}}
+                <button id="delete-room-btn">Delete Room</button>
+            </article>
+        </section>
+    </main>
+
+    {{> footer}}
+
+    <script src="/js/config.js"></script>
+</body>
+
+</html>

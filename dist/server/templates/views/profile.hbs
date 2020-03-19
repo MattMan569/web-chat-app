@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>{{pageTitle}}</title>
+</head>
+
+<body>
+    {{> header}}
+
+    <main class="profile-page">
+        <section class="profile">
+            <h2>Profile</h2>
+
+            {{!-- Profile pic, username --}}
+            <article class="basic-info">
+                <img src="data:image/png;base64,{{avatar}}" alt="User's avatar" width="125" height="125">
+                <span>{{profile.userId.username}}</span>
+            </article>
+
+            {{!-- User's self description --}}
+            <article class="description">
+                <h3>Description</h3>
+
+                {{!-- Only allow editing if the profile belongs to the viewing user --}}
+                {{#ifeq profile.userId._id userId}}
+                <div id="description-buttons">
+                    {{!-- Used by jQuery to place the edit, cancel, and save buttons --}}
+                </div>
+                {{/ifeq}}
+
+                <p class="description" id="description">{{profile.description}}</p>
+            </article>
+
+            {{#ifeq profile.userId._id userId}}
+            <div class="form-group">
+                <label for="avatar-upload">Change Your Profile Picture</label>
+                <input type="file" name="avatar-upload" id="avatar-upload" accept="image/*">
+            </div>
+
+            <article class="delete-user">
+                <button id="delete-user-btn" title="This is irreversible.">Delete your profile</button>
+            </article>
+            {{/ifeq}}
+
+        </section>
+    </main>
+
+    {{> footer}}
+
+    <script src="/js/profile.js"></script>
+</body>
+
+</html>

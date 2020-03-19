@@ -1,0 +1,1 @@
+{"version":3,"file":"message.js","sourceRoot":"","sources":["../../../../src/server/socketIO/util/message.ts"],"names":[],"mappings":";;AAEa,QAAA,eAAe,GAAG,UAAC,OAAe;IAC3C,OAAO;QACH,OAAO,SAAA;QACP,SAAS,EAAE,CAAC,IAAI,IAAI,EAAE,CAAC,CAAC,cAAc,EAAE,CAAC,KAAK,CAAC,GAAG,CAAC;QACnD,MAAM,EAAE,QAAQ;KACnB,CAAC;AACN,CAAC,CAAC"}

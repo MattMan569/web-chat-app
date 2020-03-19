@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>{{pageTitle}}</title>
+</head>
+
+<body>
+    {{> header}}
+
+    <main class="login-page">
+        <section>
+            <article class="login-form">
+                <h2>Login</h2>
+                <form action="/users/login" id="login-form" method="POST">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" placeholder="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" placeholder="password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit">Login</button>
+                    </div>
+                </form>
+            </article>
+
+            <div class="errors">
+                <p class="err-msg" id="err-msg"></p>
+            </div>
+
+            <article class="login-links">
+                <p>Don't have an account? <a href="/signup">Sign up here.</a></p>
+
+                <div class="forgot-links">
+                    <a href="#">I forgot my username</a>
+                    <a href="#">I forgot my password</a>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    {{> footer}}
+
+    <script src="/js/login.js"></script>
+</body>
+
+</html>

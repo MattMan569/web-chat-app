@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>{{pageTitle}}</title>
+</head>
+
+<body>
+    {{> header}}
+
+    <main class="index-page">
+        <section class="join">
+            <h2>Join</h2>
+
+            <div id="room-list">
+                {{!-- Used by handlebars to place rendered rooms --}}
+            </div>
+
+            <template id="room-item-template">
+                \{{#each rooms}}
+                <article class="room-item" id="\{{_id}}">
+                    <a href="/chat?room=\{{_id}}" class="room-btn-link" data-locked=\{{locked}}>
+                        <button class="room-btn">
+                            {{!-- Must be in div due to Chromium bug --}}
+                            <div class="room-btn-grid">
+                                <h3>\{{name}}</h3>
+                                <span class="capacity">\{{users.length}} / \{{capacity}}</span>
+                                \{{#if locked}}
+                                <span class="locked-icon">&bemptyv;</span>
+                                \{{/if}}
+                            </div>
+                        </button>
+                    </a>
+                    \{{#ifeq owner ../me._id}}
+                    <a href="/rooms/config/\{{_id}}">
+                        <button class="room-config-btn">Configure Room</button>
+                    </a>
+                    \{{/ifeq}}
+                </article>
+                \{{/each}}
+            </template>
+        </section>
+
+        <section class="create">
+            <h2>Create</h2>
+            <article class="create-form">
+                <form action="/rooms/create" method="POST" id="create-form">
+                    <div class="form-group name">
+                        <label for="name">Room Name</label>
+                        <input type="text" name="name" placeholder="room name" required>
+                    </div>
+
+                    <div class="form-group password" title="Leave empty to make the room public">
+                        <label for="password">Password (optional)</label>
+                        <input type="password" name="password" placeholder="password (optional)">
+                    </div>
+
+                    <div class="form-group capacity">
+                        <label for="capacity">Capacity (1 - 100)</label>
+                        <input type="number" name="capacity" value="100" min="1" max="100" required>
+                    </div>
+
+                    <div class="form-group button">
+                        <button type="submit">Create Room</button>
+                    </div>
+                </form>
+            </article>
+        </section>
+
+        {{!-- Overlay for to get the password for locked rooms --}}
+        <div id="join-overlay" class="overlay">
+            <div class="grid-wrapper">
+                <div class="overlay-content">
+                    <label for="room-password">Room Password</label>
+                    <input type="password" name="room-password" id="room-password">
+                    <p class="error" id="join-overlay-error"></p>
+                    <button id="join-overlay-cancel-btn">Cancel</button>
+                    <button id="join-overlay-join-btn">Join</button>
+                </div>
+            </div>
+        </div>
+
+        {{!-- Modal for displaying errors and information --}}
+        <div class="modal" id="error-msg-modal"></div>
+    </main>
+
+    {{> footer}}
+
+    <script src="/js/index.js"></script>
+</body>
+
+</html>

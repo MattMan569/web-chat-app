@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>{{pageTitle}}</title>
+</head>
+
+<body>
+    {{> header}}
+
+    <main class="chat-page">
+        <section class="users">
+            <div id="user-list">
+                {{!-- List of users currently in the room --}}
+                {{!-- Rendered by handlebars, placed by jQuery --}}
+            </div>
+
+            <template id="user-item-template">
+                \{{#each room.users}}
+                <article class="user-item" id="\{{socketId}}" title="\{{user.username}}">
+                    <a href="/users/\{{user._id}}" class="username" target="_blank">\{{user.username}}</a>
+                    {{!-- 
+                        Only display the kick button if the client is the owner
+                        And only on users that are not the aforementioned owner
+                    --}}
+                    \{{#ifeq ../room.owner ../client._id}}
+                    \{{#ifnoteq user._id ../client._id}}
+                    <button type="button" class="kick">Kick</button>
+                    \{{/ifnoteq}}
+                    \{{/ifeq}}
+                </article>
+                \{{/each}}
+            </template>
+        </section>
+
+        <section class="messages">
+            <div id="message-list">
+                {{!-- List of rendered messages --}}
+                {{!-- Rendered by handlebars, placed by jQuery --}}
+            </div>
+
+            <template id="message-item-template">
+                <article class="message">
+                    <p class="created-at">\{{createdAt.[1]}}<br>\{{createdAt.[0]}}</p>
+                    \{{#if _id}}
+                    <a href="users/\{{_id}}" target="_blank" class="sender">\{{sender}}</a>
+                    \{{else}}
+                    <p class="sender">\{{sender}}</p>
+                    \{{/if}}
+                    <p class="message-content">\{{message}}</p>
+                </article>
+            </template>
+        </section>
+
+        <section class="compose">
+            <article class="compose-form">
+                <form id="message-form" autocomplete="off">
+                    <fieldset id="form-controls">
+                        <div class="form-group">
+                            <textarea id="message-field" name="message" cols="100" rows="3" autofocus
+                                required></textarea>
+                            <button type="submit">Send</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </article>
+        </section>
+    </main>
+
+    {{> footer}}
+
+    <script src="/js/chat.js"></script>
+</body>
+
+</html>
