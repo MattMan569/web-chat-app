@@ -17,10 +17,7 @@ exports.websiteInfo = {
 };
 exports.getRouterOptions = function (req, pageTitle) {
     var _a, _b;
-    return __assign({ pageTitle: pageTitle, loggedIn: req.session.loggedIn, 
-        // TODO just use the whole user obj
-        // user: req.session.user,
-        username: (_a = req.session.user) === null || _a === void 0 ? void 0 : _a.username, userId: (_b = req.session.user) === null || _b === void 0 ? void 0 : _b._id }, exports.websiteInfo);
+    return __assign({ pageTitle: pageTitle, loggedIn: req.session.loggedIn, username: (_a = req.session.user) === null || _a === void 0 ? void 0 : _a.username, userId: (_b = req.session.user) === null || _b === void 0 ? void 0 : _b._id }, exports.websiteInfo);
 };
 exports.default = {
     websiteInfo: exports.websiteInfo,

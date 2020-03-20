@@ -9,5 +9,9 @@ mongoose_1.default.connect(process.env.MONGODB_URL, {
     useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true,
+}, function (err) {
+    if (err) {
+        console.log("MongoDB:", err);
+    }
 });
 //# sourceMappingURL=mongoose.js.map
