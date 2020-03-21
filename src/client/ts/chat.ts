@@ -4,7 +4,6 @@ import $ from "jquery";
 import socketio from "socket.io-client";
 import { IRoom } from "./../../server/models/room";
 import { IUser } from "./../../server/models/user";
-import { IRoomUser } from "./../../server/socketIO/routes/chat";
 import { ISocketIOMessage } from "./../../types/types";
 
 // TODO move helpers file for both server and client

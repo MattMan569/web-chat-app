@@ -1,7 +1,7 @@
 import sharedSession from "express-socket.io-session";
 import { Server } from "socket.io";
 import { ISocketIOMessage } from "./../../../types/types";
-import Room, { IRoom } from "./../../models/room";
+import Room from "./../../models/room";
 import { IUser } from "./../../models/user";
 import User from "./../../models/user";
 import { session } from "./../../server";

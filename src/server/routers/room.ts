@@ -2,7 +2,7 @@ import Cryptr from "cryptr";
 import express, { Request, Response } from "express";
 import auth from "../middleware/auth";
 import roomOwner from "../middleware/roomOwner";
-import Room, { IRoom } from "../models/room";
+import Room from "../models/room";
 import User from "./../models/user";
 import { getRouterOptions, websiteInfo } from "./util/routerOptions";
 
