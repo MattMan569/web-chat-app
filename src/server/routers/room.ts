@@ -120,18 +120,25 @@ router.post("/rooms/join/:id", auth, async (req: Request, res: Response) => {
     }
 });
 
-// TODO make sure requester is room owner
-
 // Change the room's name
 router.patch("/rooms/name", auth, async (req: Request, res: Response) => {
     try {
         const roomId = req.headers.referer.split("/").pop();
+        let room = await Room.findById(roomId);
 
-        const room = await Room.findByIdAndUpdate(roomId, {
+        // Room owner is object, user id is string
+        // tslint:disable-next-line: triple-equals
+        if (room.owner != req.session.user._id) {
+            res.status(403).send("Only room owners may change the room's name");
+            return;
+        }
+
+        room = await Room.findByIdAndUpdate(roomId, {
             name: req.body.name,
         }, {
             new: true,
         });
+
         Room.emit("roomUpdate", room);
         res.send(room);
     } catch (error) {
