@@ -5,4 +5,8 @@ mongoose.connect(process.env.MONGODB_URL, {
     useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true,
+}, (err) => {
+    if (err) {
+        console.log("MongoDB:", err);
+    }
 });
