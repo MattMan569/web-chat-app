@@ -8,6 +8,7 @@ import http from "http";
 import mongoose from "mongoose";
 import path from "path";
 import uuidv4 from "uuid/v4";
+import hbHelpers from "./../shared/handlebarsHelpers";
 require("./db/mongoose");
 import mainRouter from "./routers/main";
 import profileRouter from "./routers/profile";
@@ -62,22 +63,26 @@ app.set("view engine", "hbs");
 app.set("views", viewsPath);
 hbs.registerPartials(partialsPath);
 
-hbs.registerHelper("ifeq", function(this: any, a, b, options) {
-    // tslint:disable-next-line: triple-equals
-    if (a == b) {
-        return options.fn(this);
-    }
-    return options.inverse(this);
-});
+// Add handlebars helper functions
+// hbs.registerHelper("ifeq", function(this: any, a, b, options) {
+//     // tslint:disable-next-line: triple-equals
+//     if (a == b) {
+//         return options.fn(this);
+//     }
+//     return options.inverse(this);
+// });
 
-hbs.registerHelper("ifnoteq", function(this: any, a, b, options) {
-    // tslint:disable-next-line: triple-equals
-    if (a != b) {
-        return options.fn(this);
-    }
-    return options.inverse(this);
-});
+// hbs.registerHelper("ifnoteq", function(this: any, a, b, options) {
+//     // tslint:disable-next-line: triple-equals
+//     if (a != b) {
+//         return options.fn(this);
+//     }
+//     return options.inverse(this);
+// });
 
+// Add handlebars helper functions
+hbs.registerHelper("ifeq", hbHelpers.ifeq);
+hbs.registerHelper("ifnoteq", hbHelpers.ifnoteq);
 hbs.registerHelper("decrypt", (password: string) => {
     return new Cryptr(process.env.AES_SECRET).decrypt(password);
 });

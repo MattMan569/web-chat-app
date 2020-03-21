@@ -3,26 +3,14 @@ import Handlebars from "handlebars";
 import $ from "jquery";
 import socketio from "socket.io-client";
 import { IUser } from "../../server/models/user";
+import hbHelpers from "../../shared/handlebarsHelpers";
 import { IRoom } from "./../../server/models/room";
 import { IjQDoneAjax } from "./../../types/types";
 import { showModalTimed } from "./util/jQueryUtil";
 
-// TODO move helpers file for both server and client
-Handlebars.registerHelper("ifeq", function(this: any, a, b, options) {
-    // tslint:disable-next-line: triple-equals
-    if (a == b) {
-        return options.fn(this);
-    }
-    return options.inverse(this);
-});
-
-Handlebars.registerHelper("ifnoteq", function(this: any, a, b, options) {
-    // tslint:disable-next-line: triple-equals
-    if (a != b) {
-        return options.fn(this);
-    }
-    return options.inverse(this);
-});
+// Add handlebars helper functions
+Handlebars.registerHelper("ifeq", hbHelpers.ifeq);
+Handlebars.registerHelper("ifnoteq", hbHelpers.ifnoteq);
 
 const socket = socketio("/index");
 
