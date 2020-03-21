@@ -163,7 +163,6 @@ router.post("/rooms/join/:id", auth_1.default, function (req, res) { return __aw
                 roomId = req.params.id;
                 password = req.body.password;
                 // User was already authorized
-                // TODO consider removing, auth then remove on join
                 // so password must always be entered
                 if (req.session.authorizedRooms.includes(roomId)) {
                     return [2 /*return*/, res.send()];
@@ -204,26 +203,34 @@ router.post("/rooms/join/:id", auth_1.default, function (req, res) { return __aw
         }
     });
 }); });
-// TODO make sure requester is room owner
 // Change the room's name
 router.patch("/rooms/name", auth_1.default, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var roomId, room, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
+                _a.trys.push([0, 3, , 4]);
                 roomId = req.headers.referer.split("/").pop();
+                return [4 /*yield*/, room_1.default.findById(roomId)];
+            case 1:
+                room = _a.sent();
+                // Room owner is object, user id is string
+                // tslint:disable-next-line: triple-equals
+                if (room.owner != req.session.user._id) {
+                    res.status(403).send("Only room owners may change the room's name");
+                    return [2 /*return*/];
+                }
                 return [4 /*yield*/, room_1.default.findByIdAndUpdate(roomId, {
                         name: req.body.name,
                     }, {
                         new: true,
                     })];
-            case 1:
+            case 2:
                 room = _a.sent();
                 room_1.default.emit("roomUpdate", room);
                 res.send(room);
-                return [3 /*break*/, 3];
-            case 2:
+                return [3 /*break*/, 4];
+            case 3:
                 error_1 = _a.sent();
                 if (error_1.codeName === "DuplicateKey") {
                     res.status(400).send("Room name is already taken.");
@@ -231,8 +238,8 @@ router.patch("/rooms/name", auth_1.default, function (req, res) { return __await
                 }
                 console.log(error_1);
                 res.status(500).send("Internal server error.");
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); });

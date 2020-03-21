@@ -13,6 +13,7 @@ var http_1 = __importDefault(require("http"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var path_1 = __importDefault(require("path"));
 var v4_1 = __importDefault(require("uuid/v4"));
+var handlebarsHelpers_1 = __importDefault(require("./../shared/handlebarsHelpers"));
 require("./db/mongoose");
 var main_1 = __importDefault(require("./routers/main"));
 var profile_1 = __importDefault(require("./routers/profile"));
@@ -59,20 +60,24 @@ app.use(exports.session);
 app.set("view engine", "hbs");
 app.set("views", viewsPath);
 hbs_1.default.registerPartials(partialsPath);
-hbs_1.default.registerHelper("ifeq", function (a, b, options) {
-    // tslint:disable-next-line: triple-equals
-    if (a == b) {
-        return options.fn(this);
-    }
-    return options.inverse(this);
-});
-hbs_1.default.registerHelper("ifnoteq", function (a, b, options) {
-    // tslint:disable-next-line: triple-equals
-    if (a != b) {
-        return options.fn(this);
-    }
-    return options.inverse(this);
-});
+// Add handlebars helper functions
+// hbs.registerHelper("ifeq", function(this: any, a, b, options) {
+//     // tslint:disable-next-line: triple-equals
+//     if (a == b) {
+//         return options.fn(this);
+//     }
+//     return options.inverse(this);
+// });
+// hbs.registerHelper("ifnoteq", function(this: any, a, b, options) {
+//     // tslint:disable-next-line: triple-equals
+//     if (a != b) {
+//         return options.fn(this);
+//     }
+//     return options.inverse(this);
+// });
+// Add handlebars helper functions
+hbs_1.default.registerHelper("ifeq", handlebarsHelpers_1.default.ifeq);
+hbs_1.default.registerHelper("ifnoteq", handlebarsHelpers_1.default.ifnoteq);
 hbs_1.default.registerHelper("decrypt", function (password) {
     return new cryptr_1.default(process.env.AES_SECRET).decrypt(password);
 });
