@@ -80,7 +80,6 @@ router.post("/rooms/join/:id", auth, async (req: Request, res: Response) => {
         const password = req.body.password;
 
         // User was already authorized
-        // TODO consider removing, auth then remove on join
         // so password must always be entered
         if (req.session.authorizedRooms.includes(roomId)) {
             return res.send();
