@@ -17,11 +17,19 @@ router.post("/rooms/create", auth, async (req: Request, res: Response) => {
 
     try {
         await new Room(req.body).save((e, room) => {
+            // Parse the error message
             if (e) {
-                console.log(e);
-                // TODO parse 'e' and send helpful error message
-                res.status(400).send("Error");
-                return;
+                if (e.name === "ValidationError") {
+                    res.status(400).send("Room name is too long (max 50 characters)");
+                    return;
+                } else if (e.name === "MongoError") {
+                    res.status(400).send("Room name is already taken");
+                    return;
+                } else {
+                    console.log(e);
+                    res.status(500).send("Internal server error");
+                    return;
+                }
             }
 
             // Authorize the creator for the new room
@@ -30,10 +38,9 @@ router.post("/rooms/create", auth, async (req: Request, res: Response) => {
             // Send the URL to redirect to
             res.send(`/chat?room=${room._id}`);
         });
-
     } catch (e) {
         console.log(e);
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 });
 

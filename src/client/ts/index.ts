@@ -103,15 +103,12 @@ $("#create-form").submit(function(e) {
         url: form.attr("action"),
         method: form.attr("method"),
         data: form.serialize(),
-        statusCode: {
-            200: (res) => {
-                // Redirect to room and join
-                window.location.href = res;
-            },
-            400: (res) => {
-                // Improper input
-                console.log(res);
-            },
+        success: (res) => {
+            window.location.href = res;
+        },
+        error: (res) => {
+            // Show modal with error
+            showModalTimed("#error-msg-modal", res.responseText, 2000);
         },
     });
 });
