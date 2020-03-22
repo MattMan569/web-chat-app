@@ -72,11 +72,21 @@ router.post("/rooms/create", auth_1.default, function (req, res) { return __awai
             case 2:
                 _a.trys.push([2, 4, , 5]);
                 return [4 /*yield*/, new room_1.default(req.body).save(function (e, room) {
+                        // Parse the error message
                         if (e) {
-                            console.log(e);
-                            // TODO parse 'e' and send helpful error message
-                            res.status(400).send("Error");
-                            return;
+                            if (e.name === "ValidationError") {
+                                res.status(400).send("Room name is too long (max 50 characters)");
+                                return;
+                            }
+                            else if (e.name === "MongoError") {
+                                res.status(400).send("Room name is already taken");
+                                return;
+                            }
+                            else {
+                                console.log(e);
+                                res.status(500).send("Internal server error");
+                                return;
+                            }
                         }
                         // Authorize the creator for the new room
                         req.session.authorizedRooms.push(room._id);
@@ -89,7 +99,7 @@ router.post("/rooms/create", auth_1.default, function (req, res) { return __awai
             case 4:
                 e_1 = _a.sent();
                 console.log(e_1);
-                res.status(400).send(e_1);
+                res.status(500).send(e_1);
                 return [3 /*break*/, 5];
             case 5: return [2 /*return*/];
         }
