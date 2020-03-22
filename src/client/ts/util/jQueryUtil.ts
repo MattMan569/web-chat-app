@@ -10,9 +10,9 @@ export const hideModal = (el: string) => {
     $(el).text("");
 };
 
-export const showModalTimed = (el: string, msg: string, displayTime: number) => {
+export const showModalTimed = (el: string, msg: string, displayTimeMs: number) => {
     showModal(el, msg);
     setTimeout(() => {
         hideModal(el);
-    }, displayTime);
+    }, displayTimeMs);
 };
