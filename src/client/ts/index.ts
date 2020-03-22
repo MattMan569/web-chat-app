@@ -77,7 +77,9 @@ const roomAttachClickEvent = (element: JQuery<HTMLElement>) => {
                         // Show message on overlay
                         $("#join-overlay-error").text(error.responseText);
                     } else {
-                        // TODO close overlay first
+                        // Close overlay first if open
+                        $("#join-overlay").css("display", "none");
+
                         // Show modal with error
                         showModalTimed("#error-msg-modal", error.responseText, 2000);
                     }
