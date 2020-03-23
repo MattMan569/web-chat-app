@@ -73,7 +73,6 @@ router.post("/users/upload/avatar", [auth, upload.single("avatar")], async (req:
         res.status(500).send(e);
     }
 }, (error: multer.MulterError, req: Request, res: Response, next: NextFunction) => {
-    console.log(error);
     res.status(400).send({
         error: error.message,
     });
