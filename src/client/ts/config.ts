@@ -1,6 +1,7 @@
 require("./common");
 import $ from "jquery";
 import { IRoom } from "./../../server/models/room";
+import { showModalTimed } from "./util/jQueryUtil";
 
 const nameBtns = $("#name-buttons");
 const pswdBtns = $("#password-buttons");
@@ -50,8 +51,7 @@ const editName = () => {
                     $("#room-name-header").text(`Configure - ${res.name}`);
                 },
                 error: (res) => {
-                    // TODO modal
-                    console.log(res);
+                    showModalTimed("#error-msg-modal", res.responseText, 2000);
                 },
             });
 
@@ -97,8 +97,7 @@ const editPassword = () => {
                     inputEl.replaceWith(getSpanLabelEl("password", res.password));
                 },
                 error: (res) => {
-                    // TODO modal
-                    console.log(res);
+                    showModalTimed("#error-msg-modal", res.responseText, 2000);
                 },
             });
 
@@ -143,8 +142,7 @@ const editCapacity = () => {
                     inputEl.replaceWith(getSpanLabelEl("capacity", res.capacity.toString()));
                 },
                 error: (res) => {
-                    // TODO modal
-                    console.log(res);
+                    showModalTimed("#error-msg-modal", res.responseText, 2000);
                 },
             });
 
