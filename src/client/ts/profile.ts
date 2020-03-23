@@ -3,6 +3,7 @@ import $ from "jquery";
 import localforage from "localforage";
 import { IProfile } from "./../../server/models/profile";
 import { IUser } from "./../../server/models/user";
+import { showModalTimed } from "./util/jQueryUtil";
 
 const deleteBtn = $("#delete-user-btn");
 const descBtns = $("#description-buttons");
@@ -99,6 +100,12 @@ descBtns.append(getEditBtnEl());
 $("#avatar-upload").change(function() {
     const formData = new FormData();
     const file = $(this).prop("files")[0];
+
+    // User canceled after erroneous upload
+    if (!file) {
+        return;
+    }
+
     formData.append("avatar", file);
 
     $.ajax({
@@ -119,13 +126,12 @@ $("#avatar-upload").change(function() {
             },
             400: (res) => {
                 // Incorrect file format
-                // TODO display error
-                console.log(res);
+                showModalTimed("#error-msg-modal", res.responseJSON.error, 2000);
             },
             500: (res) => {
                 // Server cannot process file
-                // TODO display error
                 console.log(res);
+                showModalTimed("#error-msg-modal", res.responseJSON.error, 2000);
             },
         },
     });

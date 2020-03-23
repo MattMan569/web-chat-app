@@ -33,7 +33,9 @@
                 </div>
                 {{/ifeq}}
 
+                <hr>
                 <p class="description" id="description">{{profile.description}}</p>
+                <hr>
             </article>
 
             {{#ifeq profile.userId._id userId}}
@@ -46,8 +48,10 @@
                 <button id="delete-user-btn" title="This is irreversible.">Delete your profile</button>
             </article>
             {{/ifeq}}
-
         </section>
+
+        {{!-- Modal for displaying errors and information --}}
+        <div class="modal" id="error-msg-modal"></div>
     </main>
 
     {{> footer}}
