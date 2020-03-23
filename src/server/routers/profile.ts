@@ -19,8 +19,7 @@ router.patch("/profiles/description", auth, async (req: Request, res: Response) 
         // Send back the updated profile
         res.send(profile);
     } catch (e) {
-        // TODO proper error parsing
-        res.status(400);
+        res.status(500).send();
     }
 });
 
