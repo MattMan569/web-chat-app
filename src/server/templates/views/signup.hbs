@@ -16,7 +16,7 @@
         <section>
             <article class="signup-form">
                 <h2>Sign Up</h2>
-                <form action="/users" method="POST">
+                <form action="/users" method="POST" id="signup-form">
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" name="username" placeholder="username" required>
@@ -42,6 +42,10 @@
                     </div>
                 </form>
             </article>
+
+            <div class="errors">
+                <p class="err-msg" id="err-msg"></p>
+            </div>
 
             <article class="signup-links">
                 <p>Already have an account? <a href="/login">Log in here.</a></p>

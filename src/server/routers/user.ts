@@ -57,9 +57,16 @@ router.post("/users", async (req: Request, res: Response) => {
         });
 
         createSession(req.session, user);
-        res.redirect("/");
+        res.send("/");
     } catch (e) {
-        res.status(400).send(e);
+        if (e.name === "ValidationError") {
+            res.status(400).send("Password must be at least 7 characters long");
+        } else if (e.name === "MongoError") {
+            res.status(400).send("Username is already taken");
+        } else {
+            console.log(e);
+            res.status(500).send("Internal server error");
+        }
     }
 });
 
