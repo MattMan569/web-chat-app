@@ -1,5 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
+import fs from "fs";
 import multer from "multer";
+import path from "path";
 import sharp from "sharp";
 import auth from "../middleware/auth";
 import Profile from "../models/profile";
@@ -40,7 +42,13 @@ const createSession = (session: Express.Session, user: IUser) => {
 // Create a new user and log in
 router.post("/users", async (req: Request, res: Response) => {
     try {
-        const user = await User.create(req.body);
+        const avatar = fs.readFileSync(path.join(__dirname, "../img/defaultAvatar.png"));
+        const userData = {
+            ...req.body,
+            avatar,
+        };
+
+        const user = await User.create(userData);
 
         Profile.create({
             userId: user._id,
