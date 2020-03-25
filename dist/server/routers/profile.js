@@ -65,8 +65,7 @@ router.patch("/profiles/description", auth_1.default, function (req, res) { retu
                 return [3 /*break*/, 3];
             case 2:
                 e_1 = _a.sent();
-                // TODO proper error parsing
-                res.status(400);
+                res.status(500).send();
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

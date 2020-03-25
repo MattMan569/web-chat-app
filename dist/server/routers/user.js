@@ -51,7 +51,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
+var fs_1 = __importDefault(require("fs"));
 var multer_1 = __importDefault(require("multer"));
+var path_1 = __importDefault(require("path"));
 var sharp_1 = __importDefault(require("sharp"));
 var auth_1 = __importDefault(require("../middleware/auth"));
 var profile_1 = __importDefault(require("../models/profile"));
@@ -86,12 +88,14 @@ var createSession = function (session, user) {
 };
 // Create a new user and log in
 router.post("/users", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, e_1;
+    var avatar, userData, user, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, user_1.default.create(req.body)];
+                avatar = fs_1.default.readFileSync(path_1.default.join(__dirname, "../img/defaultAvatar.png"));
+                userData = __assign(__assign({}, req.body), { avatar: avatar });
+                return [4 /*yield*/, user_1.default.create(userData)];
             case 1:
                 user = _a.sent();
                 profile_1.default.create({
@@ -100,11 +104,20 @@ router.post("/users", function (req, res) { return __awaiter(void 0, void 0, voi
                     online: true,
                 });
                 createSession(req.session, user);
-                res.redirect("/");
+                res.send("/");
                 return [3 /*break*/, 3];
             case 2:
                 e_1 = _a.sent();
-                res.status(400).send(e_1);
+                if (e_1.name === "ValidationError") {
+                    res.status(400).send("Password must be at least 7 characters long");
+                }
+                else if (e_1.name === "MongoError") {
+                    res.status(400).send("Username is already taken");
+                }
+                else {
+                    console.log(e_1);
+                    res.status(500).send("Internal server error");
+                }
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -138,7 +151,6 @@ router.post("/users/upload/avatar", [auth_1.default, upload.single("avatar")], f
         }
     });
 }); }, function (error, req, res, next) {
-    console.log(error);
     res.status(400).send({
         error: error.message,
     });
